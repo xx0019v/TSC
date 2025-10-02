@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en" class="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="TSC English Academy offers premium English lessons for all ages, focusing on confidence and flexibility." />
+  <meta name="theme-color" content="#000000" />
+  <title>TSC English Academy - Premium English Lessons</title>
+
+  <!-- ========================= SEO / OGP ========================= -->
+  <link rel="canonical" href="https://example.com/" />
+  <meta property="og:title" content="TSC English Academy - Premium English Lessons" />
+  <meta property="og:description" content="Anytime, anywhere. Learn English with confidence through output-focused lessons led by teachers living abroad or from overseas backgrounds." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/1..1...jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- ========================= Icons ========================= -->
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- ========================= Preconnect (perf) ========================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://docs.google.com" />
+  <link rel="preconnect" href="https://googleusercontent.com" crossorigin />
+
+  <!-- ========================= Fonts ========================= -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&display=swap"
+  />
+
+  <!-- ========================= Preload key images ========================= -->
+  <link rel="preload" as="image" href="images/1..1...jpg" />
+  <link rel="preload" as="image" href="images/1..1.jpg" />
+  <link rel="preload" as="image" href="images/1..jpg" />
+
+  <!-- ========================= Styles ========================= -->
+  <style>
+    :root {
+      --brand-gold: #d4af37;
+      --brand-gold-soft: #f3e7c9;
+      --brand-gold-deep: #b89222;
+      --bg-black: #000000;
+      --text-white: #ffffff;
+      --panel-bg: rgba(16, 16, 16, 0.52);
+      --panel-border: rgba(255, 255, 255, 0.10);
+      --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.55);
+      --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.42);
+      --ring-gold: 0 0 0 2px rgba(212, 175, 55, 0.65), 0 0 22px rgba(212, 175, 55, 0.35);
+      --parallax-strength: 0.15; /* 0〜1: 強さ */
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg-black);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Serif JP', serif;
+      color: var(--text-white);
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      background: var(--bg-black);
+      touch-action: manipulation;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: none;
+    }
+
+    /* ========================= Accessibility helpers ========================= */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    a:focus,
+    button:focus {
+      outline: 2px dashed var(--brand-gold);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .skip-link:focus {
+      left: 16px;
+      top: 16px;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      background: var(--brand-gold);
+      color: #000000;
+      border-radius: 8px;
+      z-index: 1200;
+    }
+
+    /* ========================= Section base ========================= */
+    section {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 96px 20px;
+      text-align: center;
+      position: relative;
+      scroll-snap-align: start;
+      isolation: isolate;
+      overflow: hidden; /* 背景スタックを内包 */
+    }
+
+    /* 背景スタック（2枚クロスフェード + パララックス） */
+    .bg-stack {
+      position: absolute;
+      inset: -8vh 0 -8vh 0; /* 外側まで伸ばす */
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0) scale(1.06); /* わずかに拡大して縁欠け防止 */
+      transition: opacity 0.85s ease;
+      opacity: 0;
+      filter: saturate(1.02) contrast(1.06);
+    }
+
+    .bg-layer.is-front {
+      opacity: 1;
+    }
+
+    /* グラデーションの上掛け（陰影/金色の光沢感） */
+    .bg-vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1200px 500px at 70% 20%, rgba(212, 175, 55, 0.06), transparent 70%),
+        radial-gradient(1400px 560px at 10% 10%, rgba(255, 255, 255, 0.05), transparent 60%),
+        linear-gradient(to bottom, rgba(0,0,0,0.52), rgba(0,0,0,0.88));
+      z-index: 1;
+    }
+
+    .content,
+    .hero {
+      position: relative;
+      z-index: 2;
+      max-width: 1160px;
+      width: 100%;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      max-width: 1280px;
+    }
+
+    .hero-left,
+    .hero-right {
+      flex: 1 1 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    /* === ロゴ光沢アニメーション用のラッパ === */
+    .logo-wrap {
+      position: relative;
+      display: inline-block;
+      border-radius: 16px;
+      box-shadow: var(--shadow-strong);
+      overflow: hidden; /* 光沢がはみ出さないように */
+      background: linear-gradient(135deg, #e8dcb1, #f9f4e4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      isolation: isolate;
+    }
+    .logo-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -20% -40%;
+      background: linear-gradient(75deg, rgba(255,255,255,0) 38%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 62%);
+      transform: translateX(-120%) rotate(8deg);
+      filter: blur(1px);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: sheen 4.8s ease-in-out infinite;
+    }
+    @keyframes sheen {
+      0%, 60% { transform: translateX(-120%) rotate(8deg); opacity: 0; }
+      70%     { opacity: 1; }
+      100%    { transform: translateX(120%) rotate(8deg); opacity: 0; }
+    }
+
+    .hero-right img {
+      width: 420px;
+      max-width: 92vw;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0 0 20px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+      line-height: 1.7;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem);
+      letter-spacing: 0.02em;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 2.4vw + 1rem, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    .section-sub {
+      opacity: 0.92;
+      margin-bottom: 34px;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(2.5px);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 18px;
+      width: 100%;
+    }
+
+    @media (min-width: 700px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1100px) {
+      .card-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(24, 24, 24, 0.62), rgba(20, 20, 20, 0.50));
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 16px;
+      padding: 22px 22px 26px;
+      text-align: left;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(2px);
+      transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease, filter 260ms ease;
+      overflow: hidden;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: calc(100% - 64px);
+      bottom: 14px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand-gold-soft), var(--brand-gold));
+      border-radius: 2px;
+      transform-origin: left center;
+      transition: right 260ms ease;
+      opacity: 0.85;
+      filter: saturate(1.1);
+    }
+    .card:hover::after,
+    .card:focus-within::after {
+      right: 16px;
+    }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+    }
+    .card:hover,
+    .card:focus-within {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+      border-color: rgba(212, 175, 55, 0.45);
+      filter: saturate(1.03);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand-gold-soft), var(--brand-gold));
+      color: #000000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 3px 12px rgba(212, 175, 55, 0.35);
+    }
+
+    /* === CTA波紋＋押下マイクロモーション === */
+    .cta-button,
+    .fixed-cta {
+      position: relative;
+      overflow: hidden; /* 波紋を閉じ込める */
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cta-button {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 14px 28px;
+      background: linear-gradient(90deg, var(--brand-gold-soft), var(--brand-gold));
+      color: #000000;
+      font-weight: 700;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 1.18rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.40);
+      transition: transform 0.22s ease, box-shadow 0.28s ease, filter 0.22s ease;
+      border: 1px solid rgba(0, 0, 0, 0.22);
+    }
+    .cta-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.50);
+      filter: saturate(1.06);
+    }
+    .cta-button:active {
+      transform: translateY(-1px) scale(0.985);
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+      filter: saturate(1);
+    }
+
+    .fixed-cta {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      padding: 14px 28px;
+      font-size: 1.06rem;
+      background: #ffd700;
+      color: #000000;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s ease;
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
+      padding-bottom: calc(14px + env(safe-area-inset-bottom));
+    }
+    .fixed-cta:hover {
+      background: var(--brand-gold);
+      transform: translateX(-50%) translateY(-2px);
+    }
+    @media (min-width: 768px) {
+      .fixed-cta { display: none; }
+    }
+
+    /* 波紋素片 */
+    .ripple {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.55), rgba(212,175,55,0.45) 60%, rgba(212,175,55,0.25) 70%, rgba(212,175,55,0) 80%);
+      transform: translate(-50%, -50%) scale(0);
+      pointer-events: none;
+      animation: ripple 600ms ease-out forwards;
+      mix-blend-mode: screen;
+    }
+    @keyframes ripple {
+      to {
+        transform: translate(-50%, -50%) scale(18);
+        opacity: 0;
+      }
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 10px;
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 999;
+    }
+
+    .lang-btn-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1.5px solid #ffd700;
+      color: #ffd700;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(1px);
+    }
+    .lang-btn-circle:hover {
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35);
+    }
+    .lang-btn-circle.active {
+      background: #ffd700;
+      color: #000000;
+      border: 2px solid #ffd700;
+      box-shadow: var(--ring-gold);
+    }
+
+    [data-lang] { display: none; }
+    html.ja [data-lang][lang="ja"],
+    html.en [data-lang][lang="en"] { display: block; }
+
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 低モーション設定のユーザーにはアニメを抑制 */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+      .bg-layer { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- 言語切替 -->
+  <div class="lang-toggle" role="group" aria-label="Language selection">
+    <button id="btn-en" class="lang-btn-circle active" onclick="setLang('en')" aria-pressed="true" type="button">EN</button>
+    <button id="btn-ja" class="lang-btn-circle" onclick="setLang('ja')" aria-pressed="false" type="button">JA</button>
+  </div>
+
+  <main id="main">
+    <!-- ========================= 1) Hero ========================= -->
+    <section aria-labelledby="hero-title" class="fade-in-up" data-parallax="0.18">
+      <div class="bg-stack" aria-hidden="true">
+        <div class="bg-layer is-front" id="hero-bg-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
+        <div class="bg-layer" id="hero-bg-back" style="background-image: url('images/1..1.jpg');" data-speed="0.85"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div class="hero">
+        <div class="hero-left">
+          <div data-lang lang="ja">
+            <h1 id="hero-title">いつでも、どこでも<br />確かな英語力を</h1>
+            <p>小学生から大人まで、目的に合わせたカリキュラムで学べます。</p>
+            <p>初心者でも安心の丁寧な指導と、話す力を伸ばすアウトプット重視のレッスン。</p>
+            <a href="#form-section" class="cta-button" aria-label="レッスン申し込みフォームへ移動">レッスン申し込み</a>
+          </div>
+          <div data-lang lang="en">
+            <h1 id="hero-title-en">Anytime, Anywhere<br />Learn with Confidence</h1>
+            <p>Our curriculum is designed for learners of all levels—from beginners to advanced.</p>
+            <p>You'll gain confidence through output-focused lessons guided by experienced instructors.</p>
+            <a href="#form-section" class="cta-button" aria-label="Go to application form">Start Your Lesson</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="logo-wrap">
+            <img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" fetchpriority="high" decoding="async" />
+          </div>
+          <noscript>
+            <img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" />
+          </noscript>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= 2) 特徴 ========================= -->
+    <section aria-labelledby="features-title" class="fade-in-up" data-parallax="0.14">
+      <div class="bg-stack" aria-hidden="true">
+        <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
+        <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.9"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <div data-lang lang="ja">
+            <h2 id="features-title" class="section-title">TSC English Academyの特徴</h2>
+            <p class="section-sub">Confidence. Flexibility. Results.</p>
+          </div>
+
+          <div data-lang lang="en">
+            <h2 id="features-title-en" class="section-title">Why Choose TSC English Academy?</h2>
+            <p class="section-sub">Confidence. Flexibility. Results.</p>
+          </div>
+
+          <div class="card-grid" role="list">
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <span class="badge">少人数制</span>
+                <h3>発話量を最大化</h3>
+                <p>一人ひとりが話す時間を確保。アウトプット中心で伸ばします。</p>
+              </div>
+              <div data-lang lang="en">
+                <span class="badge">Small Class</span>
+                <h3>More Speaking Time</h3>
+                <p>We keep classes small so you speak more and grow faster.</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <span class="badge">柔軟スケジュール</span>
+                <h3>オンライン/対面</h3>
+                <p>生活に合わせて学習。いつでもどこでも受講可能です。</p>
+              </div>
+              <div data-lang lang="en">
+                <span class="badge">Flexible</span>
+                <h3>Online & In-Person</h3>
+                <p>Learn anywhere, anytime—fit lessons into your life.</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <span class="badge">目的別</span>
+                <h3>カリキュラム設計</h3>
+                <p>留学・受験・ビジネスなど目的に合わせて最適化します。</p>
+              </div>
+              <div data-lang lang="en">
+                <span class="badge">Goal-Oriented</span>
+                <h3>Tailored Curriculum</h3>
+                <p>Study plans optimized for study abroad, exams, or business.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= 3) 指導スタイル ========================= -->
+    <section aria-labelledby="approach-title" class="fade-in-up" data-parallax="0.16">
+      <div class="bg-stack" aria-hidden="true">
+        <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
+        <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.9"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <div data-lang lang="ja">
+            <h2 id="approach-title" class="section-title">指導スタイル：自然な英語に触れるために</h2>
+            <p class="section-sub">海外在住・海外出身の講師がレッスンを担当し、実践的で自然な表現に触れられる環境を提供します。</p>
+          </div>
+
+          <div data-lang lang="en">
+            <h2 id="approach-title-en" class="section-title">Teaching Approach: Real English, Real Confidence</h2>
+            <p class="section-sub">Lessons are led by teachers living abroad or from overseas backgrounds, so you’ll practice authentic, natural English.</p>
+          </div>
+
+          <div class="card-grid" role="list">
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>発話比率 &gt; 50%</h3>
+                <p>受講者がたくさん話す設計。間違いは即フィードバック。</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>Speaking &gt; 50%</h3>
+                <p>You’ll talk a lot. Mistakes are corrected on the spot.</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>ロールプレイ</h3>
+                <p>旅行・面接・会議など、実場面を想定した練習で運用力を強化。</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>Role-plays</h3>
+                <p>Practice real-life situations: travel, interviews, meetings.</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>個別フィードバック</h3>
+                <p>弱点を特定し、次回に改善がつながる具体アドバイス。</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>Personal Feedback</h3>
+                <p>Clear advice you can apply immediately in your next lesson.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= 4) 体験者の声 ========================= -->
+    <section aria-labelledby="voices-title" class="fade-in-up" data-parallax="0.14">
+      <div class="bg-stack" aria-hidden="true">
+        <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
+        <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.88"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <div data-lang lang="ja">
+            <h2 id="voices-title" class="section-title">学習者の声</h2>
+            <p class="section-sub">リアルな声が、続ける力になる。</p>
+          </div>
+
+          <div data-lang lang="en">
+            <h2 id="voices-title-en" class="section-title">What Our Learners Say</h2>
+            <p class="section-sub">Real stories that keep you motivated.</p>
+          </div>
+
+          <div class="card-grid" role="list">
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>大学生・Aさん</h3>
+                <p>「毎回たくさん話すので、留学前に自信がつきました。説明も分かりやすい！」</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>University Student (A)</h3>
+                <p>“I speak a lot every lesson and feel more confident before my study abroad.”</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>保護者・Bさん</h3>
+                <p>「子どもが自分から英語で話したいと言うように。レッスンが楽しそうです。」</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>Parent (B)</h3>
+                <p>“My child now wants to speak English by themselves—lessons look fun!”</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>社会人・Cさん</h3>
+                <p>「ロールプレイで会議の表現を練習。翌週すぐ使えて効果を実感しました。」</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>Working Professional (C)</h3>
+                <p>“Role-plays for meetings helped me use new phrases the very next week.”</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= 5) FAQ ========================= -->
+    <section aria-labelledby="faq-title" class="fade-in-up" data-parallax="0.16">
+      <div class="bg-stack" aria-hidden="true">
+        <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
+        <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.9"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <div data-lang lang="ja">
+            <h2 id="faq-title" class="section-title">よくある質問</h2>
+            <p class="section-sub">まずは無料体験で、目的とレベルを確認します。</p>
+          </div>
+
+          <div data-lang lang="en">
+            <h2 id="faq-title-en" class="section-title">FAQ</h2>
+            <p class="section-sub">Start with a free trial to check your goals and level.</p>
+          </div>
+
+          <div class="card-grid" role="list">
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>初心者でも大丈夫ですか？</h3>
+                <p>はい。完全初心者から上級者まで対応しています。無料体験で最適な進め方をご提案します。</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>Can complete beginners join?</h3>
+                <p>Yes. We welcome all levels. We’ll propose the best plan after your free trial.</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>オンラインと対面は切り替えできますか？</h3>
+                <p>可能です。スケジュールに合わせて柔軟に選べます。</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>Can I switch between online and in-person?</h3>
+                <p>Yes. Choose flexibly based on your schedule.</p>
+              </div>
+            </div>
+
+            <div class="card" role="listitem">
+              <div data-lang lang="ja">
+                <h3>教材はどうなりますか？</h3>
+                <p>目的に合わせて提案します。無料体験時に詳しくご案内します。</p>
+              </div>
+              <div data-lang lang="en">
+                <h3>What about learning materials?</h3>
+                <p>We recommend materials tailored to your goals. Details at your trial.</p>
+              </div>
+            </div>
+          </div>
+
+          <a href="#form-section" class="cta-button" aria-label="無料体験に申し込む / Start Free Trial">
+            無料体験を申し込む / Start Free Trial
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= 6) 最終CTA ========================= -->
+    <section aria-labelledby="final-cta-title" class="fade-in-up" data-parallax="0.12">
+      <div class="bg-stack" aria-hidden="true">
+        <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
+        <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.92"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <div data-lang lang="ja">
+            <h2 id="final-cta-title" class="section-title">無料体験で、あなたに合う学び方を</h2>
+            <p class="section-sub">体験の内容に基づいて、最適な学習プランをご提案します。</p>
+          </div>
+
+          <div data-lang lang="en">
+            <h2 id="final-cta-title-en" class="section-title">Start a Free Trial—Find Your Best Way to Learn</h2>
+            <p class="section-sub">We’ll propose a tailored plan after your trial lesson.</p>
+          </div>
+
+          <a href="#form-section" class="cta-button">Go to Application Form</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= 7) お申し込みフォーム ========================= -->
+    <section id="form-section" aria-labelledby="form-title" class="fade-in-up" data-parallax="0.10">
+      <div class="bg-stack" aria-hidden="true">
+        <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
+        <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.92"></div>
+        <div class="bg-vignette"></div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <div data-lang lang="ja">
+            <h2 id="form-title" class="section-title">お申し込みフォーム</h2>
+            <p class="section-sub">必要事項を入力して送信してください。担当者よりご連絡いたします。</p>
+            <iframe
+              src="https://docs.google.com/forms/d/e/1FAIpQLSdQjY0ErveIKaj6KAnCKTVZhuIsCX-SWcti7doMOWqdwCGPfg/viewform?embedded=true"
+              width="100%"
+              height="1600"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              title="申し込みフォーム"
+              loading="lazy"
+            >読み込んでいます…</iframe>
+          </div>
+
+          <div data-lang lang="en">
+            <h2 id="form-title-en" class="section-title">Application Form</h2>
+            <p class="section-sub">Please fill out the form below. We will contact you shortly.</p>
+            <iframe
+              src="https://docs.google.com/forms/d/e/1FAIpQLSdQjY0ErveIKaj6KAnCKTVZhuIsCX-SWcti7doMOWqdwCGPfg/viewform?embedded=true"
+              width="100%"
+              height="1600"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              title="Application Form"
+              loading="lazy"
+            >Loading…</iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= 8) フッター ========================= -->
+    <footer
+      style="
+        padding: 34px 16px;
+        background: #000000;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      "
+    >
+      <div class="content" style="max-width: 1160px; margin: 0 auto;">
+        <p style="opacity: 0.88; margin: 0 0 8px;">
+          © <span id="year"></span> TSC English Academy
+        </p>
+        <p style="opacity: 0.65; margin: 0;">
+          Contact: info@example.com
+        </p>
+      </div>
+    </footer>
+  </main>
+
+  <a href="#form-section" class="cta-button fixed-cta">Start Your Free Trial</a>
+
+  <!-- ========================= Structured Data (Technical SEO) ========================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "TSC English Academy",
+    "url": "https://example.com/",
+    "logo": "https://example.com/images/1..jpg",
+    "sameAs": []
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "初心者でも大丈夫ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい。完全初心者から上級者まで対応しています。無料体験で最適な進め方をご提案します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "オンラインと対面は切り替えできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "可能です。スケジュールに合わせて柔軟に選べます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "教材はどうなりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "目的に合わせて提案します。無料体験時に詳しくご案内します。"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- ========================= Scripts ========================= -->
+  <script>
+    // 言語切替
+    function setLang(lang) {
+      const html = document.documentElement;
+      html.classList.remove('ja', 'en');
+      html.classList.add(lang);
+      html.setAttribute('lang', lang);
+
+      const jaBtn = document.getElementById('btn-ja');
+      const enBtn = document.getElementById('btn-en');
+
+      jaBtn.classList.toggle('active', lang === 'ja');
+      enBtn.classList.toggle('active', lang === 'en');
+
+      jaBtn.setAttribute('aria-pressed', String(lang === 'ja'));
+      enBtn.setAttribute('aria-pressed', String(lang === 'en'));
+    }
+
+    // フェードイン（IntersectionObserver）
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
+    );
+    document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+
+    // 年号
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ========================= 背景クロスフェード + パララックス（スマホ同等挙動） =========================
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+    const sections = Array.from(document.querySelectorAll('section')).map((section) => {
+      const stack = section.querySelector('.bg-stack');
+      const layers = stack ? stack.querySelectorAll('.bg-layer') : null;
+      const front = layers ? layers[0] : null;
+      const back  = layers ? layers[1] : null;
+      const strength = parseFloat(section.getAttribute('data-parallax') || '0.15');
+      return { el: section, stack, front, back, strength, center: 0, top: 0, height: 0 };
+    });
+
+    function recalcCenters() {
+      sections.forEach((s) => {
+        if (!s.el) return;
+        s.top = s.el.offsetTop;
+        s.height = s.el.offsetHeight;
+        s.center = s.top + s.height / 2;
+      });
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (prefersReduced) return; // 低モーション設定ではスキップ
+      if (!ticking) {
+        requestAnimationFrame(applyScrollEffects);
+        ticking = true;
+      }
+    }
+
+    function applyScrollEffects() {
+      const viewportH = window.innerHeight || document.documentElement.clientHeight;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+
+      sections.forEach((s) => {
+        if (!s.stack || !s.front || !s.back) return;
+
+        // セクション中央からの距離を -1〜+1 に正規化
+        const distance = (scrollY + viewportH / 2 - s.center) / (viewportH / 1.1);
+        const ratio = clamp(Math.abs(distance), 0, 1);
+
+        // クロスフェード
+        const frontOpacity = clamp(1 - ratio * 0.85, 0.15, 1);
+        const backOpacity  = clamp(0.35 + ratio * 0.55, 0.35, 0.9);
+        s.front.style.opacity = String(frontOpacity);
+        s.back.style.opacity  = String(backOpacity);
+
+        // パララックス
+        const frontSpeed = parseFloat(s.front.getAttribute('data-speed') || '1');
+        const backSpeed  = parseFloat(s.back.getAttribute('data-speed') || '0.9');
+        const frontShift = (scrollY - s.center) * s.strength * (1 / frontSpeed);
+        const backShift  = (scrollY - s.center) * s.strength * (1 / backSpeed) * 0.7;
+        s.front.style.transform = `translate3d(0, ${frontShift}px, 0) scale(1.06)`;
+        s.back .style.transform = `translate3d(0, ${backShift }px, 0) scale(1.06)`;
+      });
+
+      ticking = false;
+    }
+
+    // 初期化と各種イベント（スマホ最適）
+    function initParallax() {
+      recalcCenters();
+      applyScrollEffects();
+    }
+
+    initParallax();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
+    window.addEventListener('orientationchange', () => { setTimeout(() => { recalcCenters(); applyScrollEffects(); }, 120); }, { passive: true });
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
+      window.visualViewport.addEventListener('scroll', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
+    }
+
+    window.addEventListener('load', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { recalcCenters(); applyScrollEffects(); });
+    }
+
+    // ========================= CTA Ripple Effect（スマホ対応 Pointer API） =========================
+    function attachRipple(el) {
+      function spawnRipple(e) {
+        const rect = el.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        const isTouch = e.touches && e.touches[0];
+        const cx = isTouch ? e.touches[0].clientX : (e.clientX ?? rect.left + rect.width / 2);
+        const cy = isTouch ? e.touches[0].clientY : (e.clientY ?? rect.top  + rect.height / 2);
+        ripple.style.left = (cx - rect.left) + 'px';
+        ripple.style.top  = (cy - rect.top ) + 'px';
+        el.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 700);
+      }
+      el.addEventListener('pointerdown', spawnRipple, { passive: true });
+    }
+    document.querySelectorAll('.cta-button, .fixed-cta').forEach(attachRipple);
+  </script>
+
+  <noscript>
+    <div style="background:#111111;color:#ffffff;padding:12px;text-align:center;">
+      JavaScript is disabled. Some animations and language toggle may not work.
+    </div>
+  </noscript>
+</body>
+</html>
