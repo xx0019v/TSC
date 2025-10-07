@@ -36,6 +36,9 @@
   <link rel="preload" as="image" href="images/1..1.jpg" />
   <link rel="preload" as="image" href="images/1..jpg" />
 
+  <!-- ========================= AOS (Animate On Scroll) ========================= -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
   <!-- ========================= Styles ========================= -->
   <style>
     :root {
@@ -49,7 +52,7 @@
       --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.55);
       --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.42);
       --ring-gold: 0 0 0 2px rgba(212, 175, 55, 0.65), 0 0 22px rgba(212, 175, 55, 0.35);
-      --parallax-strength: 0.15; /* 0〜1: 強さ */
+      --parallax-strength: 0.15;
     }
 
     html {
@@ -122,13 +125,13 @@
       position: relative;
       scroll-snap-align: start;
       isolation: isolate;
-      overflow: hidden; /* 背景スタックを内包 */
+      overflow: hidden;
     }
 
     /* 背景スタック（2枚クロスフェード + パララックス） */
     .bg-stack {
       position: absolute;
-      inset: -8vh 0 -8vh 0; /* 外側まで伸ばす */
+      inset: -8vh 0 -8vh 0;
       z-index: 0;
       pointer-events: none;
       overflow: hidden;
@@ -140,17 +143,14 @@
       background-size: cover;
       background-position: center;
       will-change: transform, opacity;
-      transform: translate3d(0, 0, 0) scale(1.06); /* わずかに拡大して縁欠け防止 */
+      transform: translate3d(0, 0, 0) scale(1.06);
       transition: opacity 0.85s ease;
       opacity: 0;
       filter: saturate(1.02) contrast(1.06);
     }
+    .bg-layer.is-front { opacity: 1; }
 
-    .bg-layer.is-front {
-      opacity: 1;
-    }
-
-    /* グラデーションの上掛け（陰影/金色の光沢感） */
+    /* グラデーションの上掛け */
     .bg-vignette {
       position: absolute;
       inset: 0;
@@ -193,7 +193,7 @@
       display: inline-block;
       border-radius: 16px;
       box-shadow: var(--shadow-strong);
-      overflow: hidden; /* 光沢がはみ出さないように */
+      overflow: hidden;
       background: linear-gradient(135deg, #e8dcb1, #f9f4e4);
       border: 1px solid rgba(255, 255, 255, 0.12);
       isolation: isolate;
@@ -223,28 +223,15 @@
       border-radius: 16px;
     }
 
-    h1,
-    h2,
-    p {
+    h1, h2, p {
       margin: 0 0 20px;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
       line-height: 1.7;
     }
+    h1 { font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem); letter-spacing: 0.02em; }
 
-    h1 {
-      font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem);
-      letter-spacing: 0.02em;
-    }
-
-    .section-title {
-      font-size: clamp(1.8rem, 2.4vw + 1rem, 2.4rem);
-      margin-bottom: 10px;
-    }
-
-    .section-sub {
-      opacity: 0.92;
-      margin-bottom: 34px;
-    }
+    .section-title { font-size: clamp(1.8rem, 2.4vw + 1rem, 2.4rem); margin-bottom: 10px; }
+    .section-sub { opacity: 0.92; margin-bottom: 34px; }
 
     .panel {
       background: var(--panel-bg);
@@ -261,14 +248,8 @@
       gap: 18px;
       width: 100%;
     }
-
-    @media (min-width: 700px) {
-      .card-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (min-width: 1100px) {
-      .card-grid { grid-template-columns: repeat(3, 1fr); }
-    }
+    @media (min-width: 700px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1100px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
 
     .card {
       position: relative;
@@ -296,18 +277,9 @@
       opacity: 0.85;
       filter: saturate(1.1);
     }
-    .card:hover::after,
-    .card:focus-within::after {
-      right: 16px;
-    }
-    .card h3 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.15rem;
-      letter-spacing: 0.01em;
-    }
-    .card:hover,
-    .card:focus-within {
+    .card:hover::after, .card:focus-within::after { right: 16px; }
+    .card h3 { margin-top: 0; margin-bottom: 8px; font-size: 1.15rem; letter-spacing: 0.01em; }
+    .card:hover, .card:focus-within {
       transform: translateY(-4px);
       box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
       border-color: rgba(212, 175, 55, 0.45);
@@ -326,10 +298,9 @@
     }
 
     /* === CTA波紋＋押下マイクロモーション === */
-    .cta-button,
-    .fixed-cta {
+    .cta-button, .fixed-cta {
       position: relative;
-      overflow: hidden; /* 波紋を閉じ込める */
+      overflow: hidden;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
@@ -347,16 +318,8 @@
       transition: transform 0.22s ease, box-shadow 0.28s ease, filter 0.22s ease;
       border: 1px solid rgba(0, 0, 0, 0.22);
     }
-    .cta-button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.50);
-      filter: saturate(1.06);
-    }
-    .cta-button:active {
-      transform: translateY(-1px) scale(0.985);
-      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
-      filter: saturate(1);
-    }
+    .cta-button:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 24px rgba(212, 175, 55, 0.50); filter: saturate(1.06); }
+    .cta-button:active { transform: translateY(-1px) scale(0.985); box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4); }
 
     .fixed-cta {
       position: fixed;
@@ -375,13 +338,8 @@
       box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
       padding-bottom: calc(14px + env(safe-area-inset-bottom));
     }
-    .fixed-cta:hover {
-      background: var(--brand-gold);
-      transform: translateX(-50%) translateY(-2px);
-    }
-    @media (min-width: 768px) {
-      .fixed-cta { display: none; }
-    }
+    .fixed-cta:hover { background: var(--brand-gold); transform: translateX(-50%) translateY(-2px); }
+    @media (min-width: 768px) { .fixed-cta { display: none; } }
 
     /* 波紋素片 */
     .ripple {
@@ -395,12 +353,7 @@
       animation: ripple 600ms ease-out forwards;
       mix-blend-mode: screen;
     }
-    @keyframes ripple {
-      to {
-        transform: translate(-50%, -50%) scale(18);
-        opacity: 0;
-      }
-    }
+    @keyframes ripple { to { transform: translate(-50%, -50%) scale(18); opacity: 0; } }
 
     .lang-toggle {
       display: flex;
@@ -410,49 +363,57 @@
       right: 18px;
       z-index: 999;
     }
-
     .lang-btn-circle {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      font-weight: 700;
-      font-size: 0.92rem;
-      cursor: pointer;
+      width: 42px; height: 42px; border-radius: 50%;
+      font-weight: 700; font-size: 0.92rem; cursor: pointer;
       background: rgba(0, 0, 0, 0.35);
-      border: 1.5px solid #ffd700;
-      color: #ffd700;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      border: 1.5px solid #ffd700; color: #ffd700;
+      transition: all 0.25s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
       backdrop-filter: blur(1px);
     }
-    .lang-btn-circle:hover {
-      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35);
-    }
-    .lang-btn-circle.active {
-      background: #ffd700;
-      color: #000000;
-      border: 2px solid #ffd700;
-      box-shadow: var(--ring-gold);
-    }
+    .lang-btn-circle:hover { box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35); }
+    .lang-btn-circle.active { background: #ffd700; color: #000000; border: 2px solid #ffd700; box-shadow: var(--ring-gold); }
 
     [data-lang] { display: none; }
     html.ja [data-lang][lang="ja"],
     html.en [data-lang][lang="en"] { display: block; }
 
-    .fade-in-up {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .fade-in-up.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     /* 低モーション設定のユーザーにはアニメを抑制 */
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
       .bg-layer { transition: none !important; }
+    }
+
+    /* ===== 背景オブジェクト（自動生成で流れる飾り） ===== */
+    .bg-objects {
+      position: absolute;
+      inset: -8vh 0 -8vh 0;
+      z-index: 1;  /* vignette(1)と同じ。DOM上で後に挿入するので上に重なる */
+      pointer-events: none;
+      overflow: hidden;
+    }
+    /* 丸フレーク（ゴールド） */
+    .fx-chip {
+      --size: 10px;
+      position: absolute;
+      width: var(--size); height: var(--size);
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffffaa 0, #ffffff66 35%, #d4af37 60%, #b89222 100%);
+      box-shadow: 0 0 10px rgba(212,175,55,.35), 0 0 20px rgba(212,175,55,.2) inset;
+      filter: saturate(1.05) contrast(1.05);
+      will-change: transform, opacity;
+      opacity: .85;
+    }
+    /* 菱形フレーク（ハイライト多め） */
+    .fx-diamond {
+      --size: 12px;
+      position: absolute;
+      width: var(--size); height: var(--size);
+      transform: rotate(45deg);
+      background: linear-gradient(135deg, #f9f4e4, #d4af37 60%, #b89222);
+      box-shadow: 0 0 12px rgba(212,175,55,.35);
+      will-change: transform, opacity;
+      opacity: .72;
     }
   </style>
 </head>
@@ -460,14 +421,14 @@
   <a href="#main" class="skip-link">Skip to content</a>
 
   <!-- 言語切替 -->
-  <div class="lang-toggle" role="group" aria-label="Language selection">
+  <div class="lang-toggle" role="group" aria-label="Language selection" data-aos="fade-down" data-aos-duration="600">
     <button id="btn-en" class="lang-btn-circle active" onclick="setLang('en')" aria-pressed="true" type="button">EN</button>
     <button id="btn-ja" class="lang-btn-circle" onclick="setLang('ja')" aria-pressed="false" type="button">JA</button>
   </div>
 
   <main id="main">
     <!-- ========================= 1) Hero ========================= -->
-    <section aria-labelledby="hero-title" class="fade-in-up" data-parallax="0.18">
+    <section aria-labelledby="hero-title" data-parallax="0.18" data-aos="fade-up">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" id="hero-bg-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" id="hero-bg-back" style="background-image: url('images/1..1.jpg');" data-speed="0.85"></div>
@@ -475,34 +436,32 @@
       </div>
 
       <div class="hero">
-        <div class="hero-left">
+        <div class="hero-left" data-aos="fade-up" data-aos-delay="120">
           <div data-lang lang="ja">
-            <h1 id="hero-title">いつでも、どこでも<br />確かな英語力を</h1>
-            <p>小学生から大人まで、目的に合わせたカリキュラムで学べます。</p>
-            <p>初心者でも安心の丁寧な指導と、話す力を伸ばすアウトプット重視のレッスン。</p>
-            <a href="#form-section" class="cta-button" aria-label="レッスン申し込みフォームへ移動">レッスン申し込み</a>
+            <h1 id="hero-title" data-aos="fade-up" data-aos-delay="40">いつでも、どこでも<br />確かな英語力を</h1>
+            <p data-aos="fade-up" data-aos-delay="120">小学生から大人まで、目的に合わせたカリキュラムで学べます。</p>
+            <p data-aos="fade-up" data-aos-delay="200">初心者でも安心の丁寧な指導と、話す力を伸ばすアウトプット重視のレッスン。</p>
+            <a href="#form-section" class="cta-button" aria-label="レッスン申し込みフォームへ移動" data-aos="zoom-in" data-aos-delay="280">レッスン申し込み</a>
           </div>
           <div data-lang lang="en">
-            <h1 id="hero-title-en">Anytime, Anywhere<br />Learn with Confidence</h1>
-            <p>Our curriculum is designed for learners of all levels—from beginners to advanced.</p>
-            <p>You'll gain confidence through output-focused lessons guided by experienced instructors.</p>
-            <a href="#form-section" class="cta-button" aria-label="Go to application form">Start Your Lesson</a>
+            <h1 id="hero-title-en" data-aos="fade-up" data-aos-delay="40">Anytime, Anywhere<br />Learn with Confidence</h1>
+            <p data-aos="fade-up" data-aos-delay="120">Our curriculum is designed for learners of all levels—from beginners to advanced.</p>
+            <p data-aos="fade-up" data-aos-delay="200">You'll gain confidence through output-focused lessons guided by experienced instructors.</p>
+            <a href="#form-section" class="cta-button" aria-label="Go to application form" data-aos="zoom-in" data-aos-delay="280">Start Your Lesson</a>
           </div>
         </div>
 
-        <div class="hero-right">
+        <div class="hero-right" data-aos="zoom-in" data-aos-delay="160">
           <div class="logo-wrap">
             <img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" fetchpriority="high" decoding="async" />
           </div>
-          <noscript>
-            <img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" />
-          </noscript>
+          <noscript><img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" /></noscript>
         </div>
       </div>
     </section>
 
     <!-- ========================= 2) 特徴 ========================= -->
-    <section aria-labelledby="features-title" class="fade-in-up" data-parallax="0.14">
+    <section aria-labelledby="features-title" data-parallax="0.14" data-aos="fade-up">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.9"></div>
@@ -510,15 +469,15 @@
       </div>
 
       <div class="content">
-        <div class="panel">
+        <div class="panel" data-aos="fade-up" data-aos-delay="80">
           <div data-lang lang="ja">
-            <h2 id="features-title" class="section-title">TSC English Academyの特徴</h2>
-            <p class="section-sub">Confidence. Flexibility. Results.</p>
+            <h2 id="features-title" class="section-title" data-aos="fade-up">TSC English Academyの特徴</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Confidence. Flexibility. Results.</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="features-title-en" class="section-title">Why Choose TSC English Academy?</h2>
-            <p class="section-sub">Confidence. Flexibility. Results.</p>
+            <h2 id="features-title-en" class="section-title" data-aos="fade-up">Why Choose TSC English Academy?</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Confidence. Flexibility. Results.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -566,7 +525,7 @@
     </section>
 
     <!-- ========================= 3) 指導スタイル ========================= -->
-    <section aria-labelledby="approach-title" class="fade-in-up" data-parallax="0.16">
+    <section aria-labelledby="approach-title" data-parallax="0.16" data-aos="fade-up">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.9"></div>
@@ -574,15 +533,15 @@
       </div>
 
       <div class="content">
-        <div class="panel">
+        <div class="panel" data-aos="fade-up" data-aos-delay="80">
           <div data-lang lang="ja">
-            <h2 id="approach-title" class="section-title">指導スタイル：自然な英語に触れるために</h2>
-            <p class="section-sub">海外在住・海外出身の講師がレッスンを担当し、実践的で自然な表現に触れられる環境を提供します。</p>
+            <h2 id="approach-title" class="section-title" data-aos="fade-up">指導スタイル：自然な英語に触れるために</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">海外在住・海外出身の講師がレッスンを担当し、実践的で自然な表現に触れられる環境を提供します。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="approach-title-en" class="section-title">Teaching Approach: Real English, Real Confidence</h2>
-            <p class="section-sub">Lessons are led by teachers living abroad or from overseas backgrounds, so you’ll practice authentic, natural English.</p>
+            <h2 id="approach-title-en" class="section-title" data-aos="fade-up">Teaching Approach: Real English, Real Confidence</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Lessons are led by teachers living abroad or from overseas backgrounds, so you’ll practice authentic, natural English.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -624,7 +583,7 @@
     </section>
 
     <!-- ========================= 4) 体験者の声 ========================= -->
-    <section aria-labelledby="voices-title" class="fade-in-up" data-parallax="0.14">
+    <section aria-labelledby="voices-title" data-parallax="0.14" data-aos="fade-up">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.88"></div>
@@ -632,15 +591,15 @@
       </div>
 
       <div class="content">
-        <div class="panel">
+        <div class="panel" data-aos="fade-up" data-aos-delay="80">
           <div data-lang lang="ja">
-            <h2 id="voices-title" class="section-title">学習者の声</h2>
-            <p class="section-sub">リアルな声が、続ける力になる。</p>
+            <h2 id="voices-title" class="section-title" data-aos="fade-up">学習者の声</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">リアルな声が、続ける力になる。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="voices-title-en" class="section-title">What Our Learners Say</h2>
-            <p class="section-sub">Real stories that keep you motivated.</p>
+            <h2 id="voices-title-en" class="section-title" data-aos="fade-up">What Our Learners Say</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Real stories that keep you motivated.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -682,7 +641,7 @@
     </section>
 
     <!-- ========================= 5) FAQ ========================= -->
-    <section aria-labelledby="faq-title" class="fade-in-up" data-parallax="0.16">
+    <section aria-labelledby="faq-title" data-parallax="0.16" data-aos="fade-up">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.9"></div>
@@ -690,15 +649,15 @@
       </div>
 
       <div class="content">
-        <div class="panel">
+        <div class="panel" data-aos="fade-up" data-aos-delay="80">
           <div data-lang lang="ja">
-            <h2 id="faq-title" class="section-title">よくある質問</h2>
-            <p class="section-sub">まずは無料体験で、目的とレベルを確認します。</p>
+            <h2 id="faq-title" class="section-title" data-aos="fade-up">よくある質問</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">まずは無料体験で、目的とレベルを確認します。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="faq-title-en" class="section-title">FAQ</h2>
-            <p class="section-sub">Start with a free trial to check your goals and level.</p>
+            <h2 id="faq-title-en" class="section-title" data-aos="fade-up">FAQ</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Start with a free trial to check your goals and level.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -736,7 +695,7 @@
             </div>
           </div>
 
-          <a href="#form-section" class="cta-button" aria-label="無料体験に申し込む / Start Free Trial">
+          <a href="#form-section" class="cta-button" aria-label="無料体験に申し込む / Start Free Trial" data-aos="zoom-in" data-aos-delay="140">
             無料体験を申し込む / Start Free Trial
           </a>
         </div>
@@ -744,7 +703,7 @@
     </section>
 
     <!-- ========================= 6) 最終CTA ========================= -->
-    <section aria-labelledby="final-cta-title" class="fade-in-up" data-parallax="0.12">
+    <section aria-labelledby="final-cta-title" data-parallax="0.12" data-aos="fade-up">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.92"></div>
@@ -752,24 +711,24 @@
       </div>
 
       <div class="content">
-        <div class="panel">
+        <div class="panel" data-aos="fade-up" data-aos-delay="80">
           <div data-lang lang="ja">
-            <h2 id="final-cta-title" class="section-title">無料体験で、あなたに合う学び方を</h2>
-            <p class="section-sub">体験の内容に基づいて、最適な学習プランをご提案します。</p>
+            <h2 id="final-cta-title" class="section-title" data-aos="fade-up">無料体験で、あなたに合う学び方を</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">体験の内容に基づいて、最適な学習プランをご提案します。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="final-cta-title-en" class="section-title">Start a Free Trial—Find Your Best Way to Learn</h2>
-            <p class="section-sub">We’ll propose a tailored plan after your trial lesson.</p>
+            <h2 id="final-cta-title-en" class="section-title" data-aos="fade-up">Start a Free Trial—Find Your Best Way to Learn</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">We’ll propose a tailored plan after your trial lesson.</p>
           </div>
 
-          <a href="#form-section" class="cta-button">Go to Application Form</a>
+          <a href="#form-section" class="cta-button" data-aos="zoom-in" data-aos-delay="140">Go to Application Form</a>
         </div>
       </div>
     </section>
 
     <!-- ========================= 7) お申し込みフォーム ========================= -->
-    <section id="form-section" aria-labelledby="form-title" class="fade-in-up" data-parallax="0.10">
+    <section id="form-section" aria-labelledby="form-title" data-parallax="0.10" data-aos="fade-up">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.92"></div>
@@ -777,10 +736,10 @@
       </div>
 
       <div class="content">
-        <div class="panel">
+        <div class="panel" data-aos="fade-up" data-aos-delay="80">
           <div data-lang lang="ja">
-            <h2 id="form-title" class="section-title">お申し込みフォーム</h2>
-            <p class="section-sub">必要事項を入力して送信してください。担当者よりご連絡いたします。</p>
+            <h2 id="form-title" class="section-title" data-aos="fade-up">お申し込みフォーム</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">必要事項を入力して送信してください。担当者よりご連絡いたします。</p>
             <iframe
               src="https://docs.google.com/forms/d/e/1FAIpQLSdQjY0ErveIKaj6KAnCKTVZhuIsCX-SWcti7doMOWqdwCGPfg/viewform?embedded=true"
               width="100%"
@@ -794,8 +753,8 @@
           </div>
 
           <div data-lang lang="en">
-            <h2 id="form-title-en" class="section-title">Application Form</h2>
-            <p class="section-sub">Please fill out the form below. We will contact you shortly.</p>
+            <h2 id="form-title-en" class="section-title" data-aos="fade-up">Application Form</h2>
+            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Please fill out the form below. We will contact you shortly.</p>
             <iframe
               src="https://docs.google.com/forms/d/e/1FAIpQLSdQjY0ErveIKaj6KAnCKTVZhuIsCX-SWcti7doMOWqdwCGPfg/viewform?embedded=true"
               width="100%"
@@ -812,71 +771,26 @@
     </section>
 
     <!-- ========================= 8) フッター ========================= -->
-    <footer
-      style="
-        padding: 34px 16px;
-        background: #000000;
-        text-align: center;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-      "
-    >
-      <div class="content" style="max-width: 1160px; margin: 0 auto;">
-        <p style="opacity: 0.88; margin: 0 0 8px;">
-          © <span id="year"></span> TSC English Academy
-        </p>
-        <p style="opacity: 0.65; margin: 0;">
-  Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none;">tscenglishacademy@gmail.com</a>
-</p>
-
-        </p>
+    <footer style="padding:34px 16px;background:#000;text-align:center;border-top:1px solid rgba(255,255,255,0.08);">
+      <div class="content" style="max-width:1160px;margin:0 auto;">
+        <p style="opacity:0.88;margin:0 0 8px;">© <span id="year"></span> TSC English Academy</p>
+        <p style="opacity:0.65;margin:0;">Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700;text-decoration:none;">tscenglishacademy@gmail.com</a></p>
       </div>
     </footer>
   </main>
 
-  <a href="#form-section" class="cta-button fixed-cta">Start Your Free Trial</a>
+  <a href="#form-section" class="cta-button fixed-cta" data-aos="zoom-in" data-aos-delay="240">Start Your Free Trial</a>
 
   <!-- ========================= Structured Data (Technical SEO) ========================= -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "TSC English Academy",
-    "url": "https://example.com/",
-    "logo": "https://example.com/images/1..jpg",
-    "sameAs": []
-  }
+  {"@context":"https://schema.org","@type":"Organization","name":"TSC English Academy","url":"https://example.com/","logo":"https://example.com/images/1..jpg","sameAs":[]}
   </script>
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "初心者でも大丈夫ですか？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "はい。完全初心者から上級者まで対応しています。無料体験で最適な進め方をご提案します。"
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "オンラインと対面は切り替えできますか？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "可能です。スケジュールに合わせて柔軟に選べます。"
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "教材はどうなりますか？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "目的に合わせて提案します。無料体験時に詳しくご案内します。"
-        }
-      }
-    ]
-  }
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"初心者でも大丈夫ですか？","acceptedAnswer":{"@type":"Answer","text":"はい。完全初心者から上級者まで対応しています。無料体験で最適な進め方をご提案します。"}},
+    {"@type":"Question","name":"オンラインと対面は切り替えできますか？","acceptedAnswer":{"@type":"Answer","text":"可能です。スケジュールに合わせて柔軟に選べます。"}},
+    {"@type":"Question","name":"教材はどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"目的に合わせて提案します。無料体験時に詳しくご案内します。"}}
+  ]}
   </script>
 
   <!-- ========================= Scripts ========================= -->
@@ -887,35 +801,18 @@
       html.classList.remove('ja', 'en');
       html.classList.add(lang);
       html.setAttribute('lang', lang);
-
       const jaBtn = document.getElementById('btn-ja');
       const enBtn = document.getElementById('btn-en');
-
       jaBtn.classList.toggle('active', lang === 'ja');
       enBtn.classList.toggle('active', lang === 'en');
-
       jaBtn.setAttribute('aria-pressed', String(lang === 'ja'));
       enBtn.setAttribute('aria-pressed', String(lang === 'en'));
     }
 
-    // フェードイン（IntersectionObserver）
-    const observer = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
-    );
-    document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
-
     // 年号
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ========================= 背景クロスフェード + パララックス（スマホ同等挙動） =========================
+    // ===== 背景クロスフェード + パララックス =====
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
@@ -939,7 +836,7 @@
 
     let ticking = false;
     function onScroll() {
-      if (prefersReduced) return; // 低モーション設定ではスキップ
+      if (prefersReduced) return;
       if (!ticking) {
         requestAnimationFrame(applyScrollEffects);
         ticking = true;
@@ -953,17 +850,14 @@
       sections.forEach((s) => {
         if (!s.stack || !s.front || !s.back) return;
 
-        // セクション中央からの距離を -1〜+1 に正規化
         const distance = (scrollY + viewportH / 2 - s.center) / (viewportH / 1.1);
         const ratio = clamp(Math.abs(distance), 0, 1);
 
-        // クロスフェード
         const frontOpacity = clamp(1 - ratio * 0.85, 0.15, 1);
         const backOpacity  = clamp(0.35 + ratio * 0.55, 0.35, 0.9);
         s.front.style.opacity = String(frontOpacity);
         s.back.style.opacity  = String(backOpacity);
 
-        // パララックス
         const frontSpeed = parseFloat(s.front.getAttribute('data-speed') || '1');
         const backSpeed  = parseFloat(s.back.getAttribute('data-speed') || '0.9');
         const frontShift = (scrollY - s.center) * s.strength * (1 / frontSpeed);
@@ -975,7 +869,6 @@
       ticking = false;
     }
 
-    // 初期化と各種イベント（スマホ最適）
     function initParallax() {
       recalcCenters();
       applyScrollEffects();
@@ -996,7 +889,7 @@
       document.fonts.ready.then(() => { recalcCenters(); applyScrollEffects(); });
     }
 
-    // ========================= CTA Ripple Effect（スマホ対応 Pointer API） =========================
+    // ===== CTA Ripple Effect =====
     function attachRipple(el) {
       function spawnRipple(e) {
         const rect = el.getBoundingClientRect();
@@ -1016,9 +909,142 @@
   </script>
 
   <noscript>
-    <div style="background:#111111;color:#ffffff;padding:12px;text-align:center;a">
+    <div style="background:#111111;color:#ffffff;padding:12px;text-align:center;">
       JavaScript is disabled. Some animations and language toggle may not work.
     </div>
   </noscript>
+
+  <!-- ========================= AOS ========================= -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    const disableIfReducedMotion = () =>
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    AOS.init({
+      duration: 900,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 80,
+      disable: disableIfReducedMotion
+    });
+
+    document.querySelectorAll('.card-grid').forEach(grid => {
+      const items = grid.querySelectorAll('.card');
+      items.forEach((el, i) => {
+        el.setAttribute('data-aos', el.getAttribute('data-aos') || 'fade-up');
+        el.setAttribute('data-aos-delay', String(80 * i));
+      });
+    });
+  </script>
+
+  <!-- GSAP（スクロール連動） -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <script>
+  /* ==========================================================
+     背景オブジェクト自動生成 + スクロールで下方向へ流す演出
+     ========================================================== */
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    const sections = Array.from(document.querySelectorAll('section'))
+      .map(sec => {
+        const stack = sec.querySelector('.bg-stack');
+        return stack ? { sec, stack } : null;
+      })
+      .filter(Boolean);
+    if (!sections.length) return;
+
+    const elsPerSection = [];
+
+    sections.forEach(({ sec, stack }, idx) => {
+      let container = stack.querySelector('.bg-objects');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'bg-objects';
+        const vignette = stack.querySelector('.bg-vignette');
+        if (vignette) {
+          stack.insertBefore(container, vignette.nextSibling);
+        } else {
+          stack.appendChild(container);
+        }
+      }
+
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const base = Math.round(vw / 42);
+      const densityBias = 6 + idx * 2;
+      const COUNT = Math.min(48, Math.max(16, base + densityBias));
+
+      const nodes = [];
+      for (let i = 0; i < COUNT; i++) {
+        const isDiamond = i % 3 === 0;
+        const el = document.createElement('span');
+        el.className = isDiamond ? 'fx-diamond' : 'fx-chip';
+
+        const size = isDiamond ? (8 + Math.random() * 14) : (6 + Math.random() * 10);
+        el.style.setProperty('--size', size + 'px');
+
+        const x = Math.random() * 100;
+        const y = -10 + Math.random() * 120;
+        el.style.left = x + '%';
+        el.style.top  = y + '%';
+
+        container.appendChild(el);
+
+        nodes.push({
+          el,
+          speed: 8 + Math.random() * 18,
+          drift: (Math.random() * 2 - 1) * 8,
+          fadeIn: 0.5 + Math.random() * 0.7
+        });
+      }
+      elsPerSection.push({ sec, container, nodes });
+    });
+
+    const hasGSAP = !!(window.gsap && window.ScrollTrigger);
+    if (hasGSAP) {
+      gsap.registerPlugin(ScrollTrigger);
+      elsPerSection.forEach(({ sec, nodes }) => {
+        nodes.forEach(({ el, speed, drift, fadeIn }) => {
+          gsap.fromTo(el,
+            { yPercent: 0, xPercent: 0, opacity: 0 },
+            {
+              opacity: fadeIn,
+              yPercent: speed,
+              xPercent: drift,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: sec,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+              }
+            }
+          );
+        });
+      });
+    } else {
+      const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+      const onScroll = () => {
+        const vh = window.innerHeight || document.documentElement.clientHeight || 1;
+        elsPerSection.forEach(({ sec, nodes }) => {
+          const rect = sec.getBoundingClientRect();
+          const progress = clamp(1 - (rect.top + rect.height) / (vh + rect.height), 0, 1);
+          nodes.forEach(({ el, speed, drift, fadeIn }) => {
+            const y = progress * speed;
+            const x = progress * drift;
+            el.style.transform = `translate(${x}%, ${y}%)`;
+            el.style.opacity = String(clamp(progress * 1.2, 0, fadeIn));
+          });
+        });
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+    }
+  })();
+  </script>
 </body>
 </html>
