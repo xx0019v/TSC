@@ -52,7 +52,7 @@
       --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.55);
       --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.42);
       --ring-gold: 0 0 0 2px rgba(212, 175, 55, 0.65), 0 0 22px rgba(212, 175, 55, 0.35);
-      --parallax-strength: 0.15;
+      --parallax-strength: 0.15; /* 0〜1: 強さ */
     }
 
     html {
@@ -125,13 +125,13 @@
       position: relative;
       scroll-snap-align: start;
       isolation: isolate;
-      overflow: hidden;
+      overflow: hidden; /* 背景スタックを内包 */
     }
 
     /* 背景スタック（2枚クロスフェード + パララックス） */
     .bg-stack {
       position: absolute;
-      inset: -8vh 0 -8vh 0;
+      inset: -8vh 0 -8vh 0; /* 外側まで伸ばす */
       z-index: 0;
       pointer-events: none;
       overflow: hidden;
@@ -143,14 +143,17 @@
       background-size: cover;
       background-position: center;
       will-change: transform, opacity;
-      transform: translate3d(0, 0, 0) scale(1.06);
+      transform: translate3d(0, 0, 0) scale(1.06); /* わずかに拡大して縁欠け防止 */
       transition: opacity 0.85s ease;
       opacity: 0;
       filter: saturate(1.02) contrast(1.06);
     }
-    .bg-layer.is-front { opacity: 1; }
 
-    /* グラデーションの上掛け */
+    .bg-layer.is-front {
+      opacity: 1;
+    }
+
+    /* グラデーションの上掛け（陰影/金色の光沢感） */
     .bg-vignette {
       position: absolute;
       inset: 0;
@@ -193,7 +196,7 @@
       display: inline-block;
       border-radius: 16px;
       box-shadow: var(--shadow-strong);
-      overflow: hidden;
+      overflow: hidden; /* 光沢がはみ出さないように */
       background: linear-gradient(135deg, #e8dcb1, #f9f4e4);
       border: 1px solid rgba(255, 255, 255, 0.12);
       isolation: isolate;
@@ -223,15 +226,28 @@
       border-radius: 16px;
     }
 
-    h1, h2, p {
+    h1,
+    h2,
+    p {
       margin: 0 0 20px;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
       line-height: 1.7;
     }
-    h1 { font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem); letter-spacing: 0.02em; }
 
-    .section-title { font-size: clamp(1.8rem, 2.4vw + 1rem, 2.4rem); margin-bottom: 10px; }
-    .section-sub { opacity: 0.92; margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem);
+      letter-spacing: 0.02em;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 2.4vw + 1rem, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    .section-sub {
+      opacity: 0.92;
+      margin-bottom: 34px;
+    }
 
     .panel {
       background: var(--panel-bg);
@@ -248,8 +264,14 @@
       gap: 18px;
       width: 100%;
     }
-    @media (min-width: 700px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 1100px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    @media (min-width: 700px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1100px) {
+      .card-grid { grid-template-columns: repeat(3, 1fr); }
+    }
 
     .card {
       position: relative;
@@ -277,9 +299,18 @@
       opacity: 0.85;
       filter: saturate(1.1);
     }
-    .card:hover::after, .card:focus-within::after { right: 16px; }
-    .card h3 { margin-top: 0; margin-bottom: 8px; font-size: 1.15rem; letter-spacing: 0.01em; }
-    .card:hover, .card:focus-within {
+    .card:hover::after,
+    .card:focus-within::after {
+      right: 16px;
+    }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+    }
+    .card:hover,
+    .card:focus-within {
       transform: translateY(-4px);
       box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
       border-color: rgba(212, 175, 55, 0.45);
@@ -298,9 +329,10 @@
     }
 
     /* === CTA波紋＋押下マイクロモーション === */
-    .cta-button, .fixed-cta {
+    .cta-button,
+    .fixed-cta {
       position: relative;
-      overflow: hidden;
+      overflow: hidden; /* 波紋を閉じ込める */
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
@@ -318,8 +350,16 @@
       transition: transform 0.22s ease, box-shadow 0.28s ease, filter 0.22s ease;
       border: 1px solid rgba(0, 0, 0, 0.22);
     }
-    .cta-button:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 24px rgba(212, 175, 55, 0.50); filter: saturate(1.06); }
-    .cta-button:active { transform: translateY(-1px) scale(0.985); box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4); }
+    .cta-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.50);
+      filter: saturate(1.06);
+    }
+    .cta-button:active {
+      transform: translateY(-1px) scale(0.985);
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+      filter: saturate(1);
+    }
 
     .fixed-cta {
       position: fixed;
@@ -338,8 +378,13 @@
       box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
       padding-bottom: calc(14px + env(safe-area-inset-bottom));
     }
-    .fixed-cta:hover { background: var(--brand-gold); transform: translateX(-50%) translateY(-2px); }
-    @media (min-width: 768px) { .fixed-cta { display: none; } }
+    .fixed-cta:hover {
+      background: var(--brand-gold);
+      transform: translateX(-50%) translateY(-2px);
+    }
+    @media (min-width: 768px) {
+      .fixed-cta { display: none; }
+    }
 
     /* 波紋素片 */
     .ripple {
@@ -353,7 +398,12 @@
       animation: ripple 600ms ease-out forwards;
       mix-blend-mode: screen;
     }
-    @keyframes ripple { to { transform: translate(-50%, -50%) scale(18); opacity: 0; } }
+    @keyframes ripple {
+      to {
+        transform: translate(-50%, -50%) scale(18);
+        opacity: 0;
+      }
+    }
 
     .lang-toggle {
       display: flex;
@@ -363,16 +413,30 @@
       right: 18px;
       z-index: 999;
     }
+
     .lang-btn-circle {
-      width: 42px; height: 42px; border-radius: 50%;
-      font-weight: 700; font-size: 0.92rem; cursor: pointer;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
       background: rgba(0, 0, 0, 0.35);
-      border: 1.5px solid #ffd700; color: #ffd700;
-      transition: all 0.25s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      border: 1.5px solid #ffd700;
+      color: #ffd700;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
       backdrop-filter: blur(1px);
     }
-    .lang-btn-circle:hover { box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35); }
-    .lang-btn-circle.active { background: #ffd700; color: #000000; border: 2px solid #ffd700; box-shadow: var(--ring-gold); }
+    .lang-btn-circle:hover {
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35);
+    }
+    .lang-btn-circle.active {
+      background: #ffd700;
+      color: #000000;
+      border: 2px solid #ffd700;
+      box-shadow: var(--ring-gold);
+    }
 
     [data-lang] { display: none; }
     html.ja [data-lang][lang="ja"],
@@ -382,38 +446,6 @@
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
       .bg-layer { transition: none !important; }
-    }
-
-    /* ===== 背景オブジェクト（自動生成で流れる飾り） ===== */
-    .bg-objects {
-      position: absolute;
-      inset: -8vh 0 -8vh 0;
-      z-index: 1;  /* vignette(1)と同じ。DOM上で後に挿入するので上に重なる */
-      pointer-events: none;
-      overflow: hidden;
-    }
-    /* 丸フレーク（ゴールド） */
-    .fx-chip {
-      --size: 10px;
-      position: absolute;
-      width: var(--size); height: var(--size);
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ffffffaa 0, #ffffff66 35%, #d4af37 60%, #b89222 100%);
-      box-shadow: 0 0 10px rgba(212,175,55,.35), 0 0 20px rgba(212,175,55,.2) inset;
-      filter: saturate(1.05) contrast(1.05);
-      will-change: transform, opacity;
-      opacity: .85;
-    }
-    /* 菱形フレーク（ハイライト多め） */
-    .fx-diamond {
-      --size: 12px;
-      position: absolute;
-      width: var(--size); height: var(--size);
-      transform: rotate(45deg);
-      background: linear-gradient(135deg, #f9f4e4, #d4af37 60%, #b89222);
-      box-shadow: 0 0 12px rgba(212,175,55,.35);
-      will-change: transform, opacity;
-      opacity: .72;
     }
   </style>
 </head>
@@ -455,7 +487,9 @@
           <div class="logo-wrap">
             <img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" fetchpriority="high" decoding="async" />
           </div>
-          <noscript><img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" /></noscript>
+          <noscript>
+            <img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" />
+          </noscript>
         </div>
       </div>
     </section>
@@ -771,10 +805,21 @@
     </section>
 
     <!-- ========================= 8) フッター ========================= -->
-    <footer style="padding:34px 16px;background:#000;text-align:center;border-top:1px solid rgba(255,255,255,0.08);">
-      <div class="content" style="max-width:1160px;margin:0 auto;">
-        <p style="opacity:0.88;margin:0 0 8px;">© <span id="year"></span> TSC English Academy</p>
-        <p style="opacity:0.65;margin:0;">Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700;text-decoration:none;">tscenglishacademy@gmail.com</a></p>
+    <footer
+      style="
+        padding: 34px 16px;
+        background: #000000;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      "
+    >
+      <div class="content" style="max-width: 1160px; margin: 0 auto;">
+        <p style="opacity: 0.88; margin: 0 0 8px;">
+          © <span id="year"></span> TSC English Academy
+        </p>
+        <p style="opacity: 0.65; margin: 0;">
+          Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none;">tscenglishacademy@gmail.com</a>
+        </p>
       </div>
     </footer>
   </main>
@@ -783,14 +828,46 @@
 
   <!-- ========================= Structured Data (Technical SEO) ========================= -->
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"TSC English Academy","url":"https://example.com/","logo":"https://example.com/images/1..jpg","sameAs":[]}
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "TSC English Academy",
+    "url": "https://example.com/",
+    "logo": "https://example.com/images/1..jpg",
+    "sameAs": []
+  }
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-    {"@type":"Question","name":"初心者でも大丈夫ですか？","acceptedAnswer":{"@type":"Answer","text":"はい。完全初心者から上級者まで対応しています。無料体験で最適な進め方をご提案します。"}},
-    {"@type":"Question","name":"オンラインと対面は切り替えできますか？","acceptedAnswer":{"@type":"Answer","text":"可能です。スケジュールに合わせて柔軟に選べます。"}},
-    {"@type":"Question","name":"教材はどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"目的に合わせて提案します。無料体験時に詳しくご案内します。"}}
-  ]}
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "初心者でも大丈夫ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい。完全初心者から上級者まで対応しています。無料体験で最適な進め方をご提案します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "オンラインと対面は切り替えできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "可能です。スケジュールに合わせて柔軟に選べます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "教材はどうなりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "目的に合わせて提案します。無料体験時に詳しくご案内します。"
+        }
+      }
+    ]
+  }
   </script>
 
   <!-- ========================= Scripts ========================= -->
@@ -801,10 +878,13 @@
       html.classList.remove('ja', 'en');
       html.classList.add(lang);
       html.setAttribute('lang', lang);
+
       const jaBtn = document.getElementById('btn-ja');
       const enBtn = document.getElementById('btn-en');
+
       jaBtn.classList.toggle('active', lang === 'ja');
       enBtn.classList.toggle('active', lang === 'en');
+
       jaBtn.setAttribute('aria-pressed', String(lang === 'ja'));
       enBtn.setAttribute('aria-pressed', String(lang === 'en'));
     }
@@ -812,7 +892,7 @@
     // 年号
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ===== 背景クロスフェード + パララックス =====
+    // ========================= 背景クロスフェード + パララックス（スマホ同等挙動） =========================
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
@@ -836,7 +916,7 @@
 
     let ticking = false;
     function onScroll() {
-      if (prefersReduced) return;
+      if (prefersReduced) return; // 低モーション設定ではスキップ
       if (!ticking) {
         requestAnimationFrame(applyScrollEffects);
         ticking = true;
@@ -850,14 +930,17 @@
       sections.forEach((s) => {
         if (!s.stack || !s.front || !s.back) return;
 
+        // セクション中央からの距離を -1〜+1 に正規化
         const distance = (scrollY + viewportH / 2 - s.center) / (viewportH / 1.1);
         const ratio = clamp(Math.abs(distance), 0, 1);
 
+        // クロスフェード
         const frontOpacity = clamp(1 - ratio * 0.85, 0.15, 1);
         const backOpacity  = clamp(0.35 + ratio * 0.55, 0.35, 0.9);
         s.front.style.opacity = String(frontOpacity);
         s.back.style.opacity  = String(backOpacity);
 
+        // パララックス
         const frontSpeed = parseFloat(s.front.getAttribute('data-speed') || '1');
         const backSpeed  = parseFloat(s.back.getAttribute('data-speed') || '0.9');
         const frontShift = (scrollY - s.center) * s.strength * (1 / frontSpeed);
@@ -869,6 +952,7 @@
       ticking = false;
     }
 
+    // 初期化と各種イベント（スマホ最適）
     function initParallax() {
       recalcCenters();
       applyScrollEffects();
@@ -889,7 +973,7 @@
       document.fonts.ready.then(() => { recalcCenters(); applyScrollEffects(); });
     }
 
-    // ===== CTA Ripple Effect =====
+    // ========================= CTA Ripple Effect（スマホ対応 Pointer API） =========================
     function attachRipple(el) {
       function spawnRipple(e) {
         const rect = el.getBoundingClientRect();
@@ -914,34 +998,29 @@
     </div>
   </noscript>
 
-  <!-- ========================= AOS ========================= -->
+  <!-- ========================= AOS (Animate On Scroll) ========================= -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
+    // 低モーション設定のユーザーは自動で無効化
     const disableIfReducedMotion = () =>
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     AOS.init({
-      duration: 900,
-      easing: 'ease-out-cubic',
-      once: true,
-      offset: 80,
+      duration: 900,                 // ふんわり速度
+      easing: 'ease-out-cubic',      // 自然な減速
+      once: true,                    // 一度だけ再生
+      offset: 80,                    // 画面下から80pxで発火
       disable: disableIfReducedMotion
     });
 
+    // グリッド要素をちょいディレイで“順番に”出す（カードにおすすめ）
     document.querySelectorAll('.card-grid').forEach(grid => {
       const items = grid.querySelectorAll('.card');
       items.forEach((el, i) => {
         el.setAttribute('data-aos', el.getAttribute('data-aos') || 'fade-up');
-        el.setAttribute('data-aos-delay', String(80 * i));
+        el.setAttribute('data-aos-delay', String(80 * i)); // 80ms刻み
       });
     });
-  </script>
-
-  <!-- GSAP（スクロール連動） -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
-  <script>
   </script>
 </body>
 </html>
