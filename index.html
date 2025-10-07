@@ -36,9 +36,6 @@
   <link rel="preload" as="image" href="images/1..1.jpg" />
   <link rel="preload" as="image" href="images/1..jpg" />
 
-  <!-- ========================= AOS (Animate On Scroll) ========================= -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-
   <!-- ========================= Styles ========================= -->
   <style>
     :root {
@@ -442,6 +439,16 @@
     html.ja [data-lang][lang="ja"],
     html.en [data-lang][lang="en"] { display: block; }
 
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* 低モーション設定のユーザーにはアニメを抑制 */
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
@@ -453,14 +460,14 @@
   <a href="#main" class="skip-link">Skip to content</a>
 
   <!-- 言語切替 -->
-  <div class="lang-toggle" role="group" aria-label="Language selection" data-aos="fade-down" data-aos-duration="600">
+  <div class="lang-toggle" role="group" aria-label="Language selection">
     <button id="btn-en" class="lang-btn-circle active" onclick="setLang('en')" aria-pressed="true" type="button">EN</button>
     <button id="btn-ja" class="lang-btn-circle" onclick="setLang('ja')" aria-pressed="false" type="button">JA</button>
   </div>
 
   <main id="main">
     <!-- ========================= 1) Hero ========================= -->
-    <section aria-labelledby="hero-title" data-parallax="0.18" data-aos="fade-up">
+    <section aria-labelledby="hero-title" class="fade-in-up" data-parallax="0.18">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" id="hero-bg-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" id="hero-bg-back" style="background-image: url('images/1..1.jpg');" data-speed="0.85"></div>
@@ -468,22 +475,22 @@
       </div>
 
       <div class="hero">
-        <div class="hero-left" data-aos="fade-up" data-aos-delay="120">
+        <div class="hero-left">
           <div data-lang lang="ja">
-            <h1 id="hero-title" data-aos="fade-up" data-aos-delay="40">いつでも、どこでも<br />確かな英語力を</h1>
-            <p data-aos="fade-up" data-aos-delay="120">小学生から大人まで、目的に合わせたカリキュラムで学べます。</p>
-            <p data-aos="fade-up" data-aos-delay="200">初心者でも安心の丁寧な指導と、話す力を伸ばすアウトプット重視のレッスン。</p>
-            <a href="#form-section" class="cta-button" aria-label="レッスン申し込みフォームへ移動" data-aos="zoom-in" data-aos-delay="280">レッスン申し込み</a>
+            <h1 id="hero-title">いつでも、どこでも<br />確かな英語力を</h1>
+            <p>小学生から大人まで、目的に合わせたカリキュラムで学べます。</p>
+            <p>初心者でも安心の丁寧な指導と、話す力を伸ばすアウトプット重視のレッスン。</p>
+            <a href="#form-section" class="cta-button" aria-label="レッスン申し込みフォームへ移動">レッスン申し込み</a>
           </div>
           <div data-lang lang="en">
-            <h1 id="hero-title-en" data-aos="fade-up" data-aos-delay="40">Anytime, Anywhere<br />Learn with Confidence</h1>
-            <p data-aos="fade-up" data-aos-delay="120">Our curriculum is designed for learners of all levels—from beginners to advanced.</p>
-            <p data-aos="fade-up" data-aos-delay="200">You'll gain confidence through output-focused lessons guided by experienced instructors.</p>
-            <a href="#form-section" class="cta-button" aria-label="Go to application form" data-aos="zoom-in" data-aos-delay="280">Start Your Lesson</a>
+            <h1 id="hero-title-en">Anytime, Anywhere<br />Learn with Confidence</h1>
+            <p>Our curriculum is designed for learners of all levels—from beginners to advanced.</p>
+            <p>You'll gain confidence through output-focused lessons guided by experienced instructors.</p>
+            <a href="#form-section" class="cta-button" aria-label="Go to application form">Start Your Lesson</a>
           </div>
         </div>
 
-        <div class="hero-right" data-aos="zoom-in" data-aos-delay="160">
+        <div class="hero-right">
           <div class="logo-wrap">
             <img src="images/1..jpg" alt="TSC English Academy Logo" width="640" height="640" fetchpriority="high" decoding="async" />
           </div>
@@ -495,7 +502,7 @@
     </section>
 
     <!-- ========================= 2) 特徴 ========================= -->
-    <section aria-labelledby="features-title" data-parallax="0.14" data-aos="fade-up">
+    <section aria-labelledby="features-title" class="fade-in-up" data-parallax="0.14">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.9"></div>
@@ -503,15 +510,15 @@
       </div>
 
       <div class="content">
-        <div class="panel" data-aos="fade-up" data-aos-delay="80">
+        <div class="panel">
           <div data-lang lang="ja">
-            <h2 id="features-title" class="section-title" data-aos="fade-up">TSC English Academyの特徴</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Confidence. Flexibility. Results.</p>
+            <h2 id="features-title" class="section-title">TSC English Academyの特徴</h2>
+            <p class="section-sub">Confidence. Flexibility. Results.</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="features-title-en" class="section-title" data-aos="fade-up">Why Choose TSC English Academy?</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Confidence. Flexibility. Results.</p>
+            <h2 id="features-title-en" class="section-title">Why Choose TSC English Academy?</h2>
+            <p class="section-sub">Confidence. Flexibility. Results.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -559,7 +566,7 @@
     </section>
 
     <!-- ========================= 3) 指導スタイル ========================= -->
-    <section aria-labelledby="approach-title" data-parallax="0.16" data-aos="fade-up">
+    <section aria-labelledby="approach-title" class="fade-in-up" data-parallax="0.16">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.9"></div>
@@ -567,15 +574,15 @@
       </div>
 
       <div class="content">
-        <div class="panel" data-aos="fade-up" data-aos-delay="80">
+        <div class="panel">
           <div data-lang lang="ja">
-            <h2 id="approach-title" class="section-title" data-aos="fade-up">指導スタイル：自然な英語に触れるために</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">海外在住・海外出身の講師がレッスンを担当し、実践的で自然な表現に触れられる環境を提供します。</p>
+            <h2 id="approach-title" class="section-title">指導スタイル：自然な英語に触れるために</h2>
+            <p class="section-sub">海外在住・海外出身の講師がレッスンを担当し、実践的で自然な表現に触れられる環境を提供します。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="approach-title-en" class="section-title" data-aos="fade-up">Teaching Approach: Real English, Real Confidence</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Lessons are led by teachers living abroad or from overseas backgrounds, so you’ll practice authentic, natural English.</p>
+            <h2 id="approach-title-en" class="section-title">Teaching Approach: Real English, Real Confidence</h2>
+            <p class="section-sub">Lessons are led by teachers living abroad or from overseas backgrounds, so you’ll practice authentic, natural English.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -617,7 +624,7 @@
     </section>
 
     <!-- ========================= 4) 体験者の声 ========================= -->
-    <section aria-labelledby="voices-title" data-parallax="0.14" data-aos="fade-up">
+    <section aria-labelledby="voices-title" class="fade-in-up" data-parallax="0.14">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.88"></div>
@@ -625,15 +632,15 @@
       </div>
 
       <div class="content">
-        <div class="panel" data-aos="fade-up" data-aos-delay="80">
+        <div class="panel">
           <div data-lang lang="ja">
-            <h2 id="voices-title" class="section-title" data-aos="fade-up">学習者の声</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">リアルな声が、続ける力になる。</p>
+            <h2 id="voices-title" class="section-title">学習者の声</h2>
+            <p class="section-sub">リアルな声が、続ける力になる。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="voices-title-en" class="section-title" data-aos="fade-up">What Our Learners Say</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Real stories that keep you motivated.</p>
+            <h2 id="voices-title-en" class="section-title">What Our Learners Say</h2>
+            <p class="section-sub">Real stories that keep you motivated.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -675,7 +682,7 @@
     </section>
 
     <!-- ========================= 5) FAQ ========================= -->
-    <section aria-labelledby="faq-title" data-parallax="0.16" data-aos="fade-up">
+    <section aria-labelledby="faq-title" class="fade-in-up" data-parallax="0.16">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.9"></div>
@@ -683,15 +690,15 @@
       </div>
 
       <div class="content">
-        <div class="panel" data-aos="fade-up" data-aos-delay="80">
+        <div class="panel">
           <div data-lang lang="ja">
-            <h2 id="faq-title" class="section-title" data-aos="fade-up">よくある質問</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">まずは無料体験で、目的とレベルを確認します。</p>
+            <h2 id="faq-title" class="section-title">よくある質問</h2>
+            <p class="section-sub">まずは無料体験で、目的とレベルを確認します。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="faq-title-en" class="section-title" data-aos="fade-up">FAQ</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Start with a free trial to check your goals and level.</p>
+            <h2 id="faq-title-en" class="section-title">FAQ</h2>
+            <p class="section-sub">Start with a free trial to check your goals and level.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -729,7 +736,7 @@
             </div>
           </div>
 
-          <a href="#form-section" class="cta-button" aria-label="無料体験に申し込む / Start Free Trial" data-aos="zoom-in" data-aos-delay="140">
+          <a href="#form-section" class="cta-button" aria-label="無料体験に申し込む / Start Free Trial">
             無料体験を申し込む / Start Free Trial
           </a>
         </div>
@@ -737,7 +744,7 @@
     </section>
 
     <!-- ========================= 6) 最終CTA ========================= -->
-    <section aria-labelledby="final-cta-title" data-parallax="0.12" data-aos="fade-up">
+    <section aria-labelledby="final-cta-title" class="fade-in-up" data-parallax="0.12">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1.jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1...jpg');" data-speed="0.92"></div>
@@ -745,24 +752,24 @@
       </div>
 
       <div class="content">
-        <div class="panel" data-aos="fade-up" data-aos-delay="80">
+        <div class="panel">
           <div data-lang lang="ja">
-            <h2 id="final-cta-title" class="section-title" data-aos="fade-up">無料体験で、あなたに合う学び方を</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">体験の内容に基づいて、最適な学習プランをご提案します。</p>
+            <h2 id="final-cta-title" class="section-title">無料体験で、あなたに合う学び方を</h2>
+            <p class="section-sub">体験の内容に基づいて、最適な学習プランをご提案します。</p>
           </div>
 
           <div data-lang lang="en">
-            <h2 id="final-cta-title-en" class="section-title" data-aos="fade-up">Start a Free Trial—Find Your Best Way to Learn</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">We’ll propose a tailored plan after your trial lesson.</p>
+            <h2 id="final-cta-title-en" class="section-title">Start a Free Trial—Find Your Best Way to Learn</h2>
+            <p class="section-sub">We’ll propose a tailored plan after your trial lesson.</p>
           </div>
 
-          <a href="#form-section" class="cta-button" data-aos="zoom-in" data-aos-delay="140">Go to Application Form</a>
+          <a href="#form-section" class="cta-button">Go to Application Form</a>
         </div>
       </div>
     </section>
 
     <!-- ========================= 7) お申し込みフォーム ========================= -->
-    <section id="form-section" aria-labelledby="form-title" data-parallax="0.10" data-aos="fade-up">
+    <section id="form-section" aria-labelledby="form-title" class="fade-in-up" data-parallax="0.10">
       <div class="bg-stack" aria-hidden="true">
         <div class="bg-layer is-front" style="background-image: url('images/1..1...jpg');" data-speed="1"></div>
         <div class="bg-layer" style="background-image: url('images/1..1.jpg');" data-speed="0.92"></div>
@@ -770,10 +777,10 @@
       </div>
 
       <div class="content">
-        <div class="panel" data-aos="fade-up" data-aos-delay="80">
+        <div class="panel">
           <div data-lang lang="ja">
-            <h2 id="form-title" class="section-title" data-aos="fade-up">お申し込みフォーム</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">必要事項を入力して送信してください。担当者よりご連絡いたします。</p>
+            <h2 id="form-title" class="section-title">お申し込みフォーム</h2>
+            <p class="section-sub">必要事項を入力して送信してください。担当者よりご連絡いたします。</p>
             <iframe
               src="https://docs.google.com/forms/d/e/1FAIpQLSdQjY0ErveIKaj6KAnCKTVZhuIsCX-SWcti7doMOWqdwCGPfg/viewform?embedded=true"
               width="100%"
@@ -787,8 +794,8 @@
           </div>
 
           <div data-lang lang="en">
-            <h2 id="form-title-en" class="section-title" data-aos="fade-up">Application Form</h2>
-            <p class="section-sub" data-aos="fade-up" data-aos-delay="100">Please fill out the form below. We will contact you shortly.</p>
+            <h2 id="form-title-en" class="section-title">Application Form</h2>
+            <p class="section-sub">Please fill out the form below. We will contact you shortly.</p>
             <iframe
               src="https://docs.google.com/forms/d/e/1FAIpQLSdQjY0ErveIKaj6KAnCKTVZhuIsCX-SWcti7doMOWqdwCGPfg/viewform?embedded=true"
               width="100%"
@@ -818,13 +825,15 @@
           © <span id="year"></span> TSC English Academy
         </p>
         <p style="opacity: 0.65; margin: 0;">
-          Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none;">tscenglishacademy@gmail.com</a>
+  Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none;">tscenglishacademy@gmail.com</a>
+</p>
+
         </p>
       </div>
     </footer>
   </main>
 
-  <a href="#form-section" class="cta-button fixed-cta" data-aos="zoom-in" data-aos-delay="240">Start Your Free Trial</a>
+  <a href="#form-section" class="cta-button fixed-cta">Start Your Free Trial</a>
 
   <!-- ========================= Structured Data (Technical SEO) ========================= -->
   <script type="application/ld+json">
@@ -888,6 +897,20 @@
       jaBtn.setAttribute('aria-pressed', String(lang === 'ja'));
       enBtn.setAttribute('aria-pressed', String(lang === 'en'));
     }
+
+    // フェードイン（IntersectionObserver）
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
+    );
+    document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
 
     // 年号
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -993,34 +1016,9 @@
   </script>
 
   <noscript>
-    <div style="background:#111111;color:#ffffff;padding:12px;text-align:center;">
+    <div style="background:#111111;color:#ffffff;padding:12px;text-align:center;a">
       JavaScript is disabled. Some animations and language toggle may not work.
     </div>
   </noscript>
-
-  <!-- ========================= AOS (Animate On Scroll) ========================= -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
-    // 低モーション設定のユーザーは自動で無効化
-    const disableIfReducedMotion = () =>
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    AOS.init({
-      duration: 900,                 // ふんわり速度
-      easing: 'ease-out-cubic',      // 自然な減速
-      once: true,                    // 一度だけ再生
-      offset: 80,                    // 画面下から80pxで発火
-      disable: disableIfReducedMotion
-    });
-
-    // グリッド要素をちょいディレイで“順番に”出す（カードにおすすめ）
-    document.querySelectorAll('.card-grid').forEach(grid => {
-      const items = grid.querySelectorAll('.card');
-      items.forEach((el, i) => {
-        el.setAttribute('data-aos', el.getAttribute('data-aos') || 'fade-up');
-        el.setAttribute('data-aos-delay', String(80 * i)); // 80ms刻み
-      });
-    });
-  </script>
 </body>
 </html>
