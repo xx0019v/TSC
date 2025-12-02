@@ -1,0 +1,12 @@
+/.vscode/
+node_modules/
+dist/
+build/
+*.log
+.DS_Store
+/*.env
+/.env.local
+__pycache__/
+*.py[cod]
+.cache/
+thumbs.db
