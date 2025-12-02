@@ -55,14 +55,15 @@
       --logo-float-amp: 8px;
       --logo-float-tilt: 0.6deg;
       --hero-tilt-strength: 6; /* degrees multiplier for pointer move */
-      --hero-tilt-mobile-multiplier: 0.28; /* scale down on touch */
-      --card-stagger-ms: 90; /* stagger delay between cards */
+      --hero-tilt-mobile-multiplier: 0; /* mobile: disable hero tilt by default */
+      --card-stagger-ms: 70; /* stagger delay between cards (mobile-friendly) */
+      --text-parallax-max: 6; /* px, max translate for heading/subtext */
       /* 3D card tuning */
-      --card-tilt-strength: 12; /* degrees */
-      --card-tilt-scale: 1.012; /* slight pop on hover */
-      --card-z-title: 18px;
-      --card-z-badge: 26px;
-      --card-z-text: 8px;
+      --card-tilt-strength: 8; /* degrees (reduced for gentler mobile feel) */
+      --card-tilt-scale: 1.006; /* slight pop on hover */
+      --card-z-title: 14px;
+      --card-z-badge: 20px;
+      --card-z-text: 6px;
     }
 
     html {
@@ -1237,6 +1238,9 @@
         const textTargets = Array.from(document.querySelectorAll('.section-title, .section-sub'))
           .map(el => ({ el, parent: el.closest('section') }));
 
+        const rootStyle = getComputedStyle(document.documentElement);
+        const textParallaxMax = parseFloat(rootStyle.getPropertyValue('--text-parallax-max')) || 6;
+
         function applyTextParallax() {
           const viewportH = window.innerHeight || document.documentElement.clientHeight;
           const scrollY = window.scrollY || window.pageYOffset || 0;
@@ -1246,7 +1250,7 @@
             const center = scrollY + rect.top + rect.height / 2;
             const distance = (scrollY + viewportH / 2 - center) / (viewportH / 1.2);
             const ratio = Math.max(-1, Math.min(1, distance));
-            const translate = ratio * 10; // max 10px up/down
+            const translate = ratio * textParallaxMax; // controlled by CSS var
             t.el.style.transform = `translateY(${translate}px)`;
             t.el.style.transition = 'transform 420ms cubic-bezier(.2,.9,.2,1)';
           });
