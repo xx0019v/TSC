@@ -108,6 +108,11 @@ h1 { font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem); letter-spacing: 0.02em; }
 /* Fade-in helper */
 .fade-in-up { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .fade-in-up.show { opacity: 1; transform: translateY(0); }
+/* Language toggle */
+[data-lang] { display: none; }
+html.ja [data-lang][lang="ja"],
+html.en [data-lang][lang="en"] { display: block; }
+
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
