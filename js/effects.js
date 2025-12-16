@@ -34,6 +34,24 @@
   }
 
   let ticking = false;
+  // Scroll progress bar (independent of reduced-motion)
+  const progressEl = document.getElementById('scroll-progress');
+  let progTick = false;
+  function onScrollProgress(){
+    if (!progressEl) return;
+    if (!progTick){
+      requestAnimationFrame(() => {
+        const viewportH = window.innerHeight || document.documentElement.clientHeight;
+        const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) || 1;
+        const max = Math.max(1, docH - viewportH);
+        const y = window.scrollY || window.pageYOffset || 0;
+        const p = clamp(y / max, 0, 1);
+        progressEl.style.transform = `scaleX(${p})`;
+        progTick = false;
+      });
+      progTick = true;
+    }
+  }
   function onScroll() {
     if (prefersReduced) return;
     if (!ticking) {
@@ -71,6 +89,9 @@
   function initParallax() { recalcCenters(); applyScrollEffects(); }
   initParallax();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', onScrollProgress, { passive: true });
+  window.addEventListener('load', onScrollProgress, { passive: true });
+  window.addEventListener('resize', onScrollProgress, { passive: true });
   window.addEventListener('resize', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
   window.addEventListener('orientationchange', () => { setTimeout(() => { recalcCenters(); applyScrollEffects(); }, 120); }, { passive: true });
   if (window.visualViewport) {

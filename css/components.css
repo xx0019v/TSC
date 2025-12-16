@@ -15,12 +15,21 @@
 
 .cta-button, .fixed-cta { position: relative; overflow:hidden; user-select:none; -webkit-tap-highlight-color: transparent; }
 .cta-button { display:inline-block; margin-top:32px; padding:14px 28px; background: linear-gradient(90deg, var(--brand-gold-soft), var(--brand-gold)); color:#000; font-weight:700; border-radius:10px; text-decoration:none; font-size:1.18rem; box-shadow:0 4px 12px rgba(0,0,0,0.40); transition: transform 0.22s ease, box-shadow 0.28s ease, filter 0.22s ease; border:1px solid rgba(0,0,0,0.22); }
+.cta-button::after{ content:''; position:absolute; inset:-20%; border-radius:12px; background: radial-gradient(closest-side, rgba(212,175,55,0.18), rgba(212,175,55,0)); opacity:0; transition: opacity 260ms ease; pointer-events:none; mix-blend-mode: screen; }
 .cta-button:hover{ transform: translateY(-3px) scale(1.02); box-shadow:0 8px 24px rgba(212,175,55,0.50); filter:saturate(1.06); }
+.cta-button:hover::after, .cta-button:focus-visible::after{ opacity:1; }
 .cta-button:active{ transform: translateY(-1px) scale(0.985); box-shadow:0 6px 18px rgba(212,175,55,0.4); }
 
 .fixed-cta{ position: fixed; bottom:20px; left:50%; transform: translateX(-50%); z-index:1000; padding:14px 28px; font-size:1.06rem; background:#ffd700; color:#000; border-radius:12px; text-decoration:none; transition: background 0.3s ease, transform 0.2s ease; border:1px solid rgba(0,0,0,0.22); box-shadow:0 8px 26px rgba(0,0,0,0.45); padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
 @media (min-width:768px){ .fixed-cta{ display:none; } }
 .fixed-cta:hover{ background: var(--brand-gold); transform: translateX(-50%) translateY(-2px); }
+
+/* FAQ cards subtle breathing (only FAQ section) */
+@keyframes breath { 0%{ transform: translateY(0) scale(1); box-shadow:0 10px 28px rgba(0,0,0,0.42);} 100%{ transform: translateY(-1px) scale(1.008); box-shadow:0 12px 32px rgba(212,175,55,0.28);} }
+@media (prefers-reduced-motion: no-preference){
+	section[aria-labelledby="faq-title"] .card,
+	section[aria-labelledby="faq-title-en"] .card{ animation: breath 5.6s ease-in-out infinite alternate; }
+}
 
 .ripple { position:absolute; width:20px; height:20px; border-radius:50%; background: radial-gradient(circle, rgba(255,255,255,0.55), rgba(212,175,55,0.45) 60%, rgba(212,175,55,0.25) 70%, rgba(212,175,55,0) 80%); transform: translate(-50%,-50%) scale(0); pointer-events:none; animation: ripple 600ms ease-out forwards; mix-blend-mode: screen; }
 @keyframes ripple { to { transform: translate(-50%,-50%) scale(18); opacity:0; } }
