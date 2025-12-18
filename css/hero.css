@@ -6,7 +6,7 @@
 /* Particles canvas sits above bg images and below vignette */
 .bg-particles { position:absolute; inset:0; z-index:1; pointer-events:none; }
 
-.hero { position: relative; z-index: 2; max-width: 1280px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:24px; }
+.hero { position: relative; z-index: 2; max-width: var(--content-max); display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:24px; }
 .hero-left, .hero-right { flex:1 1 360px; display:flex; flex-direction:column; align-items:center; padding:40px; }
 
 /* logo sheen */
@@ -16,3 +16,9 @@
 
 .hero-right { perspective: 900px; }
 .hero-right img { width: 420px; max-width:92vw; height:auto; display:block; border-radius:16px; transform-style: preserve-3d; transition: transform 420ms cubic-bezier(.2,.9,.2,1); will-change: transform; }
+
+/* Compact mobile: reduce padding and image width to avoid tall layout */
+@media (max-width: 720px){
+	.hero-left, .hero-right{ padding: 20px; }
+	.hero-right img{ max-width: 72vw; }
+}

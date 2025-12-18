@@ -45,8 +45,37 @@
 .card:focus-visible::before { opacity:1; transform: scaleY(1); }
 .card[tabindex] { cursor:pointer; }
 
+/* Card sheen sweep (hover) */
+.card .shine{ position:absolute; inset:-20% -40%; pointer-events:none; background: linear-gradient(75deg, rgba(255,255,255,0) 38%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0) 62%); transform: translateX(-120%) rotate(8deg); filter: blur(1px); mix-blend-mode: screen; opacity:0; transition: opacity .25s ease; }
+.card:hover .shine, .card:focus-within .shine{ animation: card-sheen 2.8s ease-in-out; opacity:1; }
+@keyframes card-sheen{ 0%{ transform: translateX(-120%) rotate(8deg); } 100%{ transform: translateX(120%) rotate(8deg); } }
+
+/* CTA arrival emphasis */
+.cta-button.pulse{ animation: cta-pulse .9s cubic-bezier(.2,.9,.2,1); }
+@keyframes cta-pulse{ 0%{ transform: scale(0.98); box-shadow:0 4px 12px rgba(0,0,0,0.4);} 50%{ transform: scale(1.03); box-shadow:0 10px 30px rgba(212,175,55,0.45);} 100%{ transform: scale(1.0); box-shadow:0 6px 18px rgba(212,175,55,0.35);} }
+
+/* Heading underline stroke (draw on entrance) */
+.section-title.underline{ position:relative; }
+.section-title.underline::before{ content:''; position:absolute; left:0; bottom:-6px; height:2px; width:100%; background: linear-gradient(90deg, var(--brand-gold-soft), var(--brand-gold)); transform: scaleX(0); transform-origin:left center; }
+.section-title.underline.draw::before{ animation: underline-draw .7s cubic-bezier(.2,.9,.2,1) forwards; }
+@keyframes underline-draw{ to { transform: scaleX(1); } }
+
+/* Blur-up image helper */
+.blur-up{ filter: blur(10px); opacity:0.85; transition: filter .9s ease, opacity .9s ease; }
+.blur-up.loaded{ filter: blur(0); opacity:1; }
+
 .logo-wrap.floaty { animation: floaty var(--logo-float-duration) ease-in-out infinite; }
 @keyframes floaty { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(var(--logo-float-amp)) rotate(var(--logo-float-tilt)); } 100% { transform: translateY(0) rotate(0deg); } }
 
 .card-inner { transform-style: preserve-3d; transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease; will-change: transform; position: relative; z-index: 2; background: inherit; border-radius: inherit; padding: inherit; }
 .card-layer { position: relative; transform-origin: center center; }
+
+/* Mobile downscale: paddings, buttons, badges */
+@media (max-width: 720px){
+	.panel{ padding: 20px; }
+	.card{ padding: 16px 16px 20px; }
+	.badge{ font-size: 0.8rem; padding: 4px 10px; }
+	.cta-button{ font-size: 1.02rem; padding: 12px 22px; }
+	.fixed-cta{ font-size: 0.98rem; padding: 12px 22px; }
+	.lang-btn-circle{ width:36px; height:36px; font-size:0.85rem; }
+}
