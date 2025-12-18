@@ -36,6 +36,14 @@
   let ticking = false;
   // Scroll progress bar (independent of reduced-motion)
   const progressEl = document.getElementById('scroll-progress');
+  // Dynamic gradient hue
+  let hueBase = 46; // gold
+  let hueSpan = 4;  // +/- range
+  let pointerFactor = 0;
+  window.addEventListener('pointermove', (e) => {
+    const w = window.innerWidth || document.documentElement.clientWidth || 1;
+    pointerFactor = clamp((e.clientX / w) - 0.5, -0.5, 0.5);
+  }, { passive: true });
   let progTick = false;
   function onScrollProgress(){
     if (!progressEl) return;
@@ -47,6 +55,9 @@
         const y = window.scrollY || window.pageYOffset || 0;
         const p = clamp(y / max, 0, 1);
         progressEl.style.transform = `scaleX(${p})`;
+        // subtle hue shift by scroll and pointer factor
+        const hue = clamp(hueBase + hueSpan * ((p - 0.5) + pointerFactor * 0.2), hueBase - hueSpan, hueBase + hueSpan);
+        document.documentElement.style.setProperty('--accent-hue', String(hue));
         progTick = false;
       });
       progTick = true;
@@ -171,6 +182,43 @@
       card.addEventListener('focus', () => { inner.style.transform = `scale(${baseScale})`; }, true);
       card.addEventListener('blur', () => { inner.style.transform = ''; }, true);
     });
+  })();
+
+  // Section crossfade: dim non-current section
+  (function sectionCrossfade(){
+    const secs = Array.from(document.querySelectorAll('main section'));
+    if (!secs.length) return;
+    function update(){
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const y = window.scrollY || window.pageYOffset || 0;
+      let closestIdx = 0; let closestDist = Infinity;
+      secs.forEach((sec, i) => {
+        const top = sec.offsetTop; const h = sec.offsetHeight; const center = top + h/2;
+        const dist = Math.abs((y + vh/2) - center);
+        if (dist < closestDist){ closestDist = dist; closestIdx = i; }
+      });
+      secs.forEach((sec, i) => { sec.classList.toggle('section-dim', i !== closestIdx); });
+    }
+    update();
+    window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+    window.addEventListener('resize', () => requestAnimationFrame(update), { passive: true });
+  })();
+
+  // FAQ accordion behavior
+  (function faqAccordion(){
+    const faqSection = document.querySelector('section[aria-labelledby="faq-title"], section[aria-labelledby="faq-title-en"]');
+    if (!faqSection) return;
+    const cards = Array.from(faqSection.querySelectorAll('.card'));
+    cards.forEach(card => {
+      card.setAttribute('role','button');
+      card.setAttribute('aria-expanded','false');
+      card.addEventListener('click', () => toggle(card), { passive: true });
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(card); } });
+    });
+    function toggle(card){
+      const open = card.classList.toggle('open');
+      card.setAttribute('aria-expanded', String(open));
+    }
   })();
 
   // Scroll UI: top shadow + back-to-top

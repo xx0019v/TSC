@@ -4,6 +4,7 @@
   --brand-gold-deep: #b89222;
   --bg-black: #000000;
   --text-white: #ffffff;
+  --accent-hue: 46; /* dynamic hue base for gradients */
   --panel-bg: rgba(16, 16, 16, 0.52);
   --panel-border: rgba(255, 255, 255, 0.10);
   --shadow-strong: 0 18px 50px rgba(0, 0, 0, 0.55);
@@ -126,6 +127,8 @@ h1 { font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem); letter-spacing: 0.02em; }
 /* Fade-in helper */
 .fade-in-up { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .fade-in-up.show { opacity: 1; transform: translateY(0); }
+/* Section crossfade (lightweight) */
+section.section-dim{ opacity: 0.92; transition: opacity 0.42s ease; }
 /* Heading sheen (premium look) */
 .section-title{ position:relative; display:inline-block; overflow:hidden; }
 .section-title::after{ content:''; position:absolute; left:-30%; top:0; width:60%; height:100%; background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%); transform: translateX(-120%); pointer-events:none; mix-blend-mode: overlay; opacity:0.95; }
@@ -159,3 +162,9 @@ html.en [data-lang][lang="en"] { display: block; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* FAQ accordion (collapse/expand paragraphs inside FAQ section cards) */
+section[aria-labelledby="faq-title"] .card p,
+section[aria-labelledby="faq-title-en"] .card p{ max-height: 0; opacity: 0; overflow: hidden; transition: max-height .28s ease, opacity .28s ease; }
+section[aria-labelledby="faq-title"] .card.open p,
+section[aria-labelledby="faq-title-en"] .card.open p{ max-height: 320px; opacity: 1; }
