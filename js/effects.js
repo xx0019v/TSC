@@ -173,4 +173,128 @@
     });
   })();
 
+  // Scroll UI: top shadow + back-to-top
+  (function scrollUI(){
+    const shadowEl = document.getElementById('scroll-shadow');
+    let backTopEl = document.getElementById('back-to-top');
+    if (!backTopEl){
+      backTopEl = document.createElement('button');
+      backTopEl.id = 'back-to-top';
+      backTopEl.type = 'button';
+      backTopEl.setAttribute('aria-label', 'Back to top');
+      backTopEl.innerHTML = '↑';
+      document.body.appendChild(backTopEl);
+      backTopEl.addEventListener('click', () => {
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) { window.scrollTo(0, 0); }
+        else { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      }, { passive: true });
+    }
+    let tick=false;
+    function update(){
+      const y = window.scrollY || window.pageYOffset || 0;
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (shadowEl) shadowEl.classList.toggle('show', y > 8);
+      if (backTopEl) backTopEl.classList.toggle('show', y > vh * 0.35);
+      tick=false;
+    }
+    function onScroll(){ if (!tick){ tick=true; requestAnimationFrame(update); } }
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('load', update, { passive: true });
+  })();
+
+  // Side dots nav + active highlight
+  (function sideDotsNav(){
+    const sectionsEls = Array.from(document.querySelectorAll('main section'));
+    if (!sectionsEls.length) return;
+    let nav = document.querySelector('.side-nav');
+    if (!nav){
+      nav = document.createElement('nav');
+      nav.className = 'side-nav';
+      sectionsEls.forEach((sec, i) => {
+        const a = document.createElement('a');
+        a.href = 'javascript:void(0)';
+        a.setAttribute('aria-label', `Go to section ${i+1}`);
+        a.addEventListener('click', () => {
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          sec.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+        }, { passive: true });
+        nav.appendChild(a);
+      });
+      document.body.appendChild(nav);
+    }
+    const dots = Array.from(nav.querySelectorAll('a'));
+    function updateActive(){
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const y = window.scrollY || window.pageYOffset || 0;
+      let closestIdx = 0; let closestDist = Infinity;
+      sectionsEls.forEach((sec, i) => {
+        const top = sec.offsetTop; const h = sec.offsetHeight;
+        const center = top + h/2;
+        const dist = Math.abs((y + vh/2) - center);
+        if (dist < closestDist){ closestDist = dist; closestIdx = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === closestIdx));
+    }
+    updateActive();
+    window.addEventListener('scroll', () => { requestAnimationFrame(updateActive); }, { passive: true });
+    window.addEventListener('resize', () => { requestAnimationFrame(updateActive); }, { passive: true });
+  })();
+
+  // Heading underline stroke (add underline class and draw once)
+  (function headingUnderline(){
+    const titles = Array.from(document.querySelectorAll('.section-title'));
+    titles.forEach(t => t.classList.add('underline'));
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        if (!el.classList.contains('draw')) el.classList.add('draw');
+        o.unobserve(el);
+      });
+    }, { root: null, rootMargin: '0px 0px -12% 0px', threshold: 0.2 });
+    titles.forEach(t => obs.observe(t));
+  })();
+
+  // Image blur-up transition
+  (function blurUp(){
+    const imgs = Array.from(document.querySelectorAll('img'));
+    imgs.forEach(img => {
+      if (!img.classList.contains('blur-up')) img.classList.add('blur-up');
+      function markLoaded(){ img.classList.add('loaded'); }
+      if (img.complete) { markLoaded(); }
+      else { img.addEventListener('load', markLoaded, { once: true }); }
+    });
+  })();
+
+  // Inject card sheen element for hover sweep
+  (function cardSheen(){
+    document.querySelectorAll('.card').forEach(card => {
+      if (!card.querySelector('.shine')){
+        const shine = document.createElement('div');
+        shine.className = 'shine';
+        card.appendChild(shine);
+      }
+    });
+  })();
+
+  // CTA enter emphasis pulse on first reveal
+  (function ctaPulse(){
+    const ctas = Array.from(document.querySelectorAll('.cta-button'));
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        if (!el.classList.contains('pulse')){
+          el.classList.add('pulse');
+          el.addEventListener('animationend', () => { el.classList.remove('pulse'); }, { once: true });
+        }
+        o.unobserve(el);
+      });
+    }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.2 });
+    ctas.forEach(el => obs.observe(el));
+  })();
+
 })();
