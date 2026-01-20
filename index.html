@@ -45,9 +45,9 @@
   <link rel="preload" as="image" href="images/1..1...jpg?v=3" />
 
   <!-- ========================= Styles ========================= -->
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/hero.css" />
-  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/base.css?v=2" />
+  <link rel="stylesheet" href="css/hero.css?v=2" />
+  <link rel="stylesheet" href="css/components.css?v=2" />
 
   <!-- Critical inline (minimal paint) -->
   <style>
@@ -57,9 +57,9 @@
   </style>
 
   <!-- ========================= Scripts ========================= -->
-  <script src="js/ui.js" defer></script>
-  <script src="js/effects.js" defer></script>
-  <script src="js/particles.js" defer></script>
+  <script src="js/ui.js?v=2" defer></script>
+  <script src="js/effects.js?v=2" defer></script>
+  <script src="js/particles.js?v=2" defer></script>
 </head>
 <body>
   <!-- Loading Screen -->
@@ -79,6 +79,7 @@
   <div class="lang-toggle" role="group" aria-label="Language selection">
     <button id="btn-en" class="lang-btn-circle" onclick="setLang('en')" aria-pressed="false" type="button">EN</button>
     <button id="btn-ja" class="lang-btn-circle active" onclick="setLang('ja')" aria-pressed="true" type="button">JA</button>
+    <button id="btn-pt" class="lang-btn-circle" onclick="setLang('pt')" aria-pressed="false" type="button">PT</button>
   </div>
 
   <main id="main">
@@ -103,6 +104,12 @@
             <p>Our curriculum is designed for learners of all levels—from beginners to advanced.</p>
             <p>You'll gain confidence through output-focused lessons guided by experienced instructors.</p>
             <a href="#form-section" class="cta-button" aria-label="Go to application form">Start Your Lesson</a>
+          </div>
+          <div data-lang lang="pt">
+            <h1 id="hero-title-pt">A Qualquer Hora, em Qualquer Lugar<br />Aprenda com Confiança</h1>
+            <p>Nosso currículo é projetado para alunos de todos os níveis—do iniciante ao avançado.</p>
+            <p>Você ganhará confiança através de aulas focadas em produção e guiadas por instrutores experientes.</p>
+            <a href="#form-section" class="cta-button" aria-label="Ir para formulário de inscrição">Comece Sua Aula</a>
           </div>
         </div>
 
@@ -144,6 +151,11 @@
             <p class="section-sub">Confidence. Flexibility. Results.</p>
           </div>
 
+          <div data-lang lang="pt">
+            <h2 id="features-title-pt" class="section-title">Por que escolher TSC English Academy?</h2>
+            <p class="section-sub">Confiança. Flexibilidade. Resultados.</p>
+          </div>
+
           <div class="card-grid" role="list">
             <div class="card" role="listitem">
               <div data-lang lang="ja">
@@ -155,6 +167,11 @@
                 <span class="badge">Small Class</span>
                 <h3>More Speaking Time</h3>
                 <p>We keep classes small so you speak more and grow faster.</p>
+              </div>
+              <div data-lang lang="pt">
+                <span class="badge">Turma Pequena</span>
+                <h3>Mais Tempo de Fala</h3>
+                <p>Mantemos turmas pequenas para que você fale mais e cresça mais rápido.</p>
               </div>
             </div>
 
@@ -169,6 +186,11 @@
                 <h3>Online & In-Person</h3>
                 <p>Learn anywhere, anytime—fit lessons into your life.</p>
               </div>
+              <div data-lang lang="pt">
+                <span class="badge">Flexível</span>
+                <h3>Online e Presencial</h3>
+                <p>Aprenda em qualquer lugar, a qualquer hora—encaixe aulas em sua vida.</p>
+              </div>
             </div>
 
             <div class="card" role="listitem">
@@ -181,6 +203,11 @@
                 <span class="badge">Goal-Oriented</span>
                 <h3>Tailored Curriculum</h3>
                 <p>Study plans optimized for study abroad, exams, or business.</p>
+              </div>
+              <div data-lang lang="pt">
+                <span class="badge">Orientado a Metas</span>
+                <h3>Currículo Personalizado</h3>
+                <p>Planos de estudo otimizados para intercâmbio, exames ou negócios.</p>
               </div>
             </div>
           </div>
@@ -207,7 +234,10 @@
             <h2 id="approach-title-en" class="section-title">Teaching Approach: Real English, Real Confidence</h2>
             <p class="section-sub">Lessons are led by teachers living abroad or from overseas backgrounds, so you’ll practice authentic, natural English.</p>
           </div>
-
+          <div data-lang lang="pt">
+            <h2 id="approach-title-pt" class="section-title">Abordagem de Ensino: Inglês Real, Confiança Real</h2>
+            <p class="section-sub">As aulas são conduzidas por professores que vivem no exterior ou com experiência internacional, então você praticará inglês autêntico e natural.</p>
+          </div>
           <div class="card-grid" role="list">
             <div class="card" role="listitem">
               <div data-lang lang="ja">
@@ -266,6 +296,11 @@
             <p class="section-sub">Real stories that keep you motivated.</p>
           </div>
 
+          <div data-lang lang="pt">
+            <h2 id="voices-title-pt" class="section-title">O que Dizem Nossos Alunos</h2>
+            <p class="section-sub">Histórias reais que mantêm você motivado.</p>
+          </div>
+
           <div class="card-grid" role="list">
             <div class="card" role="listitem">
               <div data-lang lang="ja">
@@ -322,6 +357,11 @@
           <div data-lang lang="en">
             <h2 id="faq-title-en" class="section-title">FAQ</h2>
             <p class="section-sub">Start with a free trial to check your goals and level.</p>
+          </div>
+
+          <div data-lang lang="pt">
+            <h2 id="faq-title-pt" class="section-title">Perguntas Frequentes</h2>
+            <p class="section-sub">Comece com uma aula gratuita para verificar suas metas e nível.</p>
           </div>
 
           <div class="card-grid" role="list">
@@ -385,7 +425,10 @@
             <h2 id="final-cta-title-en" class="section-title">Start a Free Trial—Find Your Best Way to Learn</h2>
             <p class="section-sub">We’ll propose a tailored plan after your trial lesson.</p>
           </div>
-
+          <div data-lang lang="pt">
+            <h2 id="final-cta-title-pt" class="section-title">Comece uma Aula Gratuita—Encontre Sua Melhor Forma de Aprender</h2>
+            <p class="section-sub">Proporemos um plano personalizado após sua aula de teste.</p>
+          </div>
           <a href="#form-section" class="cta-button">Go to Application Form</a>
         </div>
       </div>
@@ -434,6 +477,23 @@
               referrerpolicy="no-referrer"
             >Loading…</iframe>
           </div>
+
+          <div data-lang lang="pt">
+            <h2 id="form-title-pt" class="section-title">Formulário de Inscrição</h2>
+            <p class="section-sub">Por favor, preencha o formulário abaixo. Entraremos em contato em breve.</p>
+            <iframe
+              class="form-frame"
+              src="https://docs.google.com/forms/d/e/1FAIpQLSdQjY0ErveIKaj6KAnCKTVZhuIsCX-SWcti7doMOWqdwCGPfg/viewform?embedded=true"
+              width="100%"
+              height="1600"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              title="Formulário de Inscrição"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            >Carregando…</iframe>
+          </div>
         </div>
       </div>
     </section>
@@ -441,18 +501,19 @@
     <!-- ========================= 8) フッター ========================= -->
     <footer
       style="
-        padding: 34px 16px;
-        background: #000000;
+        padding: 56px 16px 34px;
+        background: linear-gradient(180deg, #000000, #0a0a0a);
         text-align: center;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid rgba(212,175,55,0.15);
+        margin-top: 40px;
       "
     >
       <div class="content" style="max-width: 1160px; margin: 0 auto;">
-        <p style="opacity: 0.88; margin: 0 0 8px;">
+        <p style="opacity: 0.92; margin: 0 0 16px; font-weight: 600; letter-spacing: 0.05em; font-size: 1.02rem;">
           © <span id="year"></span> TSC English Academy
         </p>
-        <p style="opacity: 0.65; margin: 0;">
-          Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none;">tscenglishacademy@gmail.com</a>
+        <p style="opacity: 0.75; margin: 0; font-size: 0.98rem;">
+          Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none; transition: opacity 0.3s ease; font-weight: 600;">tscenglishacademy@gmail.com</a>
         </p>
       </div>
     </footer>

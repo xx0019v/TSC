@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tsc-static-v4';
+const CACHE_NAME = 'tsc-static-v5';
 const ASSETS = [
   '/',
   '/TSC/',

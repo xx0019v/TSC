@@ -21,18 +21,21 @@ const StorageHelper = (() => {
 
 function setLang(lang) {
   const html = document.documentElement;
-  html.classList.remove('ja', 'en');
+  html.classList.remove('ja', 'en', 'pt');
   html.classList.add(lang);
   html.setAttribute('lang', lang);
 
   const jaBtn = document.getElementById('btn-ja');
   const enBtn = document.getElementById('btn-en');
+  const ptBtn = document.getElementById('btn-pt');
 
   if (jaBtn) jaBtn.classList.toggle('active', lang === 'ja');
   if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+  if (ptBtn) ptBtn.classList.toggle('active', lang === 'pt');
 
   if (jaBtn) jaBtn.setAttribute('aria-pressed', String(lang === 'ja'));
   if (enBtn) enBtn.setAttribute('aria-pressed', String(lang === 'en'));
+  if (ptBtn) ptBtn.setAttribute('aria-pressed', String(lang === 'pt'));
 
   // Save preference to localStorage
   StorageHelper.set('preferred-lang', lang);
@@ -41,14 +44,16 @@ function setLang(lang) {
 // Restore saved language preference on load or infer from browser
 document.addEventListener('DOMContentLoaded', () => {
   const savedLang = StorageHelper.get('preferred-lang', null);
-  if (savedLang === 'ja' || savedLang === 'en') {
+  if (savedLang === 'ja' || savedLang === 'en' || savedLang === 'pt') {
     setLang(savedLang);
     return;
   }
 
   // Fallback: infer from navigator.language
   const navLang = (navigator.language || navigator.userLanguage || 'ja').toLowerCase();
-  const inferred = navLang.startsWith('en') ? 'en' : 'ja';
+  let inferred = 'ja';
+  if (navLang.startsWith('en')) inferred = 'en';
+  else if (navLang.startsWith('pt')) inferred = 'pt';
   setLang(inferred);
 });
 
@@ -60,6 +65,11 @@ window.addEventListener('load', () => {
       loadingScreen.classList.add('hidden');
       setTimeout(() => loadingScreen.remove(), 600);
     }, 800);
+  }
+
+  // Register service worker for offline cache
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/TSC/sw.js').catch(() => {});
   }
 });
 

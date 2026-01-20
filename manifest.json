@@ -1,0 +1,14 @@
+{
+  "name": "TSC English Academy",
+  "short_name": "TSC",
+  "start_url": "/TSC/",
+  "scope": "/TSC/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Premium English lessons for all ages, focusing on confidence and flexibility.",
+  "icons": [
+    { "src": "images/1.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "images/1.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
