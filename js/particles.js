@@ -18,6 +18,7 @@
   } else {
     stack.appendChild(canvas);
   }
+  canvas.setAttribute('aria-hidden', 'true');
   const ctx = canvas.getContext('2d');
 
   const DPR = Math.min(window.devicePixelRatio || 1, 2);
@@ -75,9 +76,11 @@
   }
 
   let lastTime = 0;
+  let rafId = null;
   function draw(ts){
+    rafId = null;
     // Cap to ~30fps for perf
-    if (ts - lastTime < 33) { requestAnimationFrame(draw); return; }
+    if (ts - lastTime < 33) { start(); return; }
     lastTime = ts;
 
     ctx.clearRect(0, 0, width, height);
@@ -105,7 +108,17 @@
       ctx.fill();
     }
 
-    requestAnimationFrame(draw);
+    start();
+  }
+
+  function start(){
+    if (rafId !== null || document.hidden) return;
+    rafId = requestAnimationFrame(draw);
+  }
+  function stop(){
+    if (rafId === null) return;
+    cancelAnimationFrame(rafId);
+    rafId = null;
   }
 
   const ro = new ResizeObserver(() => resize());
@@ -114,5 +127,10 @@
   window.addEventListener('orientationchange', () => setTimeout(resize, 120), { passive:true });
 
   init();
-  requestAnimationFrame(draw);
+  start();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { stop(); }
+    else { start(); }
+  });
 })();

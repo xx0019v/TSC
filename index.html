@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="en">
+<html lang="ja" class="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -12,8 +12,14 @@
   <meta property="og:title" content="TSC English Academy - Premium English Lessons" />
   <meta property="og:description" content="Anytime, anywhere. Learn English with confidence through output-focused lessons led by teachers living abroad or from overseas backgrounds." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="images/1..1...jpg" />
+  <meta property="og:url" content="https://example.com/" />
+  <meta property="og:image" content="https://example.com/images/1..1...jpg" />
+  <meta property="og:image:width" content="1280" />
+  <meta property="og:image:height" content="640" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TSC English Academy - Premium English Lessons" />
+  <meta name="twitter:description" content="Anytime, anywhere. Learn English with confidence through output-focused lessons." />
+  <meta name="twitter:image" content="https://example.com/images/1..1...jpg" />
 
   <!-- ========================= Icons ========================= -->
   <link rel="icon" href="/favicon.ico" />
@@ -23,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://docs.google.com" />
-  <link rel="preconnect" href="https://googleusercontent.com" crossorigin />
+  <link rel="dns-prefetch" href="https://docs.google.com" />
 
   <!-- ========================= Fonts ========================= -->
   <link
@@ -47,14 +53,23 @@
   <script src="js/particles.js" defer></script>
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loading-screen" aria-hidden="true">
+    <div class="loading-content">
+      <div class="loading-logo">TSC</div>
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading Experience...</p>
+    </div>
+  </div>
+
   <div id="scroll-progress" aria-hidden="true"></div>
   <div id="scroll-shadow" aria-hidden="true"></div>
   <a href="#main" class="skip-link">Skip to content</a>
 
   <!-- 言語切替 -->
   <div class="lang-toggle" role="group" aria-label="Language selection">
-    <button id="btn-en" class="lang-btn-circle active" onclick="setLang('en')" aria-pressed="true" type="button">EN</button>
-    <button id="btn-ja" class="lang-btn-circle" onclick="setLang('ja')" aria-pressed="false" type="button">JA</button>
+    <button id="btn-en" class="lang-btn-circle" onclick="setLang('en')" aria-pressed="false" type="button">EN</button>
+    <button id="btn-ja" class="lang-btn-circle active" onclick="setLang('ja')" aria-pressed="true" type="button">JA</button>
   </div>
 
   <main id="main">
@@ -426,9 +441,7 @@
           © <span id="year"></span> TSC English Academy
         </p>
         <p style="opacity: 0.65; margin: 0;">
-  Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none;">tscenglishacademy@gmail.com</a>
-</p>
-
+          Contact: <a href="mailto:tscenglishacademy@gmail.com" style="color:#ffd700; text-decoration:none;">tscenglishacademy@gmail.com</a>
         </p>
       </div>
     </footer>
@@ -440,11 +453,19 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "EducationalOrganization",
     "name": "TSC English Academy",
+    "description": "Premium English lessons for all ages, focusing on confidence and flexibility.",
     "url": "https://example.com/",
     "logo": "https://example.com/images/1..jpg",
-    "sameAs": []
+    "email": "tscenglishacademy@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "JP"
+    },
+    "sameAs": [],
+    "areaServed": "Worldwide",
+    "availableLanguage": ["en", "ja"]
   }
   </script>
   <script type="application/ld+json">

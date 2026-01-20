@@ -31,9 +31,13 @@
 }
 
 html {
-  scroll-behavior: smooth;
   background: var(--bg-black);
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 body {
@@ -159,12 +163,73 @@ html.en [data-lang][lang="en"] { display: block; }
 @media (max-width: 920px){ .side-nav{ display:none; } }
 
 
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+/* Loading Screen */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  pointer-events: none;
+}
+#loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.loading-content {
+  text-align: center;
+  transform: translateY(-20px);
+}
+.loading-logo {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--brand-gold-soft), var(--brand-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+  animation: loading-pulse 2s ease-in-out infinite;
+}
+@keyframes loading-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 20px;
+  border: 3px solid rgba(212, 175, 55, 0.2);
+  border-top-color: var(--brand-gold);
+  border-radius: 50%;
+  animation: loading-spin 0.8s linear infinite;
+}
+@keyframes loading-spin {
+  to { transform: rotate(360deg); }
+}
+.loading-text {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+  animation: loading-fade 1.5s ease-in-out infinite;
+}
+@keyframes loading-fade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
 }
 
-/* FAQ accordion (collapse/expand paragraphs inside FAQ section cards) */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  .loading-logo, .loading-spinner, .loading-text { animation: none !important; }
+}
+
+/* FAQ - Always show answers */
 section[aria-labelledby="faq-title"] .card p,
-section[aria-labelledby="faq-title-en"] .card p{ max-height: 0; opacity: 0; overflow: hidden; transition: max-height .28s ease, opacity .28s ease; }
-section[aria-labelledby="faq-title"] .card.open p,
-section[aria-labelledby="faq-title-en"] .card.open p{ max-height: 320px; opacity: 1; }
+section[aria-labelledby="faq-title-en"] .card p { 
+  max-height: none; 
+  opacity: 1; 
+  overflow: visible; 
+}

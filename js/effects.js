@@ -3,16 +3,45 @@
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
-  // Fade-in for sections
-  const observer = new IntersectionObserver((entries, obs) => {
+  // Unified IntersectionObserver for fade-in, cards, titles, CTAs, heading underlines
+  const fadeInObserver = new IntersectionObserver((entries, obs) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('show');
+        if (entry.target.classList.contains('fade-in-up')) {
+          entry.target.classList.add('show');
+        }
+        if (entry.target.classList.contains('card-grid')) {
+          const cards = entry.target.querySelectorAll('.card');
+          const staggerDelay = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--card-stagger-ms')) || 70;
+          cards.forEach((card, i) => {
+            setTimeout(() => {
+              card.classList.add('revealed');
+            }, i * staggerDelay);
+          });
+        }
+        if (entry.target.classList.contains('section-title') && !prefersReduced) {
+          if (!entry.target.classList.contains('sheen')) {
+            entry.target.classList.add('sheen');
+            const onAnimEnd = () => { entry.target.classList.remove('sheen'); entry.target.removeEventListener('animationend', onAnimEnd); };
+            entry.target.addEventListener('animationend', onAnimEnd);
+          }
+        }
+        if (entry.target.classList.contains('section-title') && entry.target.classList.contains('underline')) {
+          if (!entry.target.classList.contains('draw')) entry.target.classList.add('draw');
+        }
+        if (entry.target.classList.contains('cta-button')) {
+          if (!entry.target.classList.contains('pulse')) {
+            entry.target.classList.add('pulse');
+            entry.target.addEventListener('animationend', () => { entry.target.classList.remove('pulse'); }, { once: true });
+          }
+        }
         obs.unobserve(entry.target);
       }
     });
   }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
-  document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+
+  document.querySelectorAll('.fade-in-up').forEach((el) => fadeInObserver.observe(el));
+  document.querySelectorAll('.card-grid').forEach((grid) => fadeInObserver.observe(grid));
 
   // Background parallax & crossfade
   const sections = Array.from(document.querySelectorAll('section')).map((section) => {
@@ -34,8 +63,14 @@
   }
 
   let ticking = false;
+  let lastScrollY = 0;
+  let debugMode = false; // Case 10: Debug toggle
+  let frameCount = 0;
+  let lastFpsTime = performance.now();
+
   // Scroll progress bar (independent of reduced-motion)
   const progressEl = document.getElementById('scroll-progress');
+  if (progressEl) progressEl.setAttribute('aria-hidden', 'true');
   // Dynamic gradient hue
   let hueBase = 46; // gold
   let hueSpan = 4;  // +/- range
@@ -44,31 +79,56 @@
     const w = window.innerWidth || document.documentElement.clientWidth || 1;
     pointerFactor = clamp((e.clientX / w) - 0.5, -0.5, 0.5);
   }, { passive: true });
-  let progTick = false;
-  function onScrollProgress(){
-    if (!progressEl) return;
-    if (!progTick){
-      requestAnimationFrame(() => {
-        const viewportH = window.innerHeight || document.documentElement.clientHeight;
-        const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) || 1;
-        const max = Math.max(1, docH - viewportH);
-        const y = window.scrollY || window.pageYOffset || 0;
-        const p = clamp(y / max, 0, 1);
-        progressEl.style.transform = `scaleX(${p})`;
-        // subtle hue shift by scroll and pointer factor
-        const hue = clamp(hueBase + hueSpan * ((p - 0.5) + pointerFactor * 0.2), hueBase - hueSpan, hueBase + hueSpan);
-        document.documentElement.style.setProperty('--accent-hue', String(hue));
-        progTick = false;
-      });
-      progTick = true;
-    }
-  }
-  function onScroll() {
-    if (prefersReduced) return;
+
+  // Case 1: Unified scroll handler (replaces multiple listeners)
+  function onUnifiedScroll() {
     if (!ticking) {
-      requestAnimationFrame(applyScrollEffects);
+      requestAnimationFrame(processScrollFrame);
       ticking = true;
     }
+  }
+
+  function processScrollFrame() {
+    const currentScrollY = window.scrollY || window.pageYOffset || 0;
+    // Debounce minor scroll jitter
+    if (Math.abs(currentScrollY - lastScrollY) > 2) {
+      lastScrollY = currentScrollY;
+      
+      // Case 6: unified animation control flag
+      const shouldAnimate = !prefersReduced;
+      
+      if (shouldAnimate) {
+        applyScrollEffects();
+      }
+    }
+    
+    // Progress bar update (independent of reduced-motion)
+    updateScrollProgress(currentScrollY);
+    
+    // Case 10: FPS logging
+    if (debugMode) {
+      frameCount++;
+      const now = performance.now();
+      if (now - lastFpsTime >= 1000) {
+        console.log(`[TSC Debug] FPS: ${frameCount}, ScrollY: ${Math.round(currentScrollY)}`);
+        frameCount = 0;
+        lastFpsTime = now;
+      }
+    }
+    
+    ticking = false;
+  }
+
+  function updateScrollProgress(scrollY) {
+    if (!progressEl) return;
+    const viewportH = window.innerHeight || document.documentElement.clientHeight;
+    const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) || 1;
+    const max = Math.max(1, docH - viewportH);
+    const p = clamp(scrollY / max, 0, 1);
+    progressEl.style.transform = `scaleX(${p})`;
+    // subtle hue shift by scroll and pointer factor
+    const hue = clamp(hueBase + hueSpan * ((p - 0.5) + pointerFactor * 0.2), hueBase - hueSpan, hueBase + hueSpan);
+    document.documentElement.style.setProperty('--accent-hue', String(hue));
   }
 
   function applyScrollEffects() {
@@ -97,42 +157,43 @@
     ticking = false;
   }
 
-  function initParallax() { recalcCenters(); applyScrollEffects(); }
+  function initParallax() { recalcCenters(); applyScrollEffects(); updateScrollProgress(window.scrollY || 0); }
   initParallax();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('scroll', onScrollProgress, { passive: true });
-  window.addEventListener('load', onScrollProgress, { passive: true });
-  window.addEventListener('resize', onScrollProgress, { passive: true });
-  window.addEventListener('resize', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
-  window.addEventListener('orientationchange', () => { setTimeout(() => { recalcCenters(); applyScrollEffects(); }, 120); }, { passive: true });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
-    window.visualViewport.addEventListener('scroll', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
+
+  // Case 1: Unified scroll listener (replaces 5+ separate listeners)
+  window.addEventListener('scroll', onUnifiedScroll, { passive: true });
+  
+  // Resize/orientation changes
+  function handleResize() {
+    recalcCenters();
+    onUnifiedScroll();
   }
-  window.addEventListener('load', () => { recalcCenters(); applyScrollEffects(); }, { passive: true });
-  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(() => { recalcCenters(); applyScrollEffects(); }); }
+  window.addEventListener('resize', handleResize, { passive: true });
+  window.addEventListener('orientationchange', () => { setTimeout(handleResize, 120); }, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', handleResize, { passive: true });
+    window.visualViewport.addEventListener('scroll', onUnifiedScroll, { passive: true });
+  }
+  window.addEventListener('load', () => { initParallax(); }, { passive: true });
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(() => { initParallax(); }); }
 
-  // Heading sheen, card reveals, and text parallax
-  (function premiumEnhancements() {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (!prefersReduced) {
-      const titleObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          const title = entry.target.querySelector('.section-title');
-          if (title && !title.classList.contains('sheen')) {
-            title.classList.add('sheen');
-            const onAnimEnd = () => { title.classList.remove('sheen'); title.removeEventListener('animationend', onAnimEnd); };
-            title.addEventListener('animationend', onAnimEnd);
-          }
-          obs.unobserve(entry.target);
-        });
-      }, { root: null, rootMargin: '0px 0px -12% 0px', threshold: 0.2 });
-      document.querySelectorAll('section').forEach(s => titleObserver.observe(s));
+  // Case 10: Debug mode toggle (press Alt+D to toggle FPS logging)
+  window.addEventListener('keydown', (e) => {
+    if (e.altKey && e.key.toLowerCase() === 'd') {
+      debugMode = !debugMode;
+      console.log(`[TSC Debug] ${debugMode ? 'Enabled' : 'Disabled'}`);
     }
+  }, { passive: true });
 
-    document.querySelectorAll('.card').forEach(card => { if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex','0'); card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { const link = card.querySelector('a, button'); if (link) { e.preventDefault(); link.focus(); link.click && link.click(); } } }); });
+  // Card accessibility and text parallax
+  (function premiumEnhancements() {
+    // Case 6: Use unified prefersReduced flag from outer scope
+
+    document.querySelectorAll('.card').forEach(card => {
+      if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex','0');
+      if (!card.hasAttribute('role')) card.setAttribute('role', 'button');
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { const link = card.querySelector('a, button'); if (link) { e.preventDefault(); link.focus(); link.click && link.click(); } } });
+    });
 
     if (!prefersReduced) {
       const textTargets = Array.from(document.querySelectorAll('.section-title, .section-sub')).map(el => ({ el, parent: el.closest('section') }));
@@ -162,7 +223,7 @@
 
   // 3D card tilt
   (function card3DTilt() {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Case 6: Use unified prefersReduced flag from outer scope
     const rootStyle = getComputedStyle(document.documentElement);
     const baseStrength = parseFloat(rootStyle.getPropertyValue('--card-tilt-strength')) || 12;
     const baseScale = parseFloat(rootStyle.getPropertyValue('--card-tilt-scale')) || 1.012;
@@ -186,6 +247,7 @@
 
   // Section crossfade: dim non-current section
   (function sectionCrossfade(){
+    if (prefersReduced) return;
     const secs = Array.from(document.querySelectorAll('main section'));
     if (!secs.length) return;
     function update(){
@@ -204,22 +266,6 @@
     window.addEventListener('resize', () => requestAnimationFrame(update), { passive: true });
   })();
 
-  // FAQ accordion behavior
-  (function faqAccordion(){
-    const faqSection = document.querySelector('section[aria-labelledby="faq-title"], section[aria-labelledby="faq-title-en"]');
-    if (!faqSection) return;
-    const cards = Array.from(faqSection.querySelectorAll('.card'));
-    cards.forEach(card => {
-      card.setAttribute('role','button');
-      card.setAttribute('aria-expanded','false');
-      card.addEventListener('click', () => toggle(card), { passive: true });
-      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(card); } });
-    });
-    function toggle(card){
-      const open = card.classList.toggle('open');
-      card.setAttribute('aria-expanded', String(open));
-    }
-  })();
 
   // Scroll UI: top shadow + back-to-top
   (function scrollUI(){
@@ -261,14 +307,13 @@
     if (!nav){
       nav = document.createElement('nav');
       nav.className = 'side-nav';
+      nav.setAttribute('aria-hidden', 'true');
       sectionsEls.forEach((sec, i) => {
+        if (!sec.id) sec.id = `section-${i+1}`;
         const a = document.createElement('a');
-        a.href = 'javascript:void(0)';
+        a.href = `#${sec.id}`;
         a.setAttribute('aria-label', `Go to section ${i+1}`);
-        a.addEventListener('click', () => {
-          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          sec.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
-        }, { passive: true });
+        a.setAttribute('title', `Section ${i+1}`);
         nav.appendChild(a);
       });
       document.body.appendChild(nav);
@@ -291,19 +336,10 @@
     window.addEventListener('resize', () => { requestAnimationFrame(updateActive); }, { passive: true });
   })();
 
-  // Heading underline stroke (add underline class and draw once)
+  // Heading underline stroke (add underline class)
   (function headingUnderline(){
     const titles = Array.from(document.querySelectorAll('.section-title'));
-    titles.forEach(t => t.classList.add('underline'));
-    const obs = new IntersectionObserver((entries, o) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        if (!el.classList.contains('draw')) el.classList.add('draw');
-        o.unobserve(el);
-      });
-    }, { root: null, rootMargin: '0px 0px -12% 0px', threshold: 0.2 });
-    titles.forEach(t => obs.observe(t));
+    titles.forEach(t => { t.classList.add('underline'); fadeInObserver.observe(t); });
   })();
 
   // Image blur-up transition
@@ -331,18 +367,7 @@
   // CTA enter emphasis pulse on first reveal
   (function ctaPulse(){
     const ctas = Array.from(document.querySelectorAll('.cta-button'));
-    const obs = new IntersectionObserver((entries, o) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        if (!el.classList.contains('pulse')){
-          el.classList.add('pulse');
-          el.addEventListener('animationend', () => { el.classList.remove('pulse'); }, { once: true });
-        }
-        o.unobserve(el);
-      });
-    }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.2 });
-    ctas.forEach(el => obs.observe(el));
+    ctas.forEach(el => fadeInObserver.observe(el));
   })();
 
 })();
