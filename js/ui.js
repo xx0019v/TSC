@@ -21,21 +21,18 @@ const StorageHelper = (() => {
 
 function setLang(lang) {
   const html = document.documentElement;
-  html.classList.remove('ja', 'en', 'pt');
+  html.classList.remove('ja', 'en');
   html.classList.add(lang);
   html.setAttribute('lang', lang);
 
   const jaBtn = document.getElementById('btn-ja');
   const enBtn = document.getElementById('btn-en');
-  const ptBtn = document.getElementById('btn-pt');
 
   if (jaBtn) jaBtn.classList.toggle('active', lang === 'ja');
   if (enBtn) enBtn.classList.toggle('active', lang === 'en');
-  if (ptBtn) ptBtn.classList.toggle('active', lang === 'pt');
 
   if (jaBtn) jaBtn.setAttribute('aria-pressed', String(lang === 'ja'));
   if (enBtn) enBtn.setAttribute('aria-pressed', String(lang === 'en'));
-  if (ptBtn) ptBtn.setAttribute('aria-pressed', String(lang === 'pt'));
 
   // Save preference to localStorage
   StorageHelper.set('preferred-lang', lang);
@@ -44,7 +41,7 @@ function setLang(lang) {
 // Restore saved language preference on load or infer from browser
 document.addEventListener('DOMContentLoaded', () => {
   const savedLang = StorageHelper.get('preferred-lang', null);
-  if (savedLang === 'ja' || savedLang === 'en' || savedLang === 'pt') {
+  if (savedLang === 'ja' || savedLang === 'en') {
     setLang(savedLang);
     return;
   }
@@ -53,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLang = (navigator.language || navigator.userLanguage || 'ja').toLowerCase();
   let inferred = 'ja';
   if (navLang.startsWith('en')) inferred = 'en';
-  else if (navLang.startsWith('pt')) inferred = 'pt';
   setLang(inferred);
 });
 

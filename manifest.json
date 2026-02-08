@@ -1,14 +1,41 @@
 {
-  "name": "TSC English Academy",
-  "short_name": "TSC",
-  "start_url": "/TSC/",
+  "name": "TSC English Academy - Premium English Lessons",
+  "short_name": "TSC English",
+  "description": "Learn English with confidence through output-focused lessons led by experienced instructors. Anytime, anywhere.",
+  "start_url": "/TSC/index.html",
   "scope": "/TSC/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#000000",
-  "theme_color": "#000000",
-  "description": "Premium English lessons for all ages, focusing on confidence and flexibility.",
+  "theme_color": "#ffd700",
+  "categories": ["education", "productivity"],
   "icons": [
-    { "src": "images/1.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "images/1.png", "sizes": "512x512", "type": "image/png" }
-  ]
+    {
+      "src": "images/1..jpg?v=2",
+      "sizes": "640x640",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "images/1..1.jpg?v=3",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book a Free Trial",
+      "short_name": "Free Trial",
+      "description": "Start your free English lesson",
+      "url": "/TSC/index.html#form-section",
+      "icons": [
+        {
+          "src": "images/1..jpg?v=2",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
 }
