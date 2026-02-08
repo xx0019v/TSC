@@ -32,8 +32,7 @@
   }
 }
 
-.fixed-cta{ position: fixed; bottom:16px; left:50%; transform: translateX(-50%); z-index:1000; padding:8px 16px; font-size:0.80rem; background:#ffd700; color:#000; border-radius:8px; text-decoration:none; transition: background 0.3s ease, transform 0.2s ease; border:1px solid rgba(0,0,0,0.22); box-shadow:0 4px 12px rgba(0,0,0,0.35); padding-bottom: calc(8px + env(safe-area-inset-bottom)); font-weight:600; white-space:nowrap; }
-@media (min-width:768px){ .fixed-cta{ display:none; } }
+.fixed-cta{ display:none; }
 .fixed-cta:hover{ background: var(--brand-gold); transform: translateX(-50%) translateY(-2px); }
 .fixed-cta:focus-visible{ outline:2px solid #000; outline-offset:3px; }
 
