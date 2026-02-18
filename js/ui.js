@@ -65,7 +65,8 @@ window.addEventListener('load', () => {
 
   // Register service worker for offline cache
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/TSC/sw.js').catch(() => {});
+    const swUrl = new URL('sw.js', window.location.href);
+    navigator.serviceWorker.register(swUrl.pathname).catch(() => {});
   }
 });
 

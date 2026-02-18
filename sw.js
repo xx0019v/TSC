@@ -1,15 +1,16 @@
 const CACHE_NAME = 'tsc-static-v6';
+const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, '');
+const withBase = (path) => `${BASE_PATH}${path}`;
 const ASSETS = [
-  '/',
-  '/TSC/',
-  '/TSC/index.html',
-  '/TSC/manifest.json',
-  '/TSC/css/base.css',
-  '/TSC/css/components.css',
-  '/TSC/css/hero.css',
-  '/TSC/js/ui.js',
-  '/TSC/js/effects.js',
-  '/TSC/js/particles.js'
+  withBase('/'),
+  withBase('/index.html'),
+  withBase('/manifest.json'),
+  withBase('/css/base.css'),
+  withBase('/css/components.css'),
+  withBase('/css/hero.css'),
+  withBase('/js/ui.js'),
+  withBase('/js/effects.js'),
+  withBase('/js/particles.js')
 ];
 
 // Install: Cache all assets
@@ -66,7 +67,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => caches.match(request) || fetch(request))
     ).catch(() => {
       // Fallback: Return offline page if available
-      if (isDocument) return caches.match('/TSC/index.html');
+      if (isDocument) return caches.match(withBase('/index.html'));
     })
   );
 });
