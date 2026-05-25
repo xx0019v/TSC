@@ -59,14 +59,8 @@ window.addEventListener('load', () => {
   if (loadingScreen) {
     setTimeout(() => {
       loadingScreen.classList.add('hidden');
-      setTimeout(() => loadingScreen.remove(), 600);
-    }, 800);
-  }
-
-  // Register service worker for offline cache
-  if ('serviceWorker' in navigator) {
-    const swUrl = new URL('sw.js', window.location.href);
-    navigator.serviceWorker.register(swUrl.pathname).catch(() => {});
+      setTimeout(() => loadingScreen.remove(), 700);
+    }, 650);
   }
 });
 
@@ -104,7 +98,7 @@ function attachRipple(el) {
 
 // attach to existing CTAs
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.cta-button, .fixed-cta').forEach(attachRipple);
+  document.querySelectorAll('.btn').forEach(attachRipple);
 
   // Smooth scroll for anchor links (respect modifier/middle-click)
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {

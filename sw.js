@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tsc-static-v6';
+const CACHE_NAME = 'tsc-static-v7';
 const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, '');
 const withBase = (path) => `${BASE_PATH}${path}`;
 const ASSETS = [

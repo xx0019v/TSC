@@ -9,12 +9,12 @@
   const stack = heroSection.querySelector('.bg-stack');
   if (!stack) return;
 
-  // Create canvas and insert before vignette
+  // Create canvas and insert above the image but below the scrim
   const canvas = document.createElement('canvas');
   canvas.className = 'bg-particles';
-  const vignette = stack.querySelector('.bg-vignette');
-  if (vignette && vignette.parentNode) {
-    vignette.parentNode.insertBefore(canvas, vignette);
+  const scrim = stack.querySelector('.bg-scrim');
+  if (scrim && scrim.parentNode) {
+    scrim.parentNode.insertBefore(canvas, scrim);
   } else {
     stack.appendChild(canvas);
   }
