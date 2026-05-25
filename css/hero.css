@@ -3,7 +3,8 @@
    ===================================================================== */
 
 /* ---- Parallax background stack (used by hero & CTA bands) ---- */
-.bg-stack { position: absolute; inset: -10% 0 -10% 0; z-index: -1; overflow: hidden; pointer-events: none; }
+/* z-index -3 so the global #fx-canvas flow field (-2) glows above the image */
+.bg-stack { position: absolute; inset: -10% 0 -10% 0; z-index: -3; overflow: hidden; pointer-events: none; }
 .bg-layer {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;

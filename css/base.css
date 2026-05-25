@@ -84,11 +84,20 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -4;
   background:
     radial-gradient(900px 600px at 80% -5%, rgba(212, 175, 55, 0.10), transparent 60%),
     radial-gradient(800px 600px at 0% 100%, rgba(169, 130, 31, 0.08), transparent 60%),
     var(--bg);
+}
+
+/* Interactive "living light" flow field — fixed, behind content, click-through */
+#fx-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  display: block;
 }
 
 img { max-width: 100%; display: block; }
