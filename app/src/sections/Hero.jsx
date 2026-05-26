@@ -13,10 +13,32 @@ export default function Hero({ ready }) {
       id="top"
       className="relative flex min-h-[100svh] flex-col items-center justify-center px-6 pb-16 pt-28 text-center md:pt-24"
     >
-      <div
-        className="pointer-events-none absolute inset-0 -z-[1]"
-        style={{ background: "radial-gradient(46% 42% at 50% 52%, rgba(5,6,10,0.5), transparent 74%)" }}
-      />
+      {/* Hero marble backdrop — fully visible bright ivory/gold marble.
+          Readability comes from the dark glass panel that holds the content. */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <img
+          src={`${import.meta.env.BASE_URL}marble.jpg`}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          className="h-full w-full object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(5,6,10,0.35), rgba(5,6,10,0.12) 38%, rgba(5,6,10,0.5))",
+          }}
+        />
+      </div>
+
+      {/* Content sits on a dark glass panel so the marble reads bright around it */}
+      <motion.div
+        className="relative z-[1] mx-auto flex w-full max-w-2xl flex-col items-center rounded-[34px] border border-white/10 bg-void/55 px-6 py-10 shadow-[0_50px_140px_rgba(0,0,0,0.6)] backdrop-blur-2xl md:px-12 md:py-12"
+        initial={{ opacity: 0, y: 18 }}
+        animate={ready ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+      >
 
       {/* Official TSC logo, framed as a luxury nameplate */}
       <motion.div
@@ -85,6 +107,7 @@ export default function Hero({ ready }) {
         <MagneticButton href="#difference" variant="ghost" label="See">
           {t.secondary}
         </MagneticButton>
+      </motion.div>
       </motion.div>
 
       <motion.div
