@@ -49,7 +49,7 @@ export default function Faq() {
 
   return (
     <section id="faq" className="relative overflow-hidden py-28 md:py-40">
-      <SectionBg src="gold.jpg" opacity={0.16} />
+      <SectionBg src="gold.jpg" opacity={0.4} scrim={0.58} />
       <div className="container-x max-w-3xl">
         <div className="mb-14 text-center">
           <Reveal>

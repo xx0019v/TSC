@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Scene from "./three/Scene";
 import Cursor from "./components/Cursor";
+import CursorTrail from "./components/CursorTrail";
 import Loader from "./components/Loader";
 import Navbar from "./components/Navbar";
 import Hero from "./sections/Hero";
@@ -36,6 +37,7 @@ export default function App() {
       </div>
 
       <Cursor />
+      <CursorTrail />
 
       <AnimatePresence>
         {!ready && <Loader key="loader" onComplete={() => setReady(true)} />}

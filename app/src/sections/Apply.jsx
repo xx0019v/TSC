@@ -10,7 +10,7 @@ export default function Apply() {
 
   return (
     <section id="apply" className="relative overflow-hidden py-28 md:py-40">
-      <SectionBg src="marble.jpg" />
+      <SectionBg src="marble.jpg" opacity={0.42} scrim={0.66} />
       <div className="container-x max-w-3xl text-center">
         <Reveal>
           <p className="eyebrow mb-5">{t.eyebrow}</p>
