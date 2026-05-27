@@ -16,11 +16,15 @@ export default function Hero({ ready }) {
       {/* Hero marble backdrop — fully visible bright ivory/gold marble.
           Readability comes from the dark glass panel that holds the content. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <img
-          src={`${import.meta.env.BASE_URL}bg.svg`}
-          alt=""
+        <video
+          src={`${import.meta.env.BASE_URL}hero.mp4`}
+          poster={`${import.meta.env.BASE_URL}bg.svg`}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
           aria-hidden="true"
-          fetchPriority="high"
           className="h-full w-full object-cover"
         />
         <div
