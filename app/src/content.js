@@ -49,6 +49,16 @@ export const content = {
         { no: "03", tag: "目的別", title: "カリキュラム設計", body: "留学・受験・ビジネスなど、目的に合わせて最適化します。" },
       ],
     },
+    showcase: {
+      eyebrow: "教室の風景",
+      title: ["画面の向こうに、", "本物の学びを。"],
+      body: "自宅にいながら、海外講師と日本人通訳者がいる本物のレッスン空間へ。落ち着いた環境で、話す力を磨きます。",
+      items: [
+        { src: "lesson3.jpg", label: "集中できる学習環境" },
+        { src: "lesson1.jpg", label: "海外講師とのオンラインレッスン" },
+        { src: "lesson2.jpg", label: "手を動かして、定着させる" },
+      ],
+    },
     pricing: {
       eyebrow: "Pricing",
       title: ["料金案内"],
@@ -124,6 +134,16 @@ export const content = {
         { no: "01", tag: "Small Class", title: "More Speaking Time", body: "Small classes mean you speak more — and grow faster through real output." },
         { no: "02", tag: "Flexible", title: "Online & In-Person", body: "Learn anywhere, anytime — lessons that fit into your life." },
         { no: "03", tag: "Goal-Oriented", title: "Tailored Curriculum", body: "Study plans optimized for study abroad, exams, or business." },
+      ],
+    },
+    showcase: {
+      eyebrow: "Inside the Lessons",
+      title: ["Real learning,", "through the screen."],
+      body: "From home, step into a real lesson space — with an overseas teacher and a Japanese interpreter beside you. Focus, and grow your speaking.",
+      items: [
+        { src: "lesson3.jpg", label: "A space to focus" },
+        { src: "lesson1.jpg", label: "Online lessons with overseas teachers" },
+        { src: "lesson2.jpg", label: "Learn by doing" },
       ],
     },
     pricing: {

@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./sections/Hero";
 import Difference from "./sections/Difference";
 import Features from "./sections/Features";
+import Showcase from "./sections/Showcase";
 import Pricing from "./sections/Pricing";
 import Faq from "./sections/Faq";
 import Apply from "./sections/Apply";
@@ -49,6 +50,7 @@ export default function App() {
         <Hero ready={ready} />
         <Difference />
         <Features />
+        <Showcase />
         <Pricing />
         <Faq />
         <Apply />
