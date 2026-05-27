@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { fx } from "../lib/store";
 
 const FRAME_COUNT = 110;
 const framePath = (i) =>
@@ -56,10 +55,14 @@ export default function ScrollFrames() {
     resize();
     window.addEventListener("resize", resize, { passive: true });
 
-    // Lenis updates fx.scroll (0..1); rAF maps it to a frame and redraws on change.
+    // Read the real scroll position (works with Lenis, native scroll, and
+    // reduced-motion alike); map page progress 0..1 to a frame and redraw on change.
     function loop() {
       raf = requestAnimationFrame(loop);
-      const f = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(fx.scroll * (FRAME_COUNT - 1))));
+      const h = document.documentElement;
+      const max = Math.max(1, h.scrollHeight - h.clientHeight);
+      const p = Math.min(1, Math.max(0, (window.scrollY || h.scrollTop || 0) / max));
+      const f = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(p * (FRAME_COUNT - 1))));
       if (f !== current) draw(f);
     }
     raf = requestAnimationFrame(loop);
