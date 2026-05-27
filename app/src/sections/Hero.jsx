@@ -17,7 +17,7 @@ export default function Hero({ ready }) {
           Readability comes from the dark glass panel that holds the content. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <img
-          src={`${import.meta.env.BASE_URL}marble.jpg`}
+          src={`${import.meta.env.BASE_URL}bg.svg`}
           alt=""
           aria-hidden="true"
           fetchPriority="high"
