@@ -92,6 +92,36 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* ── Japanese typography ───────────────────────────────────────────────
+   Break lines at natural phrase boundaries (文節) instead of mid-word, and
+   apply strict kinsoku so 「。」「、」「）」 never get orphaned at a line start.
+   `auto-phrase` is a progressive enhancement (Chrome/Edge); other browsers
+   fall back to standard kinsoku, which still avoids orphaned punctuation. */
+html[lang="ja"] body {
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+html[lang="ja"] p,
+html[lang="ja"] li,
+html[lang="ja"] blockquote,
+html[lang="ja"] .display,
+html[lang="ja"] .section-sub,
+html[lang="ja"] .hero-sub,
+html[lang="ja"] h1,
+html[lang="ja"] h2,
+html[lang="ja"] h3,
+html[lang="ja"] h4 {
+  word-break: auto-phrase;
+  line-break: strict;
+  overflow-wrap: normal;
+}
+/* Declared headline lines stay whole (no further wrapping → no orphaned 。) */
+html[lang="ja"] .split-line {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;

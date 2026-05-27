@@ -20,7 +20,7 @@ export default function SplitReveal({
       {lines.map((line, i) => (
         <span className="line-mask" key={i}>
           <motion.span
-            className="block"
+            className="split-line block"
             initial={{ y: "110%" }}
             animate={play ? { y: "0%" } : { y: "110%" }}
             transition={{

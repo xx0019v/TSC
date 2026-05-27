@@ -34,7 +34,7 @@ export default function Hero({ ready }) {
 
       {/* Content sits on a dark glass panel so the marble reads bright around it */}
       <motion.div
-        className="relative z-[1] mx-auto flex w-full max-w-2xl flex-col items-center rounded-[34px] border border-white/10 bg-void/55 px-6 py-10 shadow-[0_50px_140px_rgba(0,0,0,0.6)] backdrop-blur-2xl md:px-12 md:py-12"
+        className="relative z-[1] mx-auto flex w-full max-w-3xl flex-col items-center rounded-[34px] border border-white/10 bg-void/55 px-6 py-10 shadow-[0_50px_140px_rgba(0,0,0,0.6)] backdrop-blur-2xl md:px-12 md:py-12"
         initial={{ opacity: 0, y: 18 }}
         animate={ready ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
@@ -83,7 +83,7 @@ export default function Hero({ ready }) {
         gold={t.goldLine}
         play={ready}
         delay={0.5}
-        className="display text-[clamp(2.1rem,5.6vw,4.6rem)] text-ivory"
+        className="display text-[clamp(1.65rem,4.6vw,3.6rem)] text-ivory"
       />
 
       <motion.p
