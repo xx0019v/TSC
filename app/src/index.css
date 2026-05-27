@@ -15,11 +15,15 @@
   box-sizing: border-box;
 }
 
+/* Dark base goes on <html> only. <body> must stay transparent, otherwise its
+   background paints OVER the fixed -z-10 ScrollFrames canvas and hides it. */
+html {
+  background: var(--void);
+}
 html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--void);
   color: var(--ivory);
 }
 
