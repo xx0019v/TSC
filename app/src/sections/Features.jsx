@@ -9,7 +9,6 @@ export default function Features() {
 
   return (
     <section id="features" className="relative overflow-hidden py-28 md:py-40">
-      <SectionBg src="gold.jpg" opacity={0.4} scrim={0.58} />
       <div className="container-x">
         <div className="mb-16 max-w-2xl">
           <Reveal>

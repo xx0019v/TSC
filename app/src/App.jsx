@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import Scene from "./three/Scene";
+import ScrollFrames from "./components/ScrollFrames";
 import Cursor from "./components/Cursor";
 import CursorTrail from "./components/CursorTrail";
 import Loader from "./components/Loader";
@@ -33,9 +33,7 @@ export default function App() {
 
   return (
     <LangProvider>
-      <div className="fixed inset-0 -z-10">
-        <Scene />
-      </div>
+      <ScrollFrames />
 
       <Cursor />
       <CursorTrail />

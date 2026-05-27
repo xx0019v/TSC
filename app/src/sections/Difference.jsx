@@ -10,7 +10,6 @@ export default function Difference() {
 
   return (
     <section id="difference" className="relative overflow-hidden py-28 md:py-40">
-      <SectionBg src="marble.jpg" opacity={0.42} scrim={0.66} />
       <div className="container-x grid items-center gap-12 md:grid-cols-12 md:gap-16">
         <div className="md:col-span-7">
           <Reveal>

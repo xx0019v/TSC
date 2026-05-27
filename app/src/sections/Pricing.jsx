@@ -19,7 +19,6 @@ export default function Pricing() {
 
   return (
     <section id="pricing" className="relative overflow-hidden py-28 md:py-40">
-      <SectionBg src="marble.jpg" opacity={0.42} scrim={0.66} />
       <div className="container-x">
         <div className="mb-14 max-w-2xl">
           <Reveal>
