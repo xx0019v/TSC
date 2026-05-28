@@ -1,20 +1,21 @@
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
 
-const LangCtx = createContext({ lang: "ja", setLang: () => {} });
+const LangCtx = createContext({ lang: "en", setLang: () => {} });
 
 export function LangProvider({ children }) {
-  const [lang, setLangState] = useState("ja");
+  // Default to English on first visit; remember the user's choice afterward.
+  const [lang, setLangState] = useState("en");
 
   useEffect(() => {
-    let initial = "ja";
+    let initial = "en";
     try {
       const saved = localStorage.getItem("tsc-lang");
       if (saved === "ja" || saved === "en") initial = saved;
-      else if ((navigator.language || "ja").toLowerCase().startsWith("en")) initial = "en";
     } catch {
       /* ignore */
     }
     setLangState(initial);
+    document.documentElement.setAttribute("lang", initial);
   }, []);
 
   const setLang = useCallback((l) => {
