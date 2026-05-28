@@ -2,8 +2,9 @@ import { content } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
+import Parallax from "../components/Parallax";
 
-function Frame({ src, label, className = "", aspect }) {
+function Frame({ src, label, className = "", aspect, speed = 0.12 }) {
   return (
     <Reveal className={className} y={48}>
       <figure
@@ -12,13 +13,16 @@ function Frame({ src, label, className = "", aspect }) {
         className="group relative h-full overflow-hidden rounded-[20px] border border-white/10"
         style={aspect ? { aspectRatio: aspect } : undefined}
       >
-        <img
-          src={`${import.meta.env.BASE_URL}${src}`}
-          alt={label}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-        />
-        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-void/85 via-void/30 to-transparent p-5">
+        {/* Oversized inner layer so the parallax drift never exposes an edge. */}
+        <Parallax speed={speed} className="absolute inset-x-0 -top-[16%] h-[132%]">
+          <img
+            src={`${import.meta.env.BASE_URL}${src}`}
+            alt={label}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+          />
+        </Parallax>
+        <figcaption className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-void/85 via-void/30 to-transparent p-5">
           <span className="font-sans text-sm tracking-wide text-ivory/90">{label}</span>
         </figcaption>
       </figure>
@@ -53,9 +57,9 @@ export default function Showcase() {
 
         {/* Right: asymmetric image grid */}
         <div className="grid grid-cols-2 gap-4 md:col-span-8 md:gap-5" style={{ gridAutoRows: "minmax(0, 1fr)" }}>
-          <Frame src={t.items[0].src} label={t.items[0].label} className="row-span-2" />
-          <Frame src={t.items[1].src} label={t.items[1].label} aspect="4 / 3" />
-          <Frame src={t.items[2].src} label={t.items[2].label} aspect="4 / 3" />
+          <Frame src={t.items[0].src} label={t.items[0].label} className="row-span-2" speed={0.18} />
+          <Frame src={t.items[1].src} label={t.items[1].label} aspect="4 / 3" speed={0.1} />
+          <Frame src={t.items[2].src} label={t.items[2].label} aspect="4 / 3" speed={0.14} />
         </div>
       </div>
     </section>

@@ -4,6 +4,7 @@ import ScrollFrames from "./components/ScrollFrames";
 import Cursor from "./components/Cursor";
 import CursorTrail from "./components/CursorTrail";
 import Loader from "./components/Loader";
+import Marquee from "./components/Marquee";
 import Navbar from "./components/Navbar";
 import Hero from "./sections/Hero";
 import Difference from "./sections/Difference";
@@ -47,6 +48,9 @@ export default function App() {
       <main>
         <Hero ready={ready} />
         <Difference />
+        <Marquee
+          items={["TSC ENGLISH ACADEMY", "海外講師 × 通訳者", "ANYTIME · ANYWHERE", "話す力を、確かに", "ONLINE LESSONS"]}
+        />
         <Features />
         <Showcase />
         <Pricing />

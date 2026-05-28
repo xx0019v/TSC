@@ -2,7 +2,14 @@ import { content } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
-import SectionBg from "../components/SectionBg";
+import CountUp from "../components/CountUp";
+
+/** Split "50%+" → { value: 50, suffix: "%+" }, "2名" → { value: 2, suffix: "名" }. */
+function parseStat(num) {
+  const m = String(num).match(/^(\d+)(.*)$/);
+  if (!m) return { value: 0, suffix: String(num) };
+  return { value: Number(m[1]), suffix: m[2] };
+}
 
 export default function Difference() {
   const { lang } = useLang();
@@ -72,14 +79,19 @@ export default function Difference() {
                 style={{ background: "radial-gradient(circle, rgba(252,233,184,0.25), transparent 70%)" }}
               />
               <div className="relative grid gap-8">
-                {t.stats.map((s) => (
-                  <div key={s.label}>
-                    <div className="display text-[clamp(2.6rem,2rem+3vw,4rem)] leading-none text-gold-bright">
-                      {s.num}
+                {t.stats.map((s) => {
+                  const { value, suffix } = parseStat(s.num);
+                  return (
+                    <div key={s.label}>
+                      <CountUp
+                        value={value}
+                        suffix={suffix}
+                        className="display text-[clamp(2.6rem,2rem+3vw,4rem)] leading-none text-gold-bright"
+                      />
+                      <div className="mt-2 font-sans text-sm tracking-wide text-ivory/55">{s.label}</div>
                     </div>
-                    <div className="mt-2 font-sans text-sm tracking-wide text-ivory/55">{s.label}</div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </Reveal>
