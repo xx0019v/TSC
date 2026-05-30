@@ -26,8 +26,9 @@ export default function Hero({ ready }) {
       {/* Low-density particle field — drifts only, with cursor reactivity. */}
       <ParticleField
         targets={[{ type: "drift", hold: 8000 }]}
-        density={1100}
+        density={800}
         mouseRadius={130}
+        scrollDrift={0.18}
         className="absolute inset-0 z-[0]"
       />
 

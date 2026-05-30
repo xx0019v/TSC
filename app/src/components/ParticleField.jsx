@@ -26,7 +26,7 @@ export default function ParticleField({
   targets,
   density,
   mouseRadius = 110,
-  scrollDrift = 0.04,
+  scrollDrift = 0.10,
   loopTargets = true,
   onCycleEnd,
   className = "",
@@ -57,7 +57,7 @@ export default function ParticleField({
     resize();
 
     // Particle count — scales with size and device.
-    const baseCap = isMobile ? 1200 : 3000;
+    const baseCap = isMobile ? 900 : 3000;
     const sizeCap = Math.round((w * h) / 900); // ~one particle per 30px square
     const N = Math.max(400, Math.min(density || baseCap, sizeCap, baseCap));
 
@@ -77,7 +77,18 @@ export default function ParticleField({
       P[off + 7] = 0.6 + Math.random() * 1.2; // size px
     }
 
-    const COLORS = ["rgba(216,184,106,", "rgba(252,233,184,", "rgba(245,242,234,"];
+    // Pre-computed opaque colour strings — avoids string concat in the hot loop.
+    // Index matches the hue slot stored at P[i*8 + 6].
+    const COLORS = [
+      "rgba(216,184,106,0.85)",  // gold
+      "rgba(252,233,184,0.92)",  // gold-bright
+      "rgba(245,242,234,0.78)",  // ivory
+    ];
+    const COLORS_STATIC = [
+      "rgba(216,184,106,0.7)",
+      "rgba(252,233,184,0.8)",
+      "rgba(245,242,234,0.65)",
+    ];
 
     // ── Target sampling ──────────────────────────────────────────────────
     const off = document.createElement("canvas");
@@ -235,22 +246,23 @@ export default function ParticleField({
 
         const mx = stateRef.current.mouseX;
         const my = stateRef.current.mouseY;
+        // Sustain the scroll-driven flow — slow decay (0.94 vs 0.9) lets it
+        // linger past the gesture so particles visibly "fall" with scroll.
         const sVy = stateRef.current.scrollVy;
-        stateRef.current.scrollVy *= 0.9; // decay
+        stateRef.current.scrollVy *= 0.94;
 
+        // ── Pass 1: physics ────────────────────────────────────────────
         for (let i = 0; i < N; i++) {
           const o = i * 8;
           let x = P[o], y = P[o + 1];
           let vx = P[o + 2], vy = P[o + 3];
           const tx = P[o + 4], ty = P[o + 5];
 
-          // Spring to target
           vx += (tx - x) * k;
           vy += (ty - y) * k;
-          // Damping
           vx *= damp; vy *= damp;
-          // Scroll drag
-          vy += sVy * 0.6;
+          // Scroll drag — amplified (1.2 vs 0.6) so the downward flow is visible.
+          vy += sVy * 1.2;
           // Cursor repulsion
           const dx = x - mx, dy = y - my;
           const d2 = dx * dx + dy * dy;
@@ -260,15 +272,22 @@ export default function ParticleField({
             vx += dx * inv * f;
             vy += dy * inv * f;
           }
-          x += vx; y += vy;
-          P[o] = x; P[o + 1] = y;
-          P[o + 2] = vx; P[o + 3] = vy;
+          P[o] = x + vx;
+          P[o + 1] = y + vy;
+          P[o + 2] = vx;
+          P[o + 3] = vy;
+        }
 
-          // Draw
-          const r = P[o + 7];
-          const c = COLORS[P[o + 6] | 0];
-          ctx.fillStyle = c + "0.85)";
-          ctx.fillRect(x - r * 0.5, y - r * 0.5, r, r);
+        // ── Pass 2: draw, grouped by colour to cut fillStyle churn ─────
+        // 3000 fillStyle ops / frame → 3. The lookup-and-skip is cheap.
+        for (let g = 0; g < 3; g++) {
+          ctx.fillStyle = COLORS[g];
+          for (let i = 0; i < N; i++) {
+            const o = i * 8;
+            if ((P[o + 6] | 0) !== g) continue;
+            const r = P[o + 7];
+            ctx.fillRect(P[o] - r * 0.5, P[o + 1] - r * 0.5, r, r);
+          }
         }
 
         ctx.globalCompositeOperation = "source-over";
@@ -282,12 +301,14 @@ export default function ParticleField({
         assignTarget(pts);
         ctx.clearRect(0, 0, w, h);
         ctx.globalCompositeOperation = "lighter";
-        for (let i = 0; i < N; i++) {
-          const o = i * 8;
-          const r = P[o + 7];
-          const c = COLORS[P[o + 6] | 0];
-          ctx.fillStyle = c + "0.7)";
-          ctx.fillRect(P[o + 4] - r / 2, P[o + 5] - r / 2, r, r);
+        for (let g = 0; g < 3; g++) {
+          ctx.fillStyle = COLORS_STATIC[g];
+          for (let i = 0; i < N; i++) {
+            const o = i * 8;
+            if ((P[o + 6] | 0) !== g) continue;
+            const r = P[o + 7];
+            ctx.fillRect(P[o + 4] - r / 2, P[o + 5] - r / 2, r, r);
+          }
         }
       });
     } else {
