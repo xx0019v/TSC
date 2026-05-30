@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import ScrollFrames from "./components/ScrollFrames";
+import GlobalParticleField from "./components/GlobalParticleField";
 import Cursor from "./components/Cursor";
 import CursorTrail from "./components/CursorTrail";
 import Grain from "./components/Grain";
@@ -37,8 +38,11 @@ export default function App() {
   return (
     <LangProvider>
       <ScrollFrames />
-      {/* AuroraSpotlight was retired — Hero's particle field now owns the live light layer. */}
-      <Grain opacity={0.045} />
+      {/* Single, site-wide particle atmosphere. Per-section ParticleField
+          instances were retired in favour of this one — it reads each
+          section's profile and blends the envelope smoothly across them. */}
+      <GlobalParticleField />
+      <Grain opacity={0.04} />
 
       <Cursor />
       <CursorTrail />

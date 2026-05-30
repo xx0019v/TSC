@@ -3,7 +3,6 @@ import { content } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import MagneticButton from "../components/MagneticButton";
-import ParticleField from "../components/ParticleField";
 
 /**
  * Hero — magazine-cover composition. One dominant element (the headline)
@@ -26,26 +25,19 @@ export default function Hero({ ready }) {
       id="hero"
       className="relative flex min-h-[100svh] flex-col overflow-hidden"
     >
-      {/* Dark radial vignette — particles read with high contrast over it. */}
+      {/* Soft radial vignette — calms the marble without darkening so much
+          that the global particle field can't shine through. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-[0]"
         style={{
           background:
-            "radial-gradient(80% 70% at 50% 50%, rgba(5,6,10,0.82) 0%, rgba(5,6,10,0.62) 45%, rgba(5,6,10,0.2) 80%)",
+            "radial-gradient(80% 70% at 50% 50%, rgba(5,6,10,0.55) 0%, rgba(5,6,10,0.35) 45%, rgba(5,6,10,0.05) 85%)",
         }}
       />
 
-      {/* Particle field — full bleed, the lead visual. */}
-      <ParticleField
-        targets={[{ type: "drift", hold: 8000 }]}
-        density={1400}
-        mouseRadius={180}
-        scrollDrift={0.18}
-        sizeBoost={1.35}
-        brightness={1.05}
-        className="absolute inset-0 z-[1]"
-      />
+      {/* Particles are now provided by the site-wide GlobalParticleField at
+          zIndex: -5. This section's profile (hero) is the most prominent. */}
 
       {/* ── Top bar: wordmark left, logo right ─────────────────────────── */}
       <motion.div

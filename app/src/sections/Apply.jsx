@@ -2,7 +2,6 @@ import { content, FORM_URL } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
-import ParticleField from "../components/ParticleField";
 import SectionMark from "../components/SectionMark";
 
 export default function Apply() {
@@ -11,25 +10,14 @@ export default function Apply() {
 
   return (
     <section id="apply" className="relative overflow-hidden py-28 md:py-40">
-      {/* Outro particle drift — low density, lingers behind the form CTA so
-          the page closes on the same visual motif it opens with. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-[0] h-[60%]">
-        <ParticleField
-          targets={[{ type: "drift", hold: 8000 }]}
-          density={500}
-          mouseRadius={120}
-          scrollDrift={0.14}
-          sizeBoost={1.15}
-          brightness={0.95}
-          className="absolute inset-0"
-        />
-      </div>
+      {/* Particles handled globally. A soft top-anchored vignette stays so
+          the white form iframe doesn't sit on bare marble. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-[0]"
         style={{
           background:
-            "radial-gradient(70% 50% at 50% 18%, rgba(5,6,10,0.65) 0%, rgba(5,6,10,0.35) 50%, rgba(5,6,10,0) 80%)",
+            "radial-gradient(70% 50% at 50% 18%, rgba(5,6,10,0.4) 0%, rgba(5,6,10,0.2) 50%, rgba(5,6,10,0) 80%)",
         }}
       />
 
