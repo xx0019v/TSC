@@ -1,76 +1,96 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import ParticleField from "./ParticleField";
 
-const MOTES = Array.from({ length: 14 });
+/**
+ * Cinematic loader. A particle field drifts in the void, gathers into "TSC",
+ * dissolves, reforms as "ENGLISH ACADEMY", then breathes out — at which point
+ * the loader fades and the hero takes over. No progress bar: a thin orbital
+ * arc serves as the only timing cue.
+ *
+ * Sequencing (ms):
+ *   0      → field appears as drift
+ *   400    → first target: TSC (hold 1100ms → settle ~700ms)
+ *   2200   → second target: ENGLISH ACADEMY (hold 1500ms)
+ *   4600   → onComplete (App fades the loader; particles dissolve under it)
+ */
+const TOTAL = 4600;
 
 export default function Loader({ onComplete }) {
-  const [pct, setPct] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     let raf;
     const start = performance.now();
-    const DUR = 2300;
     const tick = (t) => {
-      const p = Math.min(1, (t - start) / DUR);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setPct(Math.round(eased * 100));
+      const p = Math.min(1, (t - start) / TOTAL);
+      setProgress(p);
       if (p < 1) raf = requestAnimationFrame(tick);
-      else setTimeout(() => onComplete?.(), 500);
+      else onComplete?.();
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [onComplete]);
 
+  const ARC = 2 * Math.PI * 38; // r=38
+
   return (
     <motion.div
-      className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-void"
+      className="fixed inset-0 z-[80] flex items-center justify-center overflow-hidden bg-void"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }}
+      exit={{ opacity: 0, transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] } }}
     >
+      {/* Deep gradient backdrop for depth. */}
       <div
+        aria-hidden="true"
         className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(60% 50% at 50% 45%, rgba(216,184,106,0.10), transparent 70%)" }}
+        style={{
+          background:
+            "radial-gradient(60% 50% at 50% 45%, rgba(216,184,106,0.10), rgba(5,6,10,0) 70%), radial-gradient(120% 80% at 50% 110%, rgba(11,16,32,0.85), transparent 70%)",
+        }}
       />
 
-      {MOTES.map((_, i) => (
-        <motion.span
-          key={i}
-          className="absolute h-[3px] w-[3px] rounded-full bg-gold-bright"
-          style={{ left: `${(i * 67) % 100}%`, top: `${(i * 37) % 100}%` }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.7, 0], y: [0, -40, -80] }}
-          transition={{ duration: 3 + (i % 4), repeat: Infinity, delay: i * 0.2, ease: "easeOut" }}
+      {/* The particle morph. Sequence: drift → TSC → ENGLISH ACADEMY → drift dissolve. */}
+      <div className="absolute inset-0">
+        <ParticleField
+          loopTargets={false}
+          targets={[
+            { type: "drift", hold: 300 },
+            { type: "text", text: "TSC", weight: 500, hold: 1100 },
+            { type: "text", text: "ENGLISH\nACADEMY", weight: 400, hold: 1500, fontSize: 96 },
+            { type: "drift", hold: 800 },
+          ]}
+          className="absolute inset-0"
         />
-      ))}
+      </div>
 
-      <div className="relative flex flex-col items-center text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, letterSpacing: "0.5em" }}
-          animate={{ opacity: 1, scale: 1, letterSpacing: "0.28em" }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="display text-[clamp(2rem,7vw,3.6rem)] text-ivory"
-        >
-          TSC
-        </motion.div>
-        <motion.p
-          className="mt-3 font-sans text-[0.7rem] uppercase tracking-[0.4em] text-gold/80"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-        >
-          English Academy
-        </motion.p>
-
-        <div className="relative mt-9 h-px w-[min(70vw,360px)] overflow-hidden bg-white/10">
-          <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-gold/40 via-gold to-gold-bright"
-            style={{ width: `${pct}%` }}
+      {/* Bottom-centre orbital — light arc that fills as time progresses. */}
+      <div className="pointer-events-none absolute bottom-12 left-1/2 -translate-x-1/2">
+        <svg width="92" height="92" viewBox="0 0 92 92" className="block">
+          <circle cx="46" cy="46" r="38" fill="none" stroke="rgba(245,242,234,0.12)" strokeWidth="1" />
+          <circle
+            cx="46"
+            cy="46"
+            r="38"
+            fill="none"
+            stroke="url(#g)"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeDasharray={ARC}
+            strokeDashoffset={ARC * (1 - progress)}
+            transform="rotate(-90 46 46)"
+            style={{ transition: "stroke-dashoffset 120ms linear" }}
           />
-        </div>
-        <div className="mt-4 flex w-[min(70vw,360px)] items-center justify-between font-sans text-[0.66rem] uppercase tracking-[0.25em] text-ivory/45">
-          <span>Loading Experience</span>
-          <span className="tabular-nums text-gold">{String(pct).padStart(3, "0")}</span>
-        </div>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stopColor="#fce9b8" />
+              <stop offset="100%" stopColor="#d8b86a" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <p className="mt-3 text-center font-sans text-[0.62rem] uppercase tracking-[0.42em] text-ivory/45">
+          Entering Experience
+        </p>
       </div>
 
       <button

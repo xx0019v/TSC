@@ -3,7 +3,6 @@ import { AnimatePresence } from "framer-motion";
 import ScrollFrames from "./components/ScrollFrames";
 import Cursor from "./components/Cursor";
 import CursorTrail from "./components/CursorTrail";
-import AuroraSpotlight from "./components/AuroraSpotlight";
 import Grain from "./components/Grain";
 import ScrollProgress from "./components/ScrollProgress";
 import Loader from "./components/Loader";
@@ -38,8 +37,8 @@ export default function App() {
   return (
     <LangProvider>
       <ScrollFrames />
-      <AuroraSpotlight />
-      <Grain />
+      {/* AuroraSpotlight was retired — Hero's particle field now owns the live light layer. */}
+      <Grain opacity={0.045} />
 
       <Cursor />
       <CursorTrail />

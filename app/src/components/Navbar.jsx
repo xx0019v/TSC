@@ -26,7 +26,7 @@ export default function Navbar({ show }) {
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
     >
       <nav className="container-x flex h-16 items-center justify-between md:h-[72px]">
-        <a href="#top" data-cursor className="flex items-center gap-3" aria-label="TSC English Academy — home">
+        <a href="#hero" data-cursor className="flex items-center gap-3" aria-label="TSC English Academy — home">
           <img
             src={`${import.meta.env.BASE_URL}logo.jpg`}
             alt=""
