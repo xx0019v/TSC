@@ -9,6 +9,7 @@ import ScrollProgress from "./components/ScrollProgress";
 import Loader from "./components/Loader";
 import Marquee from "./components/Marquee";
 import Navbar from "./components/Navbar";
+import ConciergeChat from "./components/ConciergeChat";
 import Hero from "./sections/Hero";
 import Difference from "./sections/Difference";
 import Features from "./sections/Features";
@@ -54,6 +55,7 @@ export default function App() {
 
       <Navbar show={ready} />
       {ready && <ScrollProgress />}
+      <ConciergeChat show={ready} />
 
       <main>
         <Hero ready={ready} />
