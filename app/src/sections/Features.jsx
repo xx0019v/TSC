@@ -3,6 +3,7 @@ import { useLang } from "../lib/lang";
 import Reveal from "../components/Reveal";
 import SectionMark from "../components/SectionMark";
 import SectionBg from "../components/SectionBg";
+import LetterBurst from "../components/LetterBurst";
 
 export default function Features() {
   const { lang } = useLang();
@@ -16,9 +17,7 @@ export default function Features() {
           <Reveal>
             <p className="eyebrow mb-5">{t.eyebrow}</p>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="display text-[clamp(2rem,1rem+3vw,3.4rem)] text-ivory">{t.title}</h2>
-          </Reveal>
+          <LetterBurst as="h2" lines={t.title} play delay={0.05} radius={50} push={9} intensity={0.75} className="display text-[clamp(2rem,1rem+3vw,3.4rem)]" />
           <Reveal delay={0.1}>
             <p className="mt-5 max-w-[52ch] font-body text-base text-ivory/55 md:text-lg">{t.sub}</p>
           </Reveal>

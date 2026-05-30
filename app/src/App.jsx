@@ -13,6 +13,7 @@ import Hero from "./sections/Hero";
 import Difference from "./sections/Difference";
 import Features from "./sections/Features";
 import Showcase from "./sections/Showcase";
+import ConfidenceCapsule from "./sections/ConfidenceCapsule";
 import Pricing from "./sections/Pricing";
 import Faq from "./sections/Faq";
 import Apply from "./sections/Apply";
@@ -62,6 +63,7 @@ export default function App() {
         />
         <Features />
         <Showcase />
+        <ConfidenceCapsule />
         <Pricing />
         <Faq />
         <Apply />

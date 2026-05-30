@@ -3,7 +3,7 @@ import { content } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import MagneticButton from "../components/MagneticButton";
-import ParticleHeadline from "../components/ParticleHeadline";
+import LetterBurst from "../components/LetterBurst";
 
 /**
  * Hero — magazine-cover composition. One dominant element (the headline)
@@ -112,12 +112,15 @@ export default function Hero({ ready }) {
             className="display"
             style={{ textShadow: "0 4px 36px rgba(5,6,10,0.85), 0 0 18px rgba(5,6,10,0.7)" }}
           >
-            <ParticleHeadline
+            <LetterBurst
               as="h1"
               lines={t.title}
               goldLine={t.goldLine}
               play={ready}
               delay={0.55}
+              radius={78}
+              push={18}
+              intensity={1.15}
               className="text-[clamp(2.4rem,7.4vw,6rem)] leading-[1.02] tracking-[-0.02em]"
             />
           </div>

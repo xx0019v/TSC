@@ -1,6 +1,6 @@
 import { content } from "../content";
 import { useLang } from "../lib/lang";
-import SplitReveal from "../components/SplitReveal";
+import LetterBurst from "../components/LetterBurst";
 import Reveal from "../components/Reveal";
 import Parallax from "../components/Parallax";
 import SectionMark from "../components/SectionMark";
@@ -44,11 +44,15 @@ export default function Showcase() {
           <Reveal>
             <p className="eyebrow mb-6">{t.eyebrow}</p>
           </Reveal>
-          <SplitReveal
+          <LetterBurst
             as="h2"
             lines={t.title}
-            gold={1}
-            className="display text-[clamp(1.9rem,1rem+2.6vw,3rem)] text-ivory"
+            goldLine={1}
+            play
+            radius={50}
+            push={9}
+            intensity={0.75}
+            className="display text-[clamp(1.9rem,1rem+2.6vw,3rem)]"
           />
           <Reveal delay={0.1}>
             <p className="mt-6 max-w-[42ch] font-body text-base leading-relaxed text-ivory/65">

@@ -4,6 +4,7 @@ import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
 import CountUp from "../components/CountUp";
 import SectionMark from "../components/SectionMark";
+import LetterBurst from "../components/LetterBurst";
 
 /** Split "50%+" → { value: 50, suffix: "%+" }, "2名" → { value: 2, suffix: "名" }. */
 function parseStat(num) {
@@ -31,11 +32,15 @@ export default function Difference() {
               <span>{t.versus[1]}</span>
             </div>
           </Reveal>
-          <SplitReveal
+          <LetterBurst
             as="h2"
             lines={t.title}
-            gold={1}
-            className="display text-[clamp(1.9rem,1rem+3vw,3.2rem)] text-ivory"
+            goldLine={1}
+            play
+            radius={54}
+            push={10}
+            intensity={0.8}
+            className="display text-[clamp(1.9rem,1rem+3vw,3.2rem)]"
           />
           <Reveal delay={0.1}>
             <p className="mt-7 max-w-[52ch] font-body text-base leading-relaxed text-ivory/65 md:text-lg">

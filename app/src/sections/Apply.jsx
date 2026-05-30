@@ -1,6 +1,6 @@
 import { content, FORM_URL } from "../content";
 import { useLang } from "../lib/lang";
-import SplitReveal from "../components/SplitReveal";
+import LetterBurst from "../components/LetterBurst";
 import Reveal from "../components/Reveal";
 import SectionMark from "../components/SectionMark";
 
@@ -27,7 +27,7 @@ export default function Apply() {
           <p className="eyebrow mb-5">{t.eyebrow}</p>
         </Reveal>
         <div style={{ textShadow: "0 2px 24px rgba(5,6,10,0.7)" }}>
-          <SplitReveal as="h2" lines={t.title} className="display text-[clamp(2rem,1rem+3vw,3.6rem)] text-ivory" />
+          <LetterBurst as="h2" lines={t.title} play radius={56} push={11} intensity={0.85} className="display text-[clamp(2rem,1rem+3vw,3.6rem)]" />
         </div>
         <Reveal delay={0.1}>
           <p className="mx-auto mt-5 max-w-[48ch] font-body text-base text-ivory/60 md:text-lg">{t.sub}</p>
