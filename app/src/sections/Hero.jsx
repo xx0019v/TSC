@@ -3,6 +3,7 @@ import { content } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import MagneticButton from "../components/MagneticButton";
+import ParticleHeadline from "../components/ParticleHeadline";
 
 /**
  * Hero — magazine-cover composition. One dominant element (the headline)
@@ -104,19 +105,20 @@ export default function Hero({ ready }) {
             {t.eyebrow}
           </motion.p>
 
-          {/* Oversized headline — line-height tight, deep text-shadow keeps it
-              legible over particles without needing a panel. */}
+          {/* Oversized headline. Letters are real HTML (legible, accessible);
+              a canvas overlay dusts them with gold particles that gather to
+              the letter forms and gently disperse around the cursor. */}
           <div
             className="display"
             style={{ textShadow: "0 4px 36px rgba(5,6,10,0.85), 0 0 18px rgba(5,6,10,0.7)" }}
           >
-            <SplitReveal
+            <ParticleHeadline
               as="h1"
               lines={t.title}
-              gold={t.goldLine}
+              goldLine={t.goldLine}
               play={ready}
               delay={0.55}
-              className="text-[clamp(2.4rem,7.4vw,6rem)] leading-[1.02] tracking-[-0.02em] text-ivory"
+              className="text-[clamp(2.4rem,7.4vw,6rem)] leading-[1.02] tracking-[-0.02em]"
             />
           </div>
 

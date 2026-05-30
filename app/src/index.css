@@ -112,6 +112,23 @@ html.lenis body {
   animation: marquee-rev linear infinite;
 }
 
+/* Section titles — a slow gold breathing glow. GPU-only (drop-shadow on
+   the composited layer), no layout cost, no per-frame JS. The shimmer is
+   subtle on purpose: presence over volume. */
+@keyframes title-glow-breathe {
+  0%, 100% {
+    filter: drop-shadow(0 1px 12px rgba(216, 184, 106, 0.12))
+            drop-shadow(0 0 6px rgba(252, 233, 184, 0.08));
+  }
+  50% {
+    filter: drop-shadow(0 2px 22px rgba(216, 184, 106, 0.22))
+            drop-shadow(0 0 14px rgba(252, 233, 184, 0.16));
+  }
+}
+section h2.display {
+  animation: title-glow-breathe 6.5s ease-in-out infinite;
+}
+
 /* ── Japanese typography ───────────────────────────────────────────────
    Break lines at natural phrase boundaries (文節) instead of mid-word, and
    apply strict kinsoku so 「。」「、」「）」 never get orphaned at a line start.
