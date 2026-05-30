@@ -3,6 +3,9 @@ import { AnimatePresence } from "framer-motion";
 import ScrollFrames from "./components/ScrollFrames";
 import Cursor from "./components/Cursor";
 import CursorTrail from "./components/CursorTrail";
+import AuroraSpotlight from "./components/AuroraSpotlight";
+import Grain from "./components/Grain";
+import ScrollProgress from "./components/ScrollProgress";
 import Loader from "./components/Loader";
 import Marquee from "./components/Marquee";
 import Navbar from "./components/Navbar";
@@ -35,6 +38,8 @@ export default function App() {
   return (
     <LangProvider>
       <ScrollFrames />
+      <AuroraSpotlight />
+      <Grain />
 
       <Cursor />
       <CursorTrail />
@@ -44,6 +49,7 @@ export default function App() {
       </AnimatePresence>
 
       <Navbar show={ready} />
+      {ready && <ScrollProgress />}
 
       <main>
         <Hero ready={ready} />
