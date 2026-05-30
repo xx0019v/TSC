@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { content } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
@@ -20,6 +20,17 @@ export default function Hero({ ready }) {
     animate: ready ? { opacity: 1, y: 0 } : {},
     transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay },
   });
+
+  // Scroll-driven departure — as the user scrolls into the next section the
+  // hero's centre column eases out (translateY + scale + opacity). Gives the
+  // first section a cinematic exit rather than a hard cut.
+  const { scrollY } = useScroll();
+  const stageY = useTransform(scrollY, [0, 700], [0, -160]);
+  const stageScale = useTransform(scrollY, [0, 700], [1, 0.92]);
+  const stageOpacity = useTransform(scrollY, [0, 480, 720], [1, 0.6, 0]);
+  const stageBlur = useTransform(scrollY, [300, 720], ["blur(0px)", "blur(4px)"]);
+  // Side marks linger a little longer.
+  const sideOpacity = useTransform(scrollY, [0, 550, 780], [1, 0.6, 0]);
 
   return (
     <section
@@ -64,9 +75,10 @@ export default function Hero({ ready }) {
       </motion.div>
 
       {/* ── Left vertical strip (PC only) ──────────────────────────────── */}
-      <div
+      <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute left-6 top-1/2 z-[3] hidden -translate-y-1/2 flex-col items-center gap-5 md:flex"
+        style={{ opacity: sideOpacity }}
       >
         <span
           className="font-display italic text-[0.95rem] tracking-wide text-gold"
@@ -81,12 +93,13 @@ export default function Hero({ ready }) {
         >
           Tokyo · Worldwide
         </span>
-      </div>
+      </motion.div>
 
       {/* ── Right vertical strip (PC only) ─────────────────────────────── */}
-      <div
+      <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute right-6 top-1/2 z-[3] hidden -translate-y-1/2 flex-col items-center gap-5 md:flex"
+        style={{ opacity: sideOpacity }}
       >
         <span className="font-display italic text-base text-ivory/55">est.&nbsp;2024</span>
         <span className="h-20 w-px bg-white/15" />
@@ -96,10 +109,13 @@ export default function Hero({ ready }) {
         >
           Online English Academy
         </span>
-      </div>
+      </motion.div>
 
       {/* ── Main stage: headline, dominant ──────────────────────────────── */}
-      <div className="relative z-[3] flex flex-1 items-center justify-center px-6 md:px-16">
+      <motion.div
+        className="relative z-[3] flex flex-1 items-center justify-center px-6 md:px-16"
+        style={{ y: stageY, scale: stageScale, opacity: stageOpacity, filter: stageBlur }}
+      >
         <div className="mx-auto w-full max-w-5xl text-center">
           <motion.p className="eyebrow mb-6" {...fadeUp(0.4)}>
             {t.eyebrow}
@@ -145,7 +161,7 @@ export default function Hero({ ready }) {
             </MagneticButton>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ── Bottom bar: USP rule on left, SCROLL on right ──────────────── */}
       <motion.div

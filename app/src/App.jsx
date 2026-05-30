@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import ScrollFrames from "./components/ScrollFrames";
+import SectionTint from "./components/SectionTint";
 import GlobalParticleField from "./components/GlobalParticleField";
 import Cursor from "./components/Cursor";
 import CursorTrail from "./components/CursorTrail";
@@ -40,6 +41,9 @@ export default function App() {
   return (
     <LangProvider>
       <ScrollFrames />
+      {/* Section-driven colour overlay — gives each section its own
+          "lighting", smoothly blended across the scroll. */}
+      <SectionTint />
       {/* Single, site-wide particle atmosphere. Per-section ParticleField
           instances were retired in favour of this one — it reads each
           section's profile and blends the envelope smoothly across them. */}
