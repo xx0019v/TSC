@@ -30,7 +30,7 @@ export default function Apply() {
           <LetterBurst as="h2" lines={t.title} play radius={56} push={11} intensity={0.85} className="display text-[clamp(2rem,1rem+3vw,3.6rem)]" />
         </div>
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-5 max-w-[48ch] font-body text-base text-ivory/60 md:text-lg">{t.sub}</p>
+          <p className="mx-auto mt-5 max-w-[48ch] whitespace-pre-line font-body text-base text-ivory/60 md:text-lg">{t.sub}</p>
         </Reveal>
 
         <Reveal delay={0.15} y={48}>

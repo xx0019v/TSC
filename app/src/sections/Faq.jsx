@@ -35,7 +35,7 @@ function Item({ q, a, open, onToggle }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="px-6 pb-6 font-body text-[0.96rem] leading-relaxed text-ivory/60">{a}</p>
+            <p className="whitespace-pre-line px-6 pb-6 font-body text-[0.96rem] leading-relaxed text-ivory/60">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>

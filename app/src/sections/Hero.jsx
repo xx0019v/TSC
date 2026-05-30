@@ -126,7 +126,7 @@ export default function Hero({ ready }) {
           </div>
 
           <motion.p
-            className="mx-auto mt-8 max-w-[48ch] font-body text-base leading-relaxed text-ivory/75 md:text-lg"
+            className="mx-auto mt-8 max-w-[48ch] whitespace-pre-line font-body text-base leading-relaxed text-ivory/75 md:text-lg"
             style={{ textShadow: "0 2px 18px rgba(5,6,10,0.85)" }}
             {...fadeUp(1.2)}
           >

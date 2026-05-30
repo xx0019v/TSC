@@ -28,7 +28,7 @@ export default function Pricing() {
           </Reveal>
           <LetterBurst as="h2" lines={t.title} play radius={50} push={9} intensity={0.75} className="display text-[clamp(2rem,1rem+3vw,3.4rem)]" />
           <Reveal delay={0.1}>
-            <p className="mt-5 font-body text-base text-ivory/55 md:text-lg">{t.sub}</p>
+            <p className="mt-5 whitespace-pre-line font-body text-base text-ivory/55 md:text-lg">{t.sub}</p>
           </Reveal>
         </div>
 
@@ -98,7 +98,7 @@ export default function Pricing() {
           <Reveal className="md:col-span-7" delay={0.05}>
             <div className="h-full rounded-[22px] glass p-8">
               <h3 className="display text-xl text-gold-bright">{t.credit.title}</h3>
-              <p className="mt-3 font-body text-[0.96rem] leading-relaxed text-ivory/60">{t.credit.body}</p>
+              <p className="mt-3 whitespace-pre-line font-body text-[0.96rem] leading-relaxed text-ivory/60">{t.credit.body}</p>
               <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
                 {t.credit.items.map((li) => (
                   <li key={li} className="flex gap-2.5 font-body text-[0.92rem] text-ivory/70">
@@ -123,7 +123,7 @@ export default function Pricing() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-10 text-center font-body text-sm text-ivory/40">{t.note}</p>
+          <p className="mt-10 whitespace-pre-line text-center font-body text-sm text-ivory/40">{t.note}</p>
         </Reveal>
       </div>
     </section>

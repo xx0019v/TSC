@@ -19,7 +19,7 @@ export default function Features() {
           </Reveal>
           <LetterBurst as="h2" lines={t.title} play delay={0.05} radius={50} push={9} intensity={0.75} className="display text-[clamp(2rem,1rem+3vw,3.4rem)]" />
           <Reveal delay={0.1}>
-            <p className="mt-5 max-w-[52ch] font-body text-base text-ivory/55 md:text-lg">{t.sub}</p>
+            <p className="mt-5 max-w-[52ch] whitespace-pre-line font-body text-base text-ivory/55 md:text-lg">{t.sub}</p>
           </Reveal>
         </div>
 

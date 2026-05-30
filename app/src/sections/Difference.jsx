@@ -43,7 +43,7 @@ export default function Difference() {
             className="display text-[clamp(1.9rem,1rem+3vw,3.2rem)]"
           />
           <Reveal delay={0.1}>
-            <p className="mt-7 max-w-[52ch] font-body text-base leading-relaxed text-ivory/65 md:text-lg">
+            <p className="mt-7 max-w-[52ch] whitespace-pre-line font-body text-base leading-relaxed text-ivory/65 md:text-lg">
               {t.body}
             </p>
           </Reveal>

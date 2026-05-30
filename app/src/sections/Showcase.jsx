@@ -55,7 +55,7 @@ export default function Showcase() {
             className="display text-[clamp(1.9rem,1rem+2.6vw,3rem)]"
           />
           <Reveal delay={0.1}>
-            <p className="mt-6 max-w-[42ch] font-body text-base leading-relaxed text-ivory/65">
+            <p className="mt-6 max-w-[42ch] whitespace-pre-line font-body text-base leading-relaxed text-ivory/65">
               {t.body}
             </p>
           </Reveal>
