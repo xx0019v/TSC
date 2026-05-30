@@ -3,6 +3,7 @@ import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
 import MagneticButton from "../components/MagneticButton";
+import SectionMark from "../components/SectionMark";
 import SectionBg from "../components/SectionBg";
 
 function Check() {
@@ -21,6 +22,7 @@ export default function Pricing() {
     <section id="pricing" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x">
         <div className="mb-14 max-w-2xl">
+          <Reveal><SectionMark number="04" label="Pricing" align="left" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-5">{t.eyebrow}</p>
           </Reveal>

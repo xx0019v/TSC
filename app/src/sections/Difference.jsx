@@ -3,6 +3,7 @@ import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
 import CountUp from "../components/CountUp";
+import SectionMark from "../components/SectionMark";
 
 /** Split "50%+" → { value: 50, suffix: "%+" }, "2名" → { value: 2, suffix: "名" }. */
 function parseStat(num) {
@@ -19,6 +20,7 @@ export default function Difference() {
     <section id="difference" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x grid items-center gap-12 md:grid-cols-12 md:gap-16">
         <div className="md:col-span-7">
+          <Reveal><SectionMark number="01" label="Difference" align="left" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-6">{t.eyebrow}</p>
           </Reveal>

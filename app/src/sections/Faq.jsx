@@ -4,6 +4,7 @@ import { content } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
+import SectionMark from "../components/SectionMark";
 import SectionBg from "../components/SectionBg";
 
 function Item({ q, a, open, onToggle }) {
@@ -51,6 +52,7 @@ export default function Faq() {
     <section id="faq" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x max-w-3xl">
         <div className="mb-14 text-center">
+          <Reveal><SectionMark number="05" label="Questions" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-5">{t.eyebrow}</p>
           </Reveal>

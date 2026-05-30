@@ -2,7 +2,8 @@ import { content, FORM_URL } from "../content";
 import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
-import SectionBg from "../components/SectionBg";
+import ParticleField from "../components/ParticleField";
+import SectionMark from "../components/SectionMark";
 
 export default function Apply() {
   const { lang } = useLang();
@@ -10,13 +11,38 @@ export default function Apply() {
 
   return (
     <section id="apply" className="relative overflow-hidden py-28 md:py-40">
-      <div className="container-x max-w-3xl text-center">
+      {/* Outro particle drift — low density, lingers behind the form CTA so
+          the page closes on the same visual motif it opens with. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[0] h-[60%]">
+        <ParticleField
+          targets={[{ type: "drift", hold: 8000 }]}
+          density={500}
+          mouseRadius={120}
+          scrollDrift={0.14}
+          sizeBoost={1.15}
+          brightness={0.95}
+          className="absolute inset-0"
+        />
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[0]"
+        style={{
+          background:
+            "radial-gradient(70% 50% at 50% 18%, rgba(5,6,10,0.65) 0%, rgba(5,6,10,0.35) 50%, rgba(5,6,10,0) 80%)",
+        }}
+      />
+
+      <div className="container-x relative z-[1] max-w-3xl text-center">
+        <Reveal><SectionMark number="06" label="Application" /></Reveal>
         <Reveal>
           <p className="eyebrow mb-5">{t.eyebrow}</p>
         </Reveal>
-        <SplitReveal as="h2" lines={t.title} className="display text-[clamp(2rem,1rem+3vw,3.6rem)] text-ivory" />
+        <div style={{ textShadow: "0 2px 24px rgba(5,6,10,0.7)" }}>
+          <SplitReveal as="h2" lines={t.title} className="display text-[clamp(2rem,1rem+3vw,3.6rem)] text-ivory" />
+        </div>
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-5 max-w-[48ch] font-body text-base text-ivory/55 md:text-lg">{t.sub}</p>
+          <p className="mx-auto mt-5 max-w-[48ch] font-body text-base text-ivory/60 md:text-lg">{t.sub}</p>
         </Reveal>
 
         <Reveal delay={0.15} y={48}>

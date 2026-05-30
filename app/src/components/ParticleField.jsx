@@ -27,6 +27,8 @@ export default function ParticleField({
   density,
   mouseRadius = 110,
   scrollDrift = 0.10,
+  sizeBoost = 1,
+  brightness = 1,
   loopTargets = true,
   onCycleEnd,
   className = "",
@@ -44,15 +46,19 @@ export default function ParticleField({
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const ctx = canvas.getContext("2d", { alpha: true });
     let w = 0, h = 0;
+    let initialised = false;
     const resize = () => {
       const r = wrap.getBoundingClientRect();
-      w = Math.max(1, Math.round(r.width));
-      h = Math.max(1, Math.round(r.height));
+      const newW = Math.max(1, Math.round(r.width));
+      const newH = Math.max(1, Math.round(r.height));
+      if (newW === w && newH === h) return false;
+      w = newW; h = newH;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return true;
     };
     resize();
 
@@ -74,15 +80,18 @@ export default function ParticleField({
       P[off + 5] = P[off + 1];               // ty
       const roll = Math.random();
       P[off + 6] = roll < 0.08 ? 1 : roll < 0.1 ? 2 : 0; // hue: 0=gold, 1=bright, 2=ivory
-      P[off + 7] = 0.6 + Math.random() * 1.2; // size px
+      P[off + 7] = (0.6 + Math.random() * 1.2) * sizeBoost; // size px
     }
 
     // Pre-computed opaque colour strings — avoids string concat in the hot loop.
-    // Index matches the hue slot stored at P[i*8 + 6].
+    // Brightness scales the alpha to clamp 1.0 for vivid Hero use.
+    const a1 = Math.min(1, 0.85 * brightness);
+    const a2 = Math.min(1, 0.92 * brightness);
+    const a3 = Math.min(1, 0.78 * brightness);
     const COLORS = [
-      "rgba(216,184,106,0.85)",  // gold
-      "rgba(252,233,184,0.92)",  // gold-bright
-      "rgba(245,242,234,0.78)",  // ivory
+      `rgba(216,184,106,${a1})`,
+      `rgba(252,233,184,${a2})`,
+      `rgba(245,242,234,${a3})`,
     ];
     const COLORS_STATIC = [
       "rgba(216,184,106,0.7)",
@@ -224,8 +233,34 @@ export default function ParticleField({
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerleave", onLeave, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
-    const onResize = () => resize();
-    window.addEventListener("resize", onResize);
+
+    // Redistribute particles across the field — used when the wrap was 0×0
+    // at mount and ResizeObserver delivers real dimensions later.
+    const seedPositions = () => {
+      for (let i = 0; i < N; i++) {
+        const off = i * 8;
+        P[off + 0] = Math.random() * w;
+        P[off + 1] = Math.random() * h;
+        P[off + 4] = P[off + 0];
+        P[off + 5] = P[off + 1];
+        P[off + 2] = (Math.random() - 0.5) * 0.3;
+        P[off + 3] = (Math.random() - 0.5) * 0.3;
+      }
+    };
+
+    // ResizeObserver replaces the window resize listener for the wrap —
+    // catches the very common case where useEffect runs before layout has
+    // assigned the wrap a non-zero size (Hero's flex/svh interplay).
+    const ro = new ResizeObserver(() => {
+      const grew = resize();
+      if (grew && (P[0] === P[1] || w > 0 && h > 0 && !initialised)) {
+        seedPositions();
+        if (targets[targetIdx]) advance();
+        initialised = true;
+      }
+    });
+    ro.observe(wrap);
+    if (w > 1 && h > 1) initialised = true;
 
     // Pause when off-screen.
     const io = new IntersectionObserver(([entry]) => {
@@ -321,7 +356,7 @@ export default function ParticleField({
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      ro.disconnect();
       io.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

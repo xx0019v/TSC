@@ -1,6 +1,7 @@
 import { content } from "../content";
 import { useLang } from "../lib/lang";
 import Reveal from "../components/Reveal";
+import SectionMark from "../components/SectionMark";
 import SectionBg from "../components/SectionBg";
 
 export default function Features() {
@@ -11,6 +12,7 @@ export default function Features() {
     <section id="features" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x">
         <div className="mb-16 max-w-2xl">
+          <Reveal><SectionMark number="02" label="Lessons" align="left" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-5">{t.eyebrow}</p>
           </Reveal>

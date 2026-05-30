@@ -3,6 +3,7 @@ import { useLang } from "../lib/lang";
 import SplitReveal from "../components/SplitReveal";
 import Reveal from "../components/Reveal";
 import Parallax from "../components/Parallax";
+import SectionMark from "../components/SectionMark";
 
 function Frame({ src, label, className = "", aspect, speed = 0.12 }) {
   return (
@@ -39,6 +40,7 @@ export default function Showcase() {
       <div className="container-x grid items-center gap-10 md:grid-cols-12 md:gap-14">
         {/* Left: editorial text */}
         <div className="md:col-span-4">
+          <Reveal><SectionMark number="03" label="Showcase" align="left" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-6">{t.eyebrow}</p>
           </Reveal>
