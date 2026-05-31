@@ -22,6 +22,11 @@
 // the chatbot routes the LINE chip through a friendly fallback.
 export const LINE_URL = "";
 
+// Cloudflare Worker that proxies free-text questions to Anthropic Claude.
+// While empty the free-text input is hidden and only the curated chip flow
+// is shown. See /worker/README.md for deploy instructions.
+export const AI_ENDPOINT = "";
+
 const TRIAL_CONFIRM = {
   ja: "申し込みフォームへご案内しました\n\nまずはお気軽に\nレベルや目的を教えてください",
   en: "Taking you to the application form\n\nShare your level and goals there\nand we'll take it from there",

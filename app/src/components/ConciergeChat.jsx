@@ -1,7 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLang } from "../lib/lang";
-import { FLOW, LINE_URL } from "../lib/conciergeFlow";
+import { FLOW, LINE_URL, AI_ENDPOINT } from "../lib/conciergeFlow";
+
+const INPUT_PLACEHOLDER = {
+  ja: "気になることをそのまま入力",
+  en: "Type your question",
+};
+const AI_ERROR = {
+  ja: "申し訳ありません\n一時的に応答できませんでした\n少し時間をおいて再度お試しください",
+  en: "Sorry\nWe're unable to respond right now\nPlease try again in a moment",
+};
+const AI_BANNER = {
+  ja: "自由入力にも対応しています",
+  en: "Free-form questions welcome",
+};
 
 /**
  * TSC Concierge — a bilingual chat widget that lives in the lower-right
@@ -46,6 +59,46 @@ export default function ConciergeChat({ show = true }) {
     const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, thinking]);
+
+  // Free-text submit — routes through the Cloudflare Worker AI proxy.
+  // Hidden when AI_ENDPOINT is empty (curated chips drive the whole flow).
+  const [draft, setDraft] = useState("");
+  const inputRef = useRef(null);
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    const text = draft.trim();
+    if (!text || thinking || !AI_ENDPOINT) return;
+
+    setMessages((m) => [...m, { role: "user", text }]);
+    setDraft("");
+    setThinking(true);
+
+    // Build the Anthropic-shaped history. Trim to the first user message and
+    // map bot→assistant. Append the new user message we just enqueued.
+    const history = messages
+      .map((m) => ({ role: m.role === "bot" ? "assistant" : "user", content: m.text }));
+    const firstUser = history.findIndex((h) => h.role === "user");
+    const trimmed = firstUser >= 0 ? history.slice(firstUser) : [];
+    trimmed.push({ role: "user", content: text });
+
+    try {
+      const res = await fetch(`${AI_ENDPOINT.replace(/\/$/, "")}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: trimmed, lang: chatLang }),
+      });
+      if (!res.ok) throw new Error("upstream");
+      const data = await res.json();
+      const reply = (data && data.reply) || "";
+      if (!reply) throw new Error("empty");
+      setMessages((m) => [...m, { role: "bot", text: reply }]);
+    } catch {
+      setMessages((m) => [...m, { role: "bot", text: AI_ERROR[chatLang] }]);
+    } finally {
+      setThinking(false);
+    }
+  };
 
   const handleChip = (chip) => {
     const userText = chip.label[chatLang];
@@ -233,7 +286,7 @@ export default function ConciergeChat({ show = true }) {
 
             {/* Quick replies */}
             {node && node.chips && !thinking && (
-              <div className="border-t border-white/10 bg-void/40 p-4">
+              <div className="border-t border-white/10 bg-void/40 px-4 pt-4">
                 <div className="flex flex-wrap gap-2">
                   {node.chips.map((chip) => (
                     <button
@@ -249,6 +302,41 @@ export default function ConciergeChat({ show = true }) {
                   ))}
                 </div>
               </div>
+            )}
+
+            {/* Free-text input — only when AI proxy is configured. */}
+            {AI_ENDPOINT && (
+              <form
+                onSubmit={handleSubmit}
+                className="border-t border-white/10 bg-void/40 px-4 pb-4 pt-3"
+              >
+                <p className="mb-2 font-sans text-[0.6rem] uppercase tracking-[0.3em] text-ivory/35">
+                  {AI_BANNER[chatLang]}
+                </p>
+                <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] pl-4 pr-1.5 py-1.5 focus-within:border-gold/45">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    placeholder={INPUT_PLACEHOLDER[chatLang]}
+                    aria-label={INPUT_PLACEHOLDER[chatLang]}
+                    disabled={thinking}
+                    maxLength={400}
+                    className="flex-1 bg-transparent font-sans text-[0.86rem] text-ivory placeholder:text-ivory/35 focus:outline-none disabled:opacity-50"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!draft.trim() || thinking}
+                    data-cursor
+                    data-cursor-label="Send"
+                    aria-label="Send"
+                    className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-gold-bright via-gold to-gold-deep text-void shadow-[0_4px_14px_-4px_rgba(216,184,106,0.6)] transition-opacity duration-200 disabled:opacity-30"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor"><path d="M2 21 23 12 2 3v7l15 2-15 2z" /></svg>
+                  </button>
+                </div>
+              </form>
             )}
           </motion.div>
         )}

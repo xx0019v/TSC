@@ -1,0 +1,12 @@
+name = "tsc-concierge-ai"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+# Optional: override the model.
+# [vars]
+# MODEL = "claude-haiku-4-5"
+
+# Optional: restrict which origins may call the worker.
+# Defaults to xx0019v.github.io + localhost. Override here if needed.
+# [vars]
+# ALLOWED_ORIGINS = "https://xx0019v.github.io,https://example.com"
