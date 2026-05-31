@@ -1,19 +1,17 @@
 # TSC Concierge AI — Cloudflare Worker
 
-サイトのチャット UI から AI（Anthropic Claude Haiku）に問い合わせるための小さなプロキシ Worker。
-API キーをブラウザに出さず、Cloudflare 側で安全に保管します。
+サイトのチャット UI から AI に問い合わせる小さなプロキシ Worker。
+
+**デフォルトはコスト ¥0**（Cloudflare Workers AI 無料枠）。後から Anthropic Claude にアップグレードも可能。
 
 ---
 
-## 1. 用意するもの
+## 1. 用意するもの（必須）
 
 - Cloudflare アカウント（無料）
-- Anthropic の API キー
-  - 取得: <https://console.anthropic.com/settings/keys>
-  - 「Create Key」→ コピーしておく
-- Node.js 18+ がローカルにあること
+- Node.js 18+
 
-費用目安：Claude Haiku 4.5 で 1 往復あたり ¥0.2〜0.5。月 100 往復で **¥30〜50/月** 程度。
+API キーは **不要**。
 
 ---
 
@@ -29,41 +27,28 @@ wrangler login
 
 ---
 
-## 3. API キーを Cloudflare に登録
-
-ブラウザではなく **サーバー側（Worker）** に保存します。
-
-```bash
-cd /Users/exx/aurum-experience/worker
-wrangler secret put ANTHROPIC_API_KEY
-```
-
-プロンプトで Anthropic の API キー（`sk-ant-...`）を貼り付け → Enter。
-
----
-
-## 4. デプロイ
+## 3. デプロイ（コマンド 1 回）
 
 ```bash
 wrangler deploy
 ```
 
-数秒後に URL が返ってきます：
+数秒で URL が返ってきます：
 
 ```
 https://tsc-concierge-ai.<your-account>.workers.dev
 ```
 
-ブラウザで開いてみる → `{"status":"ok","service":"tsc-concierge-ai"}` が表示されれば成功。
+ブラウザで開く → `{"status":"ok","service":"tsc-concierge-ai","provider":"cloudflare-ai"}` が表示されれば成功。
 
 ---
 
-## 5. サイト側に URL を設定
+## 4. サイト側に URL を設定
 
-`src/lib/conciergeFlow.js` の先頭：
+`src/lib/conciergeFlow.js`：
 
 ```js
-export const AI_ENDPOINT = ""; // ← ここに上の URL を貼る
+export const AI_ENDPOINT = "";
 ```
 
 を
@@ -72,50 +57,74 @@ export const AI_ENDPOINT = ""; // ← ここに上の URL を貼る
 export const AI_ENDPOINT = "https://tsc-concierge-ai.<your-account>.workers.dev";
 ```
 
-に変更 → 通常通りビルド & デプロイ：
+に変更 → 通常のビルド & デプロイ。
 
 ```bash
 cd /Users/exx/aurum-experience
 npm run build
-# dist/index.html を本番反映する
+# dist/index.html を本番反映
 ```
 
-これで チャット UI に **自由入力欄** が出現し、AI 応答が動きます。
+これで チャット UI の自由入力欄が動きます。
 
 ---
 
-## 6. 動作確認
+## 5. コスト
 
-サイトのチャットを開く → 下のテキスト入力に「業務で英語の電話会議が増えそうなんですが」など入力 → 送信。
-2〜4 秒後に AI からの応答が返ってきます。
+| 項目 | 無料枠 | TSC 想定使用量 |
+|---|---|---|
+| Cloudflare Workers (compute) | 100,000 req/日 | 100req/日 程度 |
+| Workers AI (Llama 3.1 8B) | 10,000 ニューロン/日 | ≈ 3,000 往復/日まで無料 |
+
+→ TSC 規模なら **完全に ¥0** で運用可能。
+
+---
+
+## 6. 後で品質を上げたい場合（Anthropic Claude へアップグレード）
+
+Cloudflare Workers AI の Llama 3.1 8B は実用十分ですが、より自然な応答が欲しくなったら Claude にも切り替えられます（小額課金あり、月 ¥30〜50 目安）。
+
+```bash
+wrangler secret put ANTHROPIC_API_KEY
+# Anthropic Console (https://console.anthropic.com/settings/keys) で取得した
+# sk-ant-... を貼り付け
+wrangler deploy
+```
+
+Worker は **キーが設定されていれば自動的に Anthropic を優先**します。元に戻すには:
+
+```bash
+wrangler secret delete ANTHROPIC_API_KEY
+```
 
 ---
 
 ## 7. 後で変えたい時
 
 ### モデルを変える
-`wrangler.toml` の `[vars]` で `MODEL = "claude-sonnet-4-5"` 等を指定 → `wrangler deploy`。
+`wrangler.toml` の `[vars]` に追記して `wrangler deploy`。
 
-### 許可するドメインを増やす（独自ドメインに移行した時など）
-```bash
-wrangler secret put ALLOWED_ORIGINS
-# 値: https://xx0019v.github.io,https://tsc.example.com
+```toml
+[vars]
+MODEL_CF = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"   # より高品質
+# または
+MODEL_CF = "@cf/qwen/qwen1.5-14b-chat-awq"              # 日本語に強い
 ```
 
-### キーをローテーションしたい
-```bash
-wrangler secret put ANTHROPIC_API_KEY
-# 新しいキーを入れる
+### 許可ドメインを増やす
+```toml
+[vars]
+ALLOWED_ORIGINS = "https://xx0019v.github.io,https://tsc.example.com"
 ```
 
-### 削除したい
+### 削除
 ```bash
 wrangler delete tsc-concierge-ai
 ```
 
 ---
 
-## 8. システムプロンプトのカスタマイズ
+## 8. システムプロンプトの編集
 
 `src/index.js` の `SYSTEM_PROMPT` を編集 → `wrangler deploy`。
-レッスン詳細・キャンペーン情報・FAQ など追加すると AI の回答精度が上がります。
+レッスン詳細・キャンペーン情報・FAQ など追加すると AI 回答の精度が上がります。

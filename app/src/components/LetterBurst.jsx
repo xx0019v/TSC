@@ -224,6 +224,12 @@ export default function LetterBurst({
     <Wrapper ref={wrapRef} className={`relative ${className}`} aria-label={ariaLabel}>
       {linesArr.map((line, lineIdx) => {
         const isGold = lineIdx === goldLine;
+        // Split on whitespace runs and KEEP the spaces as separate segments.
+        // Each non-whitespace segment becomes a `white-space: nowrap` word so
+        // browsers can't break a word mid-letter (which would otherwise happen
+        // because every glyph is its own inline-block span). Spaces remain
+        // wrappable, so line breaks still happen at word boundaries.
+        const segments = line.split(/(\s+)/).filter((s) => s !== "");
         return (
           <motion.span
             key={`${lineIdx}-${line}`}
@@ -237,16 +243,27 @@ export default function LetterBurst({
             }}
             aria-hidden="true"
           >
-            {Array.from(line).map((ch, i) => {
-              if (ch === " ") return <span key={i}>{" "}</span>;
-              const myIdx = flatIdx++;
+            {segments.map((segment, segIdx) => {
+              if (/^\s+$/.test(segment)) {
+                return <span key={segIdx}>{segment}</span>;
+              }
               return (
                 <span
-                  key={i}
-                  ref={(el) => (lettersRef.current[myIdx] = el)}
-                  style={{ display: "inline-block", willChange: "transform" }}
+                  key={segIdx}
+                  style={{ display: "inline-block", whiteSpace: "nowrap" }}
                 >
-                  {ch}
+                  {Array.from(segment).map((ch, i) => {
+                    const myIdx = flatIdx++;
+                    return (
+                      <span
+                        key={i}
+                        ref={(el) => (lettersRef.current[myIdx] = el)}
+                        style={{ display: "inline-block", willChange: "transform" }}
+                      >
+                        {ch}
+                      </span>
+                    );
+                  })}
                 </span>
               );
             })}

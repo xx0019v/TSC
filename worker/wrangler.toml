@@ -2,11 +2,13 @@ name = "tsc-concierge-ai"
 main = "src/index.js"
 compatibility_date = "2024-12-01"
 
-# Optional: override the model.
-# [vars]
-# MODEL = "claude-haiku-4-5"
+# Workers AI binding — zero-cost default. Provides the env.AI runtime
+# binding which the Worker uses when no Anthropic key is set.
+[ai]
+binding = "AI"
 
-# Optional: restrict which origins may call the worker.
-# Defaults to xx0019v.github.io + localhost. Override here if needed.
+# Optional model overrides
 # [vars]
+# MODEL_CF        = "@cf/meta/llama-3.1-8b-instruct"
+# MODEL_ANTHROPIC = "claude-haiku-4-5"
 # ALLOWED_ORIGINS = "https://xx0019v.github.io,https://example.com"
