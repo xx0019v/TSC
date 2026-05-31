@@ -18,34 +18,34 @@ import { prefersReduced } from "../lib/env";
  */
 
 const PAIRS_EN = [
-  { fear: "I'm afraid to speak.",      positive: "Speak with confidence." },
-  { fear: "I don't know what to say.", positive: "I have words to share." },
-  { fear: "I can't express myself.",   positive: "I express myself fully." },
-  { fear: "I want to speak naturally.", positive: "I do speak naturally." },
-  { fear: "I want confidence.",         positive: "Confidence is mine." },
+  { fear: "I'm afraid to speak",       positive: "I speak with confidence" },
+  { fear: "I don't know what to say",  positive: "I have words to share" },
+  { fear: "I can't express myself",    positive: "I express myself fully" },
+  { fear: "I want to speak naturally", positive: "I do speak naturally" },
+  { fear: "I want confidence",         positive: "Confidence is mine" },
 ];
 
 const PAIRS_JA = [
-  { fear: "話すのが怖い。",        positive: "自信を持って話せる。" },
-  { fear: "何を言えばいいか分からない。", positive: "伝えたい言葉がある。" },
-  { fear: "うまく表現できない。",   positive: "自分の言葉で表現できる。" },
-  { fear: "自然に話したい。",       positive: "自然に話している。" },
-  { fear: "自信が欲しい。",         positive: "自信は、もう私のもの。" },
+  { fear: "話すのが怖い",            positive: "自信を持って話せる" },
+  { fear: "何を言えばいいか分からない", positive: "伝えたい言葉がある" },
+  { fear: "うまく表現できない",       positive: "自分の言葉で 表現できる" },
+  { fear: "自然に話したい",           positive: "もう 自然に話している" },
+  { fear: "自信が欲しい",             positive: "自信は もう私のもの" },
 ];
 
 const COPY = {
   en: {
     eyebrow: "An interactive experiment",
-    title: ["Break the silence.", "Build your voice."],
-    body: "Choose a feeling. Watch it dissolve, and reform as the line you'll actually speak.",
+    title: ["Break the silence", "Build your voice"],
+    body: "Pick a feeling\nWatch it dissolve\nand return as the line you'll speak",
     transformLabel: "Transform",
     resetLabel: "Try another",
     hint: "Tap a chip · then Transform · click the capsule to scatter",
   },
   ja: {
     eyebrow: "Interactive Experiment",
-    title: ["沈黙を超えて、", "声をつくる。"],
-    body: "感情をひとつ選んでください。文字が散り、あなたが話す言葉として戻ります。",
+    title: ["沈黙を超えて", "声に変える"],
+    body: "気持ちをひとつ選んでください\n文字が散り あなたの言葉になって戻ります",
     transformLabel: "変える",
     resetLabel: "別の言葉",
     hint: "気持ちを選ぶ · Transform · カプセルをクリックして散らす",

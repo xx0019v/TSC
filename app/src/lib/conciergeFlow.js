@@ -60,9 +60,9 @@ export const FLOW = {
   intro: {
     botText: {
       ja:
-        "こんにちは\nTSC English Academy です\n\n気になることをお選びください\n自由な入力にも対応していきます",
+        "こんにちは\nTSC English Academy です\n\n気になることをお選びください\nそのまま入力もできます",
       en:
-        "Hi there\nWelcome to TSC English Academy\n\nPick a topic below\nor tell us what you'd like to know",
+        "Hello\nWelcome to TSC English Academy\n\nPick a topic below\nor tell us what you'd like to know",
     },
     chips: [
       { id: "trial",    label: { ja: "無料体験について",       en: "Trial lesson" },    next: "trial" },
