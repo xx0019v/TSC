@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLang } from "../lib/lang";
 import { FLOW, LINE_URL, AI_ENDPOINT } from "../lib/conciergeFlow";
+import { localChatReply } from "../lib/localChat";
 
 const INPUT_PLACEHOLDER = {
   ja: "気になることをそのまま入力",
@@ -68,16 +69,36 @@ export default function ConciergeChat({ show = true }) {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     const text = draft.trim();
-    if (!text || thinking || !AI_ENDPOINT) return;
+    if (!text || thinking) return;
 
     setMessages((m) => [...m, { role: "user", text }]);
     setDraft("");
     setThinking(true);
 
-    // Build the Anthropic-shaped history. Trim to the first user message and
-    // map bot→assistant. Append the new user message we just enqueued.
-    const history = messages
-      .map((m) => ({ role: m.role === "bot" ? "assistant" : "user", content: m.text }));
+    // When the Worker isn't deployed yet, answer locally. The visitor
+    // gets a real-feeling reply immediately; once AI_ENDPOINT is set, the
+    // remote AI takes over and falls back to localChat only on network
+    // failures.
+    const useRemote = !!AI_ENDPOINT;
+
+    // Brief perceived-typing delay so even the local reply doesn't feel
+    // robotic-instant.
+    const pause = (ms) => new Promise((r) => window.setTimeout(r, ms));
+
+    if (!useRemote) {
+      await pause(550);
+      const { reply } = localChatReply(text, chatLang);
+      setMessages((m) => [...m, { role: "bot", text: reply }]);
+      setThinking(false);
+      return;
+    }
+
+    // Build the Anthropic-shaped history. Trim to the first user message
+    // and map bot→assistant. Append the new user message we just enqueued.
+    const history = messages.map((m) => ({
+      role: m.role === "bot" ? "assistant" : "user",
+      content: m.text,
+    }));
     const firstUser = history.findIndex((h) => h.role === "user");
     const trimmed = firstUser >= 0 ? history.slice(firstUser) : [];
     trimmed.push({ role: "user", content: text });
@@ -94,7 +115,9 @@ export default function ConciergeChat({ show = true }) {
       if (!reply) throw new Error("empty");
       setMessages((m) => [...m, { role: "bot", text: reply }]);
     } catch {
-      setMessages((m) => [...m, { role: "bot", text: AI_ERROR[chatLang] }]);
+      // Remote failed — gracefully fall back to the local responder.
+      const { reply } = localChatReply(text, chatLang);
+      setMessages((m) => [...m, { role: "bot", text: reply }]);
     } finally {
       setThinking(false);
     }
@@ -304,8 +327,10 @@ export default function ConciergeChat({ show = true }) {
               </div>
             )}
 
-            {/* Free-text input — only when AI proxy is configured. */}
-            {AI_ENDPOINT && (
+            {/* Free-text input — always shown. When AI_ENDPOINT is empty
+                the responder runs locally; when set, the remote AI is used
+                and falls back locally on failure. */}
+            {(
               <form
                 onSubmit={handleSubmit}
                 className="border-t border-white/10 bg-void/40 px-4 pb-4 pt-3"

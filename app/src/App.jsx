@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import ScrollFrames from "./components/ScrollFrames";
+import PerspectiveGrid from "./components/PerspectiveGrid";
 import SectionTint from "./components/SectionTint";
 import GlobalParticleField from "./components/GlobalParticleField";
 import Cursor from "./components/Cursor";
@@ -41,6 +42,10 @@ export default function App() {
   return (
     <LangProvider>
       <ScrollFrames />
+      {/* Cinematic deep-space frame — very faint vanishing-point grid
+          that sits between the marble and the tint. Adds depth without
+          competing with content. */}
+      <PerspectiveGrid />
       {/* Section-driven colour overlay — gives each section its own
           "lighting", smoothly blended across the scroll. */}
       <SectionTint />
