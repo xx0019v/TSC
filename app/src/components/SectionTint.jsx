@@ -50,7 +50,31 @@ export default function SectionTint() {
 
     let raf;
     let frame = 0;
-    const tick = () => {
+    let lastTickTime = 0;
+    let lastScrollY = window.scrollY;
+    let lastActivity = performance.now();
+    const onScroll = () => { lastActivity = performance.now(); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const onVis = () => { if (!document.hidden) { lastActivity = performance.now(); } };
+    document.addEventListener("visibilitychange", onVis);
+
+    const IDLE_FRAME_MS = 1000 / 30; // 30fps when nothing has happened recently
+
+    const tick = (t) => {
+      if (document.hidden) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      // Adaptive FPS: while idle, run at 30fps. The colour LERP is slow
+      // enough that visitors can't see a difference, but it halves the
+      // section-rect reads + style writes.
+      const idle = (t - lastActivity) > 2000;
+      if (idle && (t - lastTickTime) < IDLE_FRAME_MS) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      lastTickTime = t;
+
       if ((frame & 31) === 0) refreshEls();
       frame++;
       const target = computeTarget();
@@ -63,7 +87,11 @@ export default function SectionTint() {
     };
     raf = requestAnimationFrame(tick);
 
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, []);
 
   return (

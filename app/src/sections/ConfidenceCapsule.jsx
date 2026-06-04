@@ -151,7 +151,7 @@ export default function ConfidenceCapsule() {
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onCapsuleClick(); } }}
               data-cursor
               data-cursor-label={stage === "fear" ? "Reveal" : "Reset"}
-              className="relative overflow-hidden rounded-[34px] border border-white/12 bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-transparent px-6 py-16 backdrop-blur-2xl shadow-[0_60px_140px_-30px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)] md:px-12 md:py-20"
+              className="relative overflow-hidden rounded-[34px] border border-white/12 bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-transparent px-6 py-16 backdrop-blur-md shadow-[0_60px_140px_-30px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)] md:px-12 md:py-20"
               style={{ cursor: "none" }}
             >
               {/* Gold inner trim */}

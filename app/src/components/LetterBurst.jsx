@@ -72,9 +72,20 @@ export default function LetterBurst({
     else cacheOffsets();
 
     let mx = -9999, my = -9999;
-    const onMove = (e) => { mx = e.clientX; my = e.clientY; };
+    let raf = null;
+    let running = false;
+
+    // Wake the RAF chain. Called from pointermove / scroll / IO becoming
+    // visible. Idempotent — no-ops if already running.
+    const start = () => {
+      if (running) return;
+      running = true;
+      raf = requestAnimationFrame(tick);
+    };
+
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; start(); };
     const onLeave = () => { mx = -9999; my = -9999; };
-    const onResize = () => { cacheOffsets(); };
+    const onResize = () => { cacheOffsets(); start(); };
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerleave", onLeave, { passive: true });
     window.addEventListener("resize", onResize);
@@ -82,16 +93,21 @@ export default function LetterBurst({
     let visible = true;
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
+      if (visible) start();
     }, { threshold: 0 });
     io.observe(wrap);
 
+    const onVis = () => { if (!document.hidden) start(); };
+    document.addEventListener("visibilitychange", onVis);
+
     const r2 = radius * radius;
-    let raf;
     let stillFrames = 0;
 
     const tick = (now) => {
-      if (!visible) {
-        raf = requestAnimationFrame(tick);
+      if (!visible || document.hidden) {
+        // Park: stop the chain. Restart hooks above will wake us up.
+        running = false;
+        raf = null;
         return;
       }
 
@@ -199,18 +215,26 @@ export default function LetterBurst({
       } else {
         stillFrames = 0;
       }
-      // Even when idle keep RAF alive (cheap) so we can catch the next burst.
+      // True idle (no animation, no near cursor) → park the RAF entirely.
+      // pointermove / scroll / IO will start it back up. With 8 headlines
+      // on the page this saves 8 concurrent RAF callbacks per frame.
+      if (stillFrames > 90) {
+        running = false;
+        raf = null;
+        return;
+      }
       raf = requestAnimationFrame(tick);
     };
 
-    raf = requestAnimationFrame(tick);
+    start();
 
     return () => {
       clearTimeout(settle);
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVis);
       io.disconnect();
     };
   }, [linesArr.join("|"), radius, push, intensity, burstMs, lingerMs, releaseMs]);

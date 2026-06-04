@@ -118,17 +118,25 @@ export default function GlobalParticleField() {
     };
 
     // ── Listeners ─────────────────────────────────────────────────────
-    const onMove = (e) => { state.mouseX = e.clientX; state.mouseY = e.clientY; };
+    let lastActivity = performance.now();
+    const onMove = (e) => {
+      state.mouseX = e.clientX;
+      state.mouseY = e.clientY;
+      lastActivity = performance.now();
+    };
     const onLeave = () => { state.mouseX = -9999; state.mouseY = -9999; };
     const onScroll = () => {
       const y = window.scrollY;
       state.scrollVy = y - state.lastScrollY;
       state.lastScrollY = y;
+      lastActivity = performance.now();
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerleave", onLeave, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", resize);
+    const onVis = () => { if (!document.hidden) lastActivity = performance.now(); };
+    document.addEventListener("visibilitychange", onVis);
 
     // ── Animation loop ────────────────────────────────────────────────
     const damp = 0.93; // slow, graceful damping
@@ -137,8 +145,23 @@ export default function GlobalParticleField() {
     let frameCount = 0;
     let fpsStart = 0;
     let fpsCheckDone = false;
+    let lastTickTime = 0;
+    // When the user hasn't interacted for ~2.5s, cap drawing at ~30fps
+    // (still smooth for slow drift, half the CPU). 60fps the moment they
+    // move again.
+    const IDLE_FRAME_MS = 1000 / 30;
 
     const tick = (t) => {
+      if (document.hidden) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      const idle = (t - lastActivity) > 2500;
+      if (idle && (t - lastTickTime) < IDLE_FRAME_MS) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      lastTickTime = t;
       // First-2-seconds FPS sample → halve the pool on slow devices.
       if (!fpsCheckDone) {
         if (fpsStart === 0) fpsStart = t;
@@ -265,6 +288,7 @@ export default function GlobalParticleField() {
       window.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVis);
     };
   }, []);
 

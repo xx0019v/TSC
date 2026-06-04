@@ -23,6 +23,10 @@ export default function Grain({ opacity = 0.07, fps = 14 }) {
     let raf;
     let last = 0;
     const step = (t) => {
+      if (document.hidden) {
+        raf = requestAnimationFrame(step);
+        return;
+      }
       if (t - last > 1000 / fps) {
         last = t;
         const img = ctx.createImageData(size, size);

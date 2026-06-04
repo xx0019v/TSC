@@ -202,7 +202,7 @@ export default function ConciergeChat({ show = true }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-4 right-4 z-[55] flex max-h-[min(82vh,640px)] w-[min(94vw,400px)] flex-col overflow-hidden rounded-[24px] border border-white/15 bg-void/92 backdrop-blur-2xl shadow-[0_60px_140px_-30px_rgba(0,0,0,0.85),0_0_60px_-20px_rgba(216,184,106,0.25)] md:bottom-7 md:right-7"
+            className="fixed bottom-4 right-4 z-[55] flex max-h-[min(82vh,640px)] w-[min(94vw,400px)] flex-col overflow-hidden rounded-[24px] border border-white/15 bg-void/92 backdrop-blur-lg shadow-[0_60px_140px_-30px_rgba(0,0,0,0.85),0_0_60px_-20px_rgba(216,184,106,0.25)] md:bottom-7 md:right-7"
           >
             {/* Header */}
             <header className="flex items-center justify-between border-b border-white/10 px-5 py-4">
