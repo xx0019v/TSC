@@ -22,7 +22,7 @@ export default function Apply() {
       />
 
       <div className="container-x relative z-[1] max-w-3xl text-center">
-        <Reveal><SectionMark number="06" label="Application" /></Reveal>
+        <Reveal><SectionMark number="08" label="Application" /></Reveal>
         <Reveal>
           <p className="eyebrow mb-5">{t.eyebrow}</p>
         </Reveal>

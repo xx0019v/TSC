@@ -6,13 +6,15 @@ import { useEffect, useState } from "react";
  * for the section currently in view glows gold.
  */
 const SECTIONS = [
-  { id: "hero", label: "00" },
+  { id: "hero",       label: "00" },
   { id: "difference", label: "01" },
-  { id: "features", label: "02" },
-  { id: "showcase", label: "03" },
-  { id: "pricing", label: "04" },
-  { id: "faq", label: "05" },
-  { id: "apply", label: "06" },
+  { id: "features",   label: "02" },
+  { id: "showcase",   label: "03" },
+  { id: "path",       label: "04" },
+  { id: "capsule",    label: "05" },
+  { id: "pricing",    label: "06" },
+  { id: "faq",        label: "07" },
+  { id: "apply",      label: "08" },
 ];
 
 export default function ScrollProgress() {

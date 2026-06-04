@@ -52,7 +52,7 @@ export default function Faq() {
     <section id="faq" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x max-w-3xl">
         <div className="mb-14 text-center">
-          <Reveal><SectionMark number="05" label="Questions" /></Reveal>
+          <Reveal><SectionMark number="07" label="Questions" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-5">{t.eyebrow}</p>
           </Reveal>
