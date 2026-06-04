@@ -34,6 +34,35 @@ const HEADER_LABEL = { ja: "TSC コンシェルジュ", en: "TSC Concierge" };
 const STATUS_LABEL = { ja: "Online", en: "Online" };
 const CTA_LABEL    = { ja: "コンシェルジュに相談", en: "Talk to the concierge" };
 
+const STORAGE_KEY = "tsc-concierge";
+
+function loadSavedSession() {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.messages)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function persistSession(messages, nodeKey, chatLang) {
+  if (typeof window === "undefined") return;
+  try {
+    // Cap stored history so it doesn't grow without bound across visits.
+    const capped = messages.slice(-40);
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ messages: capped, nodeKey, chatLang })
+    );
+  } catch {
+    /* quota errors are fine to ignore */
+  }
+}
+
 export default function ConciergeChat({ show = true }) {
   const { lang: pageLang } = useLang();
   const [open, setOpen] = useState(false);
@@ -41,6 +70,7 @@ export default function ConciergeChat({ show = true }) {
   const [messages, setMessages] = useState([]);
   const [nodeKey, setNodeKey] = useState("intro");
   const [thinking, setThinking] = useState(false);
+  const seededRef = useRef(false);
   const scrollRef = useRef(null);
 
   // When the page language switches and the chat is closed, follow along.
@@ -48,12 +78,51 @@ export default function ConciergeChat({ show = true }) {
     if (!open) setChatLang(pageLang);
   }, [pageLang, open]);
 
-  // Seed the intro the first time the panel opens, and after a language flip.
+  // Seed the intro on first open (or restore prior conversation from local
+  // storage so visitors can pick up where they left off after a refresh).
   useEffect(() => {
     if (!open) return;
+    if (seededRef.current) return;
+    seededRef.current = true;
+    const saved = loadSavedSession();
+    if (saved && saved.messages.length > 0) {
+      setMessages(saved.messages);
+      if (saved.nodeKey && FLOW[saved.nodeKey]) setNodeKey(saved.nodeKey);
+      if (saved.chatLang === "ja" || saved.chatLang === "en") setChatLang(saved.chatLang);
+    } else {
+      setMessages([{ role: "bot", text: FLOW.intro.botText[chatLang] }]);
+      setNodeKey("intro");
+    }
+  }, [open, chatLang]);
+
+  // Re-seed and reset history when the user manually flips JP / EN inside
+  // the chat — the prior conversation was in a different voice, so restart.
+  const seededLangRef = useRef(chatLang);
+  useEffect(() => {
+    if (!open) return;
+    if (seededLangRef.current === chatLang) return;
+    seededLangRef.current = chatLang;
     setMessages([{ role: "bot", text: FLOW.intro.botText[chatLang] }]);
     setNodeKey("intro");
-  }, [open, chatLang]);
+  }, [chatLang, open]);
+
+  // Persist on any meaningful change.
+  useEffect(() => {
+    if (messages.length === 0) return;
+    persistSession(messages, nodeKey, chatLang);
+  }, [messages, nodeKey, chatLang]);
+
+  // Quietly focus the input when the panel opens, on devices that have a
+  // real keyboard (avoids forcing the on-screen keyboard up on mobile).
+  useEffect(() => {
+    if (!open) return;
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: none)").matches) return;
+    const t = window.setTimeout(() => {
+      if (inputRef.current) inputRef.current.focus({ preventScroll: true });
+    }, 380);
+    return () => window.clearTimeout(t);
+  }, [open]);
 
   // Auto-scroll to the newest message.
   useEffect(() => {
