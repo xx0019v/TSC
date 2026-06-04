@@ -54,9 +54,9 @@ export const content = {
       title: ["画面の向こうに", "本物の学びを"],
       body: "自宅から数歩で\n本物のレッスンの場へ\n\n海外講師と通訳者が\nあなたの隣に",
       items: [
-        { src: "lesson3.jpg", label: "集中できる学習環境" },
-        { src: "lesson1.jpg", label: "海外講師とのオンラインレッスン" },
-        { src: "lesson2.jpg", label: "手を動かして 身につける" },
+        { src: "lesson3.webp", label: "集中できる学習環境" },
+        { src: "lesson1.webp", label: "海外講師とのオンラインレッスン" },
+        { src: "lesson2.webp", label: "手を動かして 身につける" },
       ],
     },
     pricing: {
@@ -141,9 +141,9 @@ export const content = {
       title: ["A real lesson", "through the screen"],
       body: "Step into a real lesson\nfrom wherever you are\n\nThe overseas teacher and the interpreter\nare both right beside you",
       items: [
-        { src: "lesson3.jpg", label: "A space to focus" },
-        { src: "lesson1.jpg", label: "Online lessons with overseas teachers" },
-        { src: "lesson2.jpg", label: "Learn by doing" },
+        { src: "lesson3.webp", label: "A space to focus" },
+        { src: "lesson1.webp", label: "Online lessons with overseas teachers" },
+        { src: "lesson2.webp", label: "Learn by doing" },
       ],
     },
     pricing: {

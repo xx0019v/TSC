@@ -71,7 +71,7 @@ export default function Difference() {
             <div className="relative overflow-hidden rounded-[26px] border border-white/10 p-9">
               {/* marble texture + scrim for a luxe, readable surface */}
               <img
-                src={`${import.meta.env.BASE_URL}marble.jpg`}
+                src={`${import.meta.env.BASE_URL}marble.webp`}
                 alt=""
                 aria-hidden="true"
                 loading="lazy"

@@ -28,7 +28,7 @@ export default function Navbar({ show }) {
       <nav className="container-x flex h-16 items-center justify-between md:h-[72px]">
         <a href="#hero" data-cursor className="flex items-center gap-3" aria-label="TSC English Academy — home">
           <img
-            src={`${import.meta.env.BASE_URL}logo.jpg`}
+            src={`${import.meta.env.BASE_URL}logo.webp`}
             alt=""
             aria-hidden="true"
             width="40"

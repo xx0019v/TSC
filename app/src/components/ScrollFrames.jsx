@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 const FRAME_COUNT = 110;
 const framePath = (i) =>
-  `${import.meta.env.BASE_URL}frames/frame_${String(i).padStart(4, "0")}.jpg`;
+  `${import.meta.env.BASE_URL}frames/frame_${String(i).padStart(4, "0")}.webp`;
 
 /**
  * Site-wide scroll-scrubbed background. A fixed, full-screen canvas that plays

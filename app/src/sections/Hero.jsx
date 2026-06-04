@@ -64,7 +64,7 @@ export default function Hero({ ready }) {
         </div>
         <div className="relative h-[58px] w-[58px] overflow-hidden rounded-md border border-white/15 shadow-[0_10px_28px_rgba(0,0,0,0.55)] ring-1 ring-gold/35 md:h-[68px] md:w-[68px]">
           <img
-            src={`${import.meta.env.BASE_URL}logo.jpg`}
+            src={`${import.meta.env.BASE_URL}logo.webp`}
             alt="TSC English Academy"
             width="640"
             height="640"
