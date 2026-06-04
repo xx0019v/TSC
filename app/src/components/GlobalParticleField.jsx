@@ -138,6 +138,16 @@ export default function GlobalParticleField() {
     const onVis = () => { if (!document.hidden) lastActivity = performance.now(); };
     document.addEventListener("visibilitychange", onVis);
 
+    // Celebration burst — listens for the Konami egg event and lifts the
+    // brightness for a short window.
+    let celebrateUntil = 0;
+    const onCelebrate = (e) => {
+      const dur = (e?.detail?.duration) || 4000;
+      celebrateUntil = performance.now() + dur;
+      lastActivity = performance.now();
+    };
+    window.addEventListener("tsc-celebrate", onCelebrate);
+
     // ── Animation loop ────────────────────────────────────────────────
     const damp = 0.93; // slow, graceful damping
     const mRad2 = 120 * 120;
@@ -186,8 +196,13 @@ export default function GlobalParticleField() {
       env.centerDim += (target.centerDim - env.centerDim) * 0.06;
       env.drift += (target.drift - env.drift) * 0.06;
 
-      const visN = Math.max(0, Math.min(N, Math.round(N * env.density)));
-      const aBucket = Math.max(0, Math.min(BUCKETS, Math.round(env.brightness * BUCKETS)));
+      // While celebrating, scale density + brightness up briefly.
+      const celebrating = t < celebrateUntil;
+      const celebrateBoost = celebrating
+        ? 1 + Math.max(0, Math.min(1, (celebrateUntil - t) / 4000)) * 0.6
+        : 1;
+      const visN = Math.max(0, Math.min(N, Math.round(N * env.density * celebrateBoost)));
+      const aBucket = Math.max(0, Math.min(BUCKETS, Math.round(env.brightness * celebrateBoost * BUCKETS)));
 
       // Scroll velocity decays slowly so the downward "fall" lingers.
       const sVy = state.scrollVy;
@@ -289,6 +304,7 @@ export default function GlobalParticleField() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("tsc-celebrate", onCelebrate);
     };
   }, []);
 

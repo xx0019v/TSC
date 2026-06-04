@@ -9,6 +9,8 @@ import CursorTrail from "./components/CursorTrail";
 import Grain from "./components/Grain";
 import ScrollProgress from "./components/ScrollProgress";
 import TopProgress from "./components/TopProgress";
+import ScrollMilestone from "./components/ScrollMilestone";
+import KonamiEgg from "./components/KonamiEgg";
 import Loader from "./components/Loader";
 import Marquee from "./components/Marquee";
 import Navbar from "./components/Navbar";
@@ -67,6 +69,8 @@ export default function App() {
       <Navbar show={ready} />
       {ready && <ScrollProgress />}
       {ready && <TopProgress />}
+      {ready && <ScrollMilestone />}
+      {ready && <KonamiEgg />}
       <ConciergeChat show={ready} />
 
       <main>
