@@ -23,9 +23,10 @@ export const PROFILES = {
   features:   { density: 0.22, brightness: 0.62, size: 0.90, centerDim: 0.28, drift: 0.08, tint: [14, 10, 24, 0.26] },
   showcase:   { density: 0.26, brightness: 0.68, size: 0.95, centerDim: 0.28, drift: 0.10, tint: [28, 18, 12, 0.24] },
   path:       { density: 0.30, brightness: 0.75, size: 1.00, centerDim: 0.38, drift: 0.10, tint: [12, 14, 24, 0.24] },
-  // Constellation owns its own visualisation — keep the global field very
-  // quiet here so the section's word-canvas dominates.
-  constellation: { density: 0.10, brightness: 0.42, size: 0.85, centerDim: 0.55, drift: 0.06, tint: [2,  2,  6, 0.38] },
+  // Becoming runs its own halo + horizon; keep global field quiet here
+  // and shift the tint slightly warmer as the section progresses (this
+  // is the average — Becoming itself paints the late-section gold).
+  becoming:   { density: 0.18, brightness: 0.55, size: 0.92, centerDim: 0.48, drift: 0.06, tint: [16, 12, 10, 0.32] },
   capsule:    { density: 0.36, brightness: 0.80, size: 1.05, centerDim: 0.42, drift: 0.12, tint: [4,  4,  8, 0.32] },
   pricing:    { density: 0.22, brightness: 0.62, size: 0.90, centerDim: 0.28, drift: 0.08, tint: [12, 16, 14, 0.22] },
   faq:        { density: 0.20, brightness: 0.58, size: 0.88, centerDim: 0.30, drift: 0.08, tint: [16, 12, 22, 0.22] },
@@ -43,7 +44,7 @@ export const SECTION_IDS = [
   "features",
   "showcase",
   "path",
-  "constellation",
+  "becoming",
   "capsule",
   "pricing",
   "faq",
