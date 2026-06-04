@@ -8,6 +8,7 @@ import Cursor from "./components/Cursor";
 import CursorTrail from "./components/CursorTrail";
 import Grain from "./components/Grain";
 import ScrollProgress from "./components/ScrollProgress";
+import TopProgress from "./components/TopProgress";
 import Loader from "./components/Loader";
 import Marquee from "./components/Marquee";
 import Navbar from "./components/Navbar";
@@ -16,7 +17,6 @@ import Hero from "./sections/Hero";
 import Difference from "./sections/Difference";
 import Features from "./sections/Features";
 import Showcase from "./sections/Showcase";
-import LevelDiagnose from "./sections/LevelDiagnose";
 import Becoming from "./sections/Becoming";
 import ConfidenceCapsule from "./sections/ConfidenceCapsule";
 import Pricing from "./sections/Pricing";
@@ -66,6 +66,7 @@ export default function App() {
 
       <Navbar show={ready} />
       {ready && <ScrollProgress />}
+      {ready && <TopProgress />}
       <ConciergeChat show={ready} />
 
       <main>
@@ -76,7 +77,6 @@ export default function App() {
         />
         <Features />
         <Showcase />
-        <LevelDiagnose />
         <Becoming />
         <ConfidenceCapsule />
         <Pricing />

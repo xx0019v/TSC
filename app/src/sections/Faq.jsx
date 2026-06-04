@@ -10,18 +10,34 @@ import SectionBg from "../components/SectionBg";
 function Item({ q, a, open, onToggle }) {
   return (
     <div
-      className={`overflow-hidden rounded-2xl border transition-colors duration-300 ${
-        open ? "border-gold/40 bg-gold/[0.05]" : "border-white/10 bg-white/[0.03]"
+      className={`group relative overflow-hidden rounded-2xl border transition-all duration-500 ${
+        open
+          ? "border-gold/45 bg-gold/[0.06] shadow-[inset_0_1px_0_rgba(252,233,184,0.10)]"
+          : "border-white/10 bg-white/[0.03] hover:border-gold/25"
       }`}
     >
+      {/* Editorial gold left rule that appears when the item is open. */}
+      <span
+        aria-hidden="true"
+        className={`absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-gradient-to-b from-gold-bright via-gold to-gold/0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          open ? "scale-y-100" : ""
+        }`}
+      />
       <button
         type="button"
         onClick={onToggle}
         data-cursor
         className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+        aria-expanded={open}
       >
-        <span className="display text-lg text-ivory">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3 }} className="flex-none text-gold">
+        <span className="display text-lg text-ivory transition-colors duration-300 group-hover:text-gold-bright">
+          {q}
+        </span>
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="flex-none text-gold"
+        >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="m6 9 6 6 6-6" />
           </svg>
@@ -33,9 +49,11 @@ function Item({ q, a, open, onToggle }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="whitespace-pre-line px-6 pb-6 font-body text-[0.96rem] leading-relaxed text-ivory/60">{a}</p>
+            <p className="whitespace-pre-line px-6 pb-6 font-body text-[0.96rem] leading-relaxed text-ivory/65">
+              {a}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -52,7 +70,7 @@ export default function Faq() {
     <section id="faq" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x max-w-3xl">
         <div className="mb-14 text-center">
-          <Reveal><SectionMark number="08" label="Questions" /></Reveal>
+          <Reveal><SectionMark number="07" label="Questions" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-5">{t.eyebrow}</p>
           </Reveal>

@@ -118,7 +118,7 @@ export default function ConfidenceCapsule() {
   return (
     <section id="capsule" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x relative z-[1] mx-auto max-w-4xl text-center">
-        <Reveal><SectionMark number="06" label="Confidence Capsule" /></Reveal>
+        <Reveal><SectionMark number="05" label="Confidence Capsule" /></Reveal>
         <Reveal>
           <p className="eyebrow mb-5">{t.eyebrow}</p>
         </Reveal>

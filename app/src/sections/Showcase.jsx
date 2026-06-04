@@ -11,7 +11,7 @@ function Frame({ src, label, className = "", aspect, speed = 0.12 }) {
       <figure
         data-cursor
         data-cursor-label="View"
-        className="group relative h-full overflow-hidden rounded-[20px] border border-white/10"
+        className="group relative h-full overflow-hidden rounded-[20px] border border-white/10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6),0_0_50px_-18px_rgba(216,184,106,0.35)]"
         style={aspect ? { aspectRatio: aspect } : undefined}
       >
         {/* Oversized inner layer so the parallax drift never exposes an edge. */}
@@ -23,8 +23,17 @@ function Frame({ src, label, className = "", aspect, speed = 0.12 }) {
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
           />
         </Parallax>
+        {/* Cursor-following sheen on hover, sub-zero z so the caption stays
+            on top. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[5] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{ background: "radial-gradient(60% 60% at 50% 30%, rgba(252,233,184,0.08), transparent 70%)" }}
+        />
         <figcaption className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-void/85 via-void/30 to-transparent p-5">
-          <span className="font-sans text-sm tracking-wide text-ivory/90">{label}</span>
+          <span className="block font-sans text-sm tracking-wide text-ivory/90 transition-colors duration-500 group-hover:text-gold-bright">{label}</span>
+          {/* Thin gold rule that draws in on hover. */}
+          <span className="mt-2 block h-px w-0 origin-left bg-gradient-to-r from-gold via-gold-bright to-transparent transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-12" />
         </figcaption>
       </figure>
     </Reveal>

@@ -22,7 +22,6 @@ export const PROFILES = {
   difference: { density: 0.32, brightness: 0.78, size: 1.00, centerDim: 0.30, drift: 0.10, tint: [9, 14, 28, 0.22] },
   features:   { density: 0.22, brightness: 0.62, size: 0.90, centerDim: 0.28, drift: 0.08, tint: [14, 10, 24, 0.26] },
   showcase:   { density: 0.26, brightness: 0.68, size: 0.95, centerDim: 0.28, drift: 0.10, tint: [28, 18, 12, 0.24] },
-  path:       { density: 0.30, brightness: 0.75, size: 1.00, centerDim: 0.38, drift: 0.10, tint: [12, 14, 24, 0.24] },
   // Becoming runs its own halo + horizon; keep global field quiet here
   // and shift the tint slightly warmer as the section progresses (this
   // is the average — Becoming itself paints the late-section gold).
@@ -43,7 +42,6 @@ export const SECTION_IDS = [
   "difference",
   "features",
   "showcase",
-  "path",
   "becoming",
   "capsule",
   "pricing",

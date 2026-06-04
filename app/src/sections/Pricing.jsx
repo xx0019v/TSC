@@ -5,6 +5,7 @@ import Reveal from "../components/Reveal";
 import MagneticButton from "../components/MagneticButton";
 import SectionMark from "../components/SectionMark";
 import SectionBg from "../components/SectionBg";
+import TiltCard from "../components/TiltCard";
 
 function Check() {
   return (
@@ -22,7 +23,7 @@ export default function Pricing() {
     <section id="pricing" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x">
         <div className="mb-14 max-w-2xl">
-          <Reveal><SectionMark number="07" label="Pricing" align="left" /></Reveal>
+          <Reveal><SectionMark number="06" label="Pricing" align="left" /></Reveal>
           <Reveal>
             <p className="eyebrow mb-5">{t.eyebrow}</p>
           </Reveal>
@@ -52,9 +53,12 @@ export default function Pricing() {
         <div className="grid gap-5 md:grid-cols-3">
           {t.plans.map((p, i) => (
             <Reveal key={p.name} delay={i * 0.08}>
-              <article
+              <TiltCard
+                as="article"
                 data-cursor
-                className={`relative flex h-full flex-col overflow-hidden rounded-[22px] p-8 transition-shadow duration-500 ${
+                maxTilt={p.featured ? 5 : 3}
+                className="h-full rounded-[22px]"
+                innerClassName={`flex h-full flex-col overflow-hidden rounded-[22px] p-8 transition-shadow duration-500 ${
                   p.featured
                     ? "border border-gold/55 bg-gold/[0.08] shadow-[0_30px_80px_-30px_rgba(216,184,106,0.55),inset_0_1px_0_rgba(252,233,184,0.15)] hover:shadow-[0_36px_100px_-30px_rgba(216,184,106,0.7),inset_0_1px_0_rgba(252,233,184,0.22),0_0_60px_-12px_rgba(252,233,184,0.18)]"
                     : "glass hover:border-gold/20"
@@ -88,7 +92,7 @@ export default function Pricing() {
                     {t.choose}
                   </MagneticButton>
                 </div>
-              </article>
+              </TiltCard>
             </Reveal>
           ))}
         </div>

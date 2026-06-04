@@ -4,6 +4,7 @@ import Reveal from "../components/Reveal";
 import SectionMark from "../components/SectionMark";
 import SectionBg from "../components/SectionBg";
 import LetterBurst from "../components/LetterBurst";
+import TiltCard from "../components/TiltCard";
 
 export default function Features() {
   const { lang } = useLang();
@@ -26,23 +27,26 @@ export default function Features() {
         <div className="grid gap-5 md:grid-cols-3">
           {t.items.map((item, i) => (
             <Reveal key={item.no} delay={i * 0.1}>
-              <article
+              <TiltCard
+                as="article"
                 data-cursor
-                className="group relative h-full overflow-hidden rounded-[22px] glass p-8 transition-colors duration-500 hover:border-gold/40"
+                maxTilt={4}
+                className="group h-full rounded-[22px]"
+                innerClassName="glass overflow-hidden rounded-[22px] p-8 transition-colors duration-500 hover:border-gold/40"
               >
                 <div
                   className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
                   style={{ background: "radial-gradient(circle, rgba(216,184,106,0.35), transparent 70%)" }}
                 />
                 <div className="flex items-center justify-between">
-                  <span className="font-sans text-sm tracking-[0.2em] text-gold/70">{item.no}</span>
+                  <span className="font-display text-2xl italic text-gold/70">{item.no}</span>
                   <span className="rounded-full border border-gold/25 bg-gold/[0.08] px-3 py-1 font-sans text-[0.66rem] uppercase tracking-wider text-gold-bright">
                     {item.tag}
                   </span>
                 </div>
                 <h3 className="display mt-7 text-2xl text-ivory">{item.title}</h3>
                 <p className="mt-3 font-body text-[0.98rem] leading-relaxed text-ivory/60">{item.body}</p>
-              </article>
+              </TiltCard>
             </Reveal>
           ))}
         </div>
