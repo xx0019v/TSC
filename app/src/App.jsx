@@ -17,6 +17,7 @@ import Difference from "./sections/Difference";
 import Features from "./sections/Features";
 import Showcase from "./sections/Showcase";
 import LevelDiagnose from "./sections/LevelDiagnose";
+import WordConstellation from "./sections/WordConstellation";
 import ConfidenceCapsule from "./sections/ConfidenceCapsule";
 import Pricing from "./sections/Pricing";
 import Faq from "./sections/Faq";
@@ -76,6 +77,7 @@ export default function App() {
         <Features />
         <Showcase />
         <LevelDiagnose />
+        <WordConstellation />
         <ConfidenceCapsule />
         <Pricing />
         <Faq />
