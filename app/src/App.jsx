@@ -76,11 +76,11 @@ export default function App() {
         />
         <Features />
         <Showcase />
-        <LevelDiagnose />
         <Becoming />
         <ConfidenceCapsule />
         <Pricing />
         <Faq />
+        <LevelDiagnose />
         <Apply />
         <Footer />
       </main>
