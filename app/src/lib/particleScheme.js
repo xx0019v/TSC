@@ -43,11 +43,11 @@ export const SECTION_IDS = [
   "difference",
   "features",
   "showcase",
+  "path",
   "becoming",
   "capsule",
   "pricing",
   "faq",
-  "path",
   "apply",
   "footer",
 ];

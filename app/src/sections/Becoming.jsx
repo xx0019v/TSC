@@ -147,7 +147,7 @@ export default function Becoming() {
 
         {/* Editorial chrome — corner marks, never compete with the text. */}
         <div className="pointer-events-none absolute left-6 top-12 z-[2] md:left-12 md:top-16">
-          <SectionMark number="04" label={TAG[lang] || TAG.en} align="left" />
+          <SectionMark number="05" label={TAG[lang] || TAG.en} align="left" />
         </div>
         <div
           aria-hidden="true"

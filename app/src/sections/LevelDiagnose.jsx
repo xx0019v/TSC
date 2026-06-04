@@ -14,8 +14,8 @@ import { useLang } from "../lib/lang";
  * Progress and answers are mirrored to localStorage so a refresh resumes
  * mid-flow.
  *
- * Sits just before Apply — visitors have read everything; this is the
- * final personalisation before the application form.
+ * Lives between Showcase and Becoming — the personalisation that breaks
+ * up the editorial flow before the emotional Becoming scene.
  */
 
 const STORAGE_KEY = "tsc-level-diagnose";
@@ -260,7 +260,7 @@ export default function LevelDiagnose() {
     <section id="path" className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x relative z-[1] mx-auto max-w-3xl text-center">
         <Reveal>
-          <SectionMark number="08" label="Path" />
+          <SectionMark number="04" label="Path" />
         </Reveal>
         <Reveal>
           <p className="eyebrow mb-5">{t.eyebrow}</p>

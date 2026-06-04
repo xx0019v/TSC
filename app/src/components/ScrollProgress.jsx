@@ -10,11 +10,11 @@ const SECTIONS = [
   { id: "difference", label: "01" },
   { id: "features",   label: "02" },
   { id: "showcase",   label: "03" },
-  { id: "becoming",   label: "04" },
-  { id: "capsule",    label: "05" },
-  { id: "pricing",    label: "06" },
-  { id: "faq",        label: "07" },
-  { id: "path",       label: "08" },
+  { id: "path",       label: "04" },
+  { id: "becoming",   label: "05" },
+  { id: "capsule",    label: "06" },
+  { id: "pricing",    label: "07" },
+  { id: "faq",        label: "08" },
   { id: "apply",      label: "09" },
 ];
 
