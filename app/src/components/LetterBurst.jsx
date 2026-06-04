@@ -73,19 +73,10 @@ export default function LetterBurst({
 
     let mx = -9999, my = -9999;
     let raf = null;
-    let running = false;
 
-    // Wake the RAF chain. Called from pointermove / scroll / IO becoming
-    // visible. Idempotent — no-ops if already running.
-    const start = () => {
-      if (running) return;
-      running = true;
-      raf = requestAnimationFrame(tick);
-    };
-
-    const onMove = (e) => { mx = e.clientX; my = e.clientY; start(); };
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; };
     const onLeave = () => { mx = -9999; my = -9999; };
-    const onResize = () => { cacheOffsets(); start(); };
+    const onResize = () => { cacheOffsets(); };
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerleave", onLeave, { passive: true });
     window.addEventListener("resize", onResize);
@@ -93,23 +84,33 @@ export default function LetterBurst({
     let visible = true;
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible) start();
     }, { threshold: 0 });
     io.observe(wrap);
 
-    const onVis = () => { if (!document.hidden) start(); };
-    document.addEventListener("visibilitychange", onVis);
-
     const r2 = radius * radius;
     let stillFrames = 0;
+    let lastTickTime = 0;
 
     const tick = (now) => {
-      if (!visible || document.hidden) {
-        // Park: stop the chain. Restart hooks above will wake us up.
-        running = false;
-        raf = null;
+      if (document.hidden) {
+        // Browser throttles RAF when hidden anyway; we just no-op fast.
+        raf = requestAnimationFrame(tick);
         return;
       }
+      if (!visible) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      // When deeply idle, throttle to ~30fps instead of stopping. This
+      // is the safe middle ground: we still wake instantly on the next
+      // pointermove (the cursor proximity check happens every tick),
+      // and we cut idle work in half.
+      const deeplyIdle = stillFrames > 30;
+      if (deeplyIdle && (now - lastTickTime) < 33) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      lastTickTime = now;
 
       const wr = wrap.getBoundingClientRect();
       const wox = wr.left;
@@ -215,18 +216,10 @@ export default function LetterBurst({
       } else {
         stillFrames = 0;
       }
-      // True idle (no animation, no near cursor) → park the RAF entirely.
-      // pointermove / scroll / IO will start it back up. With 8 headlines
-      // on the page this saves 8 concurrent RAF callbacks per frame.
-      if (stillFrames > 90) {
-        running = false;
-        raf = null;
-        return;
-      }
       raf = requestAnimationFrame(tick);
     };
 
-    start();
+    raf = requestAnimationFrame(tick);
 
     return () => {
       clearTimeout(settle);
@@ -234,7 +227,6 @@ export default function LetterBurst({
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("resize", onResize);
-      document.removeEventListener("visibilitychange", onVis);
       io.disconnect();
     };
   }, [linesArr.join("|"), radius, push, intensity, burstMs, lingerMs, releaseMs]);
