@@ -54,10 +54,10 @@ export default function Pricing() {
             <Reveal key={p.name} delay={i * 0.08}>
               <article
                 data-cursor
-                className={`relative flex h-full flex-col overflow-hidden rounded-[22px] p-8 ${
+                className={`relative flex h-full flex-col overflow-hidden rounded-[22px] p-8 transition-shadow duration-500 ${
                   p.featured
-                    ? "border border-gold/60 bg-gold/[0.1] shadow-[0_20px_60px_-20px_rgba(216,184,106,0.5)]"
-                    : "glass"
+                    ? "border border-gold/55 bg-gold/[0.08] shadow-[0_30px_80px_-30px_rgba(216,184,106,0.55),inset_0_1px_0_rgba(252,233,184,0.15)] hover:shadow-[0_36px_100px_-30px_rgba(216,184,106,0.7),inset_0_1px_0_rgba(252,233,184,0.22),0_0_60px_-12px_rgba(252,233,184,0.18)]"
+                    : "glass hover:border-gold/20"
                 }`}
               >
                 {p.featured && (

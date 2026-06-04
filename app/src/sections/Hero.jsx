@@ -174,15 +174,17 @@ export default function Hero({ ready }) {
             {t.usp}
           </span>
         </div>
-        <div className="flex flex-col items-center gap-2">
-          <span className="font-sans text-[0.58rem] uppercase tracking-[0.32em] text-ivory/45">
+        <div className="flex flex-col items-center gap-3">
+          <span className="font-sans text-[0.58rem] uppercase tracking-[0.34em] text-ivory/45">
             Scroll
           </span>
-          <span className="relative h-9 w-5 rounded-full border border-gold/45">
+          {/* A single travelling gold dot on a quiet vertical rule — the
+              hardware-store lozenge swapped for editorial restraint. */}
+          <span className="relative block h-12 w-px overflow-hidden bg-gradient-to-b from-gold/0 via-gold/35 to-gold/0">
             <motion.span
-              className="absolute left-1/2 top-1.5 h-1.5 w-0.5 -translate-x-1/2 rounded-full bg-gold"
-              animate={{ y: [0, 10, 0], opacity: [0, 1, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-gold-bright shadow-[0_0_8px_1px_rgba(252,233,184,0.6)]"
+              animate={{ y: [0, 38, 0], opacity: [0, 1, 0] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
             />
           </span>
         </div>

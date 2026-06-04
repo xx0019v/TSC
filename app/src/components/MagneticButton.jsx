@@ -33,11 +33,11 @@ export default function MagneticButton({
   };
 
   const base =
-    "relative inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-medium font-sans tracking-wide select-none";
+    "group relative inline-flex items-center justify-center overflow-visible rounded-full px-7 py-3.5 text-sm font-medium font-sans tracking-wide select-none transition-shadow duration-500";
   const styles =
     variant === "primary"
-      ? "text-void bg-gradient-to-br from-gold-bright via-gold to-gold-deep shadow-[0_10px_40px_-8px_rgba(216,184,106,0.6)]"
-      : "text-ivory border border-white/15 bg-white/[0.03] hover:border-gold/50";
+      ? "text-void bg-gradient-to-br from-gold-bright via-gold to-gold-deep shadow-[0_10px_40px_-8px_rgba(216,184,106,0.55)] hover:shadow-[0_18px_60px_-10px_rgba(252,233,184,0.7),0_0_0_1px_rgba(252,233,184,0.18)]"
+      : "text-ivory border border-white/15 bg-white/[0.03] hover:border-gold/55 hover:bg-white/[0.06]";
 
   const Tag = as;
 
@@ -52,7 +52,15 @@ export default function MagneticButton({
       data-cursor-label={label}
       className={`${base} ${styles} ${className}`}
     >
-      <span ref={innerRef} className="inline-flex items-center gap-2">
+      {/* Expanding gold ring on hover — primary only. The pointer-events-none
+          ring sits OUTSIDE the pill so the magnetic pull still feels precise. */}
+      {variant === "primary" && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-1 rounded-full border border-gold-bright/0 opacity-0 transition-all duration-500 group-hover:-inset-2 group-hover:border-gold-bright/35 group-hover:opacity-100"
+        />
+      )}
+      <span ref={innerRef} className="relative inline-flex items-center gap-2">
         {children}
       </span>
     </Tag>
